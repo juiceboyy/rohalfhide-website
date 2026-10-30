@@ -1,22 +1,11 @@
+import { isSheetsConfigured, upsertSubscriber } from './utils/google-sheets.mjs';
+import { isBrevoConfigured, sendSubscriptionEmails } from './utils/brevo-mail.mjs';
+
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export default async (req) => {
+export default async (req, context) => {
   if (req.method !== 'POST') {
     return Response.json({ error: 'Method not allowed.' }, { status: 405 });
-  }
-
-  const apiKey =
-    (typeof Netlify !== 'undefined' && Netlify.env?.get('BREVO_API_KEY')) ||
-    process.env.BREVO_API_KEY;
-  const rawListId =
-    (typeof Netlify !== 'undefined' && Netlify.env?.get('BREVO_LIST_ID')) ||
-    process.env.BREVO_LIST_ID;
-
-  if (!apiKey) {
-    return Response.json(
-      { error: 'Newsletter service is not configured yet (missing BREVO_API_KEY).' },
-      { status: 503 }
-    );
   }
 
   let body;
@@ -31,50 +20,50 @@ export default async (req) => {
     return Response.json({ error: 'Please provide a valid email address.' }, { status: 400 });
   }
 
-  const payload = {
-    email,
-    updateEnabled: true,
-  };
+  const sheetsReady = isSheetsConfigured();
+  const brevoReady = isBrevoConfigured();
 
-  if (rawListId) {
-    const parsedListId = Number.parseInt(rawListId, 10);
-    if (!Number.isNaN(parsedListId) && parsedListId > 0) {
-      payload.listIds = [parsedListId];
-    }
+  if (!sheetsReady && !brevoReady) {
+    return Response.json(
+      {
+        error:
+          'Mailing list service is not configured yet (missing Google Sheets or Brevo environment variables).',
+      },
+      { status: 503 }
+    );
   }
 
+  const country = context?.geo?.country?.code || '';
+  let isUpdate = false;
+
   try {
-    const response = await fetch('https://api.brevo.com/v3/contacts', {
-      method: 'POST',
-      headers: {
-        accept: 'application/json',
-        'content-type': 'application/json',
-        'api-key': apiKey,
-      },
-      body: JSON.stringify(payload),
-    });
-
-    if (response.ok) {
-      return Response.json({ ok: true, message: 'Subscribed successfully.' }, { status: 200 });
+    if (sheetsReady) {
+      const sheetResult = await upsertSubscriber({
+        email,
+        type: 'Fan',
+        source: 'Website Mailing List',
+        country,
+        subscribed: true,
+        notes: 'Newsletter',
+      });
+      isUpdate = Boolean(sheetResult?.isUpdate);
     }
 
-    let errorDetail = 'Could not complete subscription. Please try again later.';
-    try {
-      const errData = await response.json();
-      if (errData?.code === 'duplicate_parameter') {
-        return Response.json({ ok: true, message: 'You are already subscribed.' }, { status: 200 });
-      }
-      if (typeof errData?.message === 'string') {
-        errorDetail = errData.message;
-      }
-    } catch {
-      // Ignore JSON parse errors on upstream error response
+    if (brevoReady) {
+      await sendSubscriptionEmails({ email, isUpdate, country });
     }
 
-    return Response.json({ error: errorDetail }, { status: response.status });
-  } catch {
     return Response.json(
-      { error: 'Unable to reach the mailing list service. Please try again later.' },
+      {
+        ok: true,
+        message: 'Subscribed successfully.',
+      },
+      { status: 200 }
+    );
+  } catch (err) {
+    console.error('Error in /api/subscribe:', err);
+    return Response.json(
+      { error: 'Unable to complete subscription right now. Please try again later.' },
       { status: 502 }
     );
   }

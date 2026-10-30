@@ -186,24 +186,40 @@
       try {
         const formData = new FormData(form);
         const encoded = new URLSearchParams();
+        const payload: Record<string, string> = {};
+
         formData.forEach((value, key) => {
           if (typeof value === 'string') {
             encoded.append(key, value);
+            payload[key] = value;
           }
         });
 
-        const response = await fetch('/__forms.html', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: encoded.toString(),
-        });
+        const [apiResult, netlifyResult] = await Promise.allSettled([
+          fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          }),
+          fetch('/__forms.html', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: encoded.toString(),
+          }),
+        ]);
 
-        if (response.ok) {
+        const apiOk =
+          apiResult.status === 'fulfilled' &&
+          (apiResult.value.status === 200 || apiResult.value.status === 202);
+        const netlifyOk =
+          netlifyResult.status === 'fulfilled' && netlifyResult.value.ok;
+
+        if (apiOk || netlifyOk) {
           window.location.assign('/success');
           return;
         }
 
-        throw new Error(`Submission returned status ${response.status}`);
+        throw new Error('Both submission endpoints failed.');
       } catch {
         submitBtn.disabled = false;
         submitBtn.textContent = originalLabel;
