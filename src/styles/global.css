@@ -5,28 +5,69 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    color: #f4f4f5;
-    background-color: #0d0e12;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    color: #F5F5F5;
+    background-color: #08090A;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   ::selection {
-    background-color: #e28743;
-    color: #0d0e12;
+    background-color: #D4954A;
+    color: #08090A;
   }
 }
 
-/* Custom scrollbar */
+@layer components {
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F5F5F5] focus-visible:ring-offset-4 focus-visible:ring-offset-[#D4954A];
+  }
+
+  .form-input {
+    @apply w-full px-4 py-3 bg-surface-raised text-surface-ink text-sm font-sans font-normal rounded-lg shadow-hairline placeholder:text-surface-subtle transition-shadow duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F5F5F5] focus-visible:ring-offset-4 focus-visible:ring-offset-[#D4954A];
+  }
+}
+
+/* Post-interaction form validation (:user-invalid with shadow-as-border) */
+.field-error {
+  display: none;
+}
+
+input:user-invalid,
+textarea:user-invalid,
+select:user-invalid,
+input.user-invalid-fallback,
+textarea.user-invalid-fallback,
+select.user-invalid-fallback {
+  box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.75);
+  background-color: rgba(127, 29, 29, 0.16);
+}
+
+input:user-invalid + .field-error,
+textarea:user-invalid + .field-error,
+input.user-invalid-fallback + .field-error,
+textarea.user-invalid-fallback + .field-error {
+  display: flex;
+}
+
+input:user-valid,
+textarea:user-valid,
+input.user-valid-fallback,
+textarea.user-valid-fallback {
+  box-shadow: 0 0 0 1px rgba(212, 149, 74, 0.45);
+}
+
+/* Minimalist scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #0d0e12;
+  background: #08090A;
 }
 ::-webkit-scrollbar-thumb {
-  background: #272a34;
+  background: #1F1F22;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #e28743;
+  background: #D4954A;
 }

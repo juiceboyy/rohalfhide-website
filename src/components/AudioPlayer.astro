@@ -36,62 +36,111 @@ const tracks: Track[] = [
 ];
 ---
 
-<section id="music" class="py-20 bg-[#0c0d11] border-t border-zinc-900">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="mb-10 text-left">
-      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mb-2">Music</h2>
-      <p class="text-zinc-400 text-sm">
-        Stream tracks below or visit <a href="https://rohalfhide.bandcamp.com" target="_blank" rel="noopener noreferrer" class="text-zinc-200 underline hover:text-white">Bandcamp</a>.
+<section id="music" class="relative py-24 bg-surface-void shadow-divider-t overflow-hidden">
+  <!-- Ambient Atmospheric Artwork Layer -->
+  <div class="absolute inset-0 pointer-events-none select-none overflow-hidden z-0" aria-hidden="true">
+    <div class="absolute top-1/2 left-1/2 lg:left-[64%] -translate-x-1/2 -translate-y-1/2 w-[520px] sm:w-[760px] aspect-square rounded-full overflow-hidden opacity-45 sm:opacity-55 blur-2xl sm:blur-3xl saturate-150 scale-110">
+      <img
+        id="player-ambient-aura"
+        src={tracks[0].cover}
+        alt=""
+        width="600"
+        height="600"
+        loading="lazy"
+        class="w-full h-full object-cover"
+      />
+    </div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_64%_50%,transparent_0%,rgba(8,9,10,0.65)_50%,#08090A_88%)]"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-surface-void via-transparent to-surface-void"></div>
+  </div>
+
+  <!-- 12-Column Asymmetric Spread -->
+  <div class="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    <!-- Editorial Section Column -->
+    <div class="lg:col-span-4 space-y-4">
+      <h2 class="font-serif font-semibold text-4xl sm:text-5xl tracking-[-0.04em] leading-[1.05] text-surface-ink">
+        Music
+      </h2>
+      <p class="font-sans font-normal text-base text-surface-muted leading-relaxed">
+        Stream tracks or visit <a
+          href="https://rohalfhide.bandcamp.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-accent hover:text-accent-hover underline underline-offset-4 transition-colors duration-150 rounded-sm focus-ring"
+        >Bandcamp</a>.
       </p>
     </div>
 
-    <!-- Minimalist Player -->
-    <div class="bg-[#121318] border border-zinc-800 rounded-lg p-6 mb-6">
-      <div class="flex flex-col sm:flex-row items-center gap-6">
+    <!-- Translucent Frosted-Glass Audio Deck -->
+    <div class="lg:col-span-8 bg-surface-raised/70 backdrop-blur-2xl rounded-2xl shadow-hairline p-6 sm:p-8 space-y-8">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
         <img
           id="player-cover"
           src={tracks[0].cover}
           alt={tracks[0].title}
-          class="w-28 h-28 sm:w-32 sm:h-32 rounded object-cover bg-zinc-900 shrink-0"
+          width="112"
+          height="112"
+          loading="lazy"
+          class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl object-cover bg-surface-base shadow-hairline shrink-0"
         />
 
-        <div class="flex-grow w-full space-y-3">
+        <div class="flex-grow w-full space-y-4">
           <div>
-            <h3 id="player-title" class="font-display text-xl font-bold text-white">
+            <h3 id="player-title" class="font-serif font-semibold text-2xl sm:text-3xl tracking-[-0.03em] text-surface-ink">
               {tracks[0].title}
             </h3>
-            <p id="player-artist" class="text-zinc-400 text-sm">
+            <p id="player-artist" class="font-sans font-normal text-sm text-surface-muted mt-1">
               {tracks[0].artist}
             </p>
           </div>
 
-          <!-- Timeline -->
+          <!-- Interactive Timeline -->
           <div>
-            <div id="progress-container" class="w-full bg-zinc-800 h-1.5 rounded-full cursor-pointer relative">
-              <div id="progress-bar" class="bg-zinc-200 h-1.5 rounded-full w-0"></div>
+            <div
+              id="progress-container"
+              role="slider"
+              tabindex="0"
+              aria-label="Seek audio position"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+              class="w-full bg-white/[0.12] h-1.5 rounded-full cursor-pointer relative focus-ring"
+            >
+              <div id="progress-bar" class="bg-accent h-1.5 rounded-full w-0"></div>
             </div>
-            <div class="flex justify-between text-xs text-zinc-400 font-mono mt-1.5">
+            <div class="flex justify-between text-xs text-surface-muted font-mono mt-2">
               <span id="current-time">0:00</span>
               <span id="total-duration">{tracks[0].duration}</span>
             </div>
           </div>
 
-          <!-- Controls -->
-          <div class="flex items-center gap-4 pt-1">
-            <button id="prev-btn" aria-label="Previous track" class="text-zinc-400 hover:text-white p-1">
+          <!-- Transport Controls -->
+          <div class="flex items-center gap-4">
+            <button
+              id="prev-btn"
+              type="button"
+              aria-label="Previous track"
+              class="text-surface-muted hover:text-surface-ink p-2 rounded-full transition-colors duration-150 focus-ring"
+            >
               <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
             </button>
 
             <button
               id="play-btn"
-              aria-label="Play or pause"
-              class="w-10 h-10 rounded-full bg-white hover:bg-zinc-200 text-black flex items-center justify-center transition-colors"
+              type="button"
+              aria-label="Play track"
+              class="w-12 h-12 rounded-full bg-surface-ink hover:bg-white text-surface-void flex items-center justify-center transition-colors duration-150 focus-ring"
             >
               <svg id="play-icon" class="w-5 h-5 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
               <svg id="pause-icon" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
             </button>
 
-            <button id="next-btn" aria-label="Next track" class="text-zinc-400 hover:text-white p-1">
+            <button
+              id="next-btn"
+              type="button"
+              aria-label="Next track"
+              class="text-surface-muted hover:text-surface-ink p-2 rounded-full transition-colors duration-150 focus-ring"
+            >
               <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
             </button>
           </div>
@@ -99,146 +148,34 @@ const tracks: Track[] = [
       </div>
 
       <audio id="audio-element" preload="metadata" src={tracks[0].src}></audio>
-    </div>
 
-    <!-- Clean Tracklist -->
-    <div class="divide-y divide-zinc-800/80 border-t border-b border-zinc-800/80">
-      {tracks.map((track, idx) => (
-        <div
-          data-track-index={idx}
-          data-src={track.src}
-          data-title={track.title}
-          data-artist={track.artist}
-          data-duration={track.duration}
-          data-cover={track.cover}
-          class="track-item cursor-pointer flex items-center justify-between py-3.5 px-3 hover:bg-zinc-900/60 rounded transition-colors group"
-        >
-          <div class="flex items-center gap-4">
-            <span class="font-mono text-xs text-zinc-400 w-5">{idx + 1}</span>
-            <span class="text-sm font-medium text-zinc-200 group-hover:text-white">{track.title}</span>
-          </div>
-          <span class="font-mono text-xs text-zinc-400">{track.duration}</span>
-        </div>
-      ))}
+      <!-- Tracklist -->
+      <div class="pt-4 shadow-divider-t space-y-1">
+        {tracks.map((track, idx) => (
+          <button
+            type="button"
+            data-track-index={idx}
+            data-src={track.src}
+            data-title={track.title}
+            data-artist={track.artist}
+            data-duration={track.duration}
+            data-cover={track.cover}
+            class="track-item w-full text-left flex items-center justify-between py-4 px-4 rounded-lg shadow-divider-b last:shadow-none hover:bg-white/[0.04] transition-colors duration-150 group focus-ring"
+          >
+            <span class="flex items-center gap-4">
+              <span class="track-index font-mono text-xs text-surface-subtle w-6">
+                {String(idx + 1).padStart(2, '0')}
+              </span>
+              <span class="track-row-title font-sans font-medium text-sm text-surface-muted group-hover:text-surface-ink transition-colors duration-150">
+                {track.title}
+              </span>
+            </span>
+            <span class="font-mono text-xs text-surface-subtle">{track.duration}</span>
+          </button>
+        ))}
+      </div>
     </div>
   </div>
 </section>
 
-<script>
-  let currentIdx = 0;
-  const audio = document.getElementById('audio-element') as HTMLAudioElement;
-  const playBtn = document.getElementById('play-btn');
-  const playIcon = document.getElementById('play-icon');
-  const pauseIcon = document.getElementById('pause-icon');
-  const prevBtn = document.getElementById('prev-btn');
-  const nextBtn = document.getElementById('next-btn');
-
-  const titleEl = document.getElementById('player-title');
-  const artistEl = document.getElementById('player-artist');
-  const coverEl = document.getElementById('player-cover') as HTMLImageElement;
-  const currentTimeEl = document.getElementById('current-time');
-  const totalDurationEl = document.getElementById('total-duration');
-  const progressContainer = document.getElementById('progress-container');
-  const progressBar = document.getElementById('progress-bar');
-
-  const trackItems = document.querySelectorAll<HTMLElement>('.track-item');
-
-  function formatTime(seconds: number): string {
-    const min = Math.floor(seconds / 60);
-    const sec = Math.floor(seconds % 60);
-    return `${min}:${sec < 10 ? '0' : ''}${sec}`;
-  }
-
-  function setTrack(index: number, autoPlay: boolean = false) {
-    if (index < 0) index = trackItems.length - 1;
-    if (index >= trackItems.length) index = 0;
-    currentIdx = index;
-
-    const item = trackItems[index];
-    const src = item.getAttribute('data-src') || '';
-    const title = item.getAttribute('data-title') || '';
-    const artist = item.getAttribute('data-artist') || '';
-    const duration = item.getAttribute('data-duration') || '0:00';
-    const cover = item.getAttribute('data-cover') || '';
-
-    if (titleEl) titleEl.textContent = title;
-    if (artistEl) artistEl.textContent = artist;
-    if (coverEl) coverEl.src = cover;
-    if (totalDurationEl) totalDurationEl.textContent = duration;
-
-    trackItems.forEach((el, i) => {
-      if (i === index) {
-        el.classList.add('bg-zinc-900');
-      } else {
-        el.classList.remove('bg-zinc-900');
-      }
-    });
-
-    audio.src = src;
-    if (autoPlay) {
-      audio.play().then(() => updatePlayState(true)).catch(console.error);
-    } else {
-      updatePlayState(false);
-    }
-  }
-
-  function updatePlayState(isPlaying: boolean) {
-    if (isPlaying) {
-      playIcon?.classList.add('hidden');
-      pauseIcon?.classList.remove('hidden');
-    } else {
-      playIcon?.classList.remove('hidden');
-      pauseIcon?.classList.add('hidden');
-    }
-  }
-
-  if (playBtn) {
-    playBtn.addEventListener('click', () => {
-      if (audio.paused) {
-        audio.play().then(() => updatePlayState(true)).catch(console.error);
-      } else {
-        audio.pause();
-        updatePlayState(false);
-      }
-    });
-  }
-
-  if (prevBtn) {
-    prevBtn.addEventListener('click', () => setTrack(currentIdx - 1, !audio.paused));
-  }
-
-  if (nextBtn) {
-    nextBtn.addEventListener('click', () => setTrack(currentIdx + 1, !audio.paused));
-  }
-
-  trackItems.forEach((item, index) => {
-    item.addEventListener('click', () => {
-      setTrack(index, true);
-    });
-  });
-
-  audio.addEventListener('timeupdate', () => {
-    if (!audio.duration) return;
-    const progress = (audio.currentTime / audio.duration) * 100;
-    if (progressBar) progressBar.style.width = `${progress}%`;
-
-    const cur = formatTime(audio.currentTime);
-    if (currentTimeEl) currentTimeEl.textContent = cur;
-  });
-
-  audio.addEventListener('ended', () => {
-    setTrack(currentIdx + 1, true);
-  });
-
-  if (progressContainer) {
-    progressContainer.addEventListener('click', (e) => {
-      const rect = progressContainer.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const width = rect.width;
-      const seekRatio = Math.max(0, Math.min(1, clickX / width));
-      if (audio.duration) {
-        audio.currentTime = seekRatio * audio.duration;
-      }
-    });
-  }
-</script>
+<script src="../scripts/audio-player.ts"></script>

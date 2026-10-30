@@ -19,45 +19,57 @@ const pastShows: PastShow[] = [
 ];
 ---
 
-<section id="shows" class="py-20 bg-[#0c0d11] border-t border-zinc-900">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="mb-10 text-left">
-      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mb-2">Shows</h2>
-      <p class="text-zinc-400 text-sm">
-        Upcoming dates synced via Bandsintown & Spotify.
+<section id="shows" class="py-24 bg-surface-base shadow-divider-t">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    <div class="lg:col-span-4 space-y-4">
+      <h2 class="font-serif font-semibold text-4xl sm:text-5xl tracking-[-0.04em] leading-[1.05] text-surface-ink">
+        Shows
+      </h2>
+      <p class="font-sans font-normal text-base text-surface-muted leading-relaxed">
+        Upcoming dates synced via Bandsintown &amp; Spotify.
       </p>
     </div>
 
-    <!-- Bandsintown Widget -->
-    <div class="mb-12">
-      <a
-        class="bit-widget-initializer"
-        data-artist-name="Ro Halfhide"
-        data-background-color="transparent"
-        data-text-color="#FFFFFF"
-        data-link-color="#d4af37"
-        data-auto-style="true"
-        data-display-limit="10"
-        data-display-lineup="false"
-        data-display-play-my-city="true"
-        data-separator-color="rgba(255, 255, 255, 0.08)"
-      ></a>
-    </div>
+    <div class="lg:col-span-8 space-y-12">
+      <!-- Bandsintown Widget Surface -->
+      <div class="bg-surface-raised/60 rounded-2xl shadow-hairline p-6 sm:p-8">
+        <a
+          class="bit-widget-initializer"
+          data-artist-name="Ro Halfhide"
+          data-background-color="transparent"
+          data-text-color="#F5F5F5"
+          data-link-color="#D4954A"
+          data-auto-style="true"
+          data-display-limit="10"
+          data-display-lineup="false"
+          data-display-play-my-city="true"
+          data-separator-color="rgba(255, 255, 255, 0.08)"
+        ></a>
+      </div>
 
-    <!-- Past Shows -->
-    <div class="pt-8 border-t border-zinc-800/60">
-      <h3 class="text-xs uppercase tracking-wider text-zinc-400 font-semibold mb-4">Past Dates</h3>
-      <div class="divide-y divide-zinc-800/60">
-        {pastShows.map((show) => (
-          <div class="py-3 flex items-center justify-between text-sm">
-            <span class="font-mono text-zinc-400 text-xs w-28">{show.date}</span>
-            <span class="text-zinc-200">{show.venue}</span>
-            <span class="text-zinc-400 text-xs">{show.city}</span>
-          </div>
-        ))}
+      <!-- Past Shows Ledger -->
+      <div class="pt-8 shadow-divider-t">
+        <h3 class="font-mono font-medium text-xs uppercase tracking-[0.2em] text-surface-subtle mb-4">
+          Past Dates
+        </h3>
+        <div>
+          {pastShows.map((show) => (
+            <div class="py-4 grid grid-cols-12 gap-4 items-center shadow-divider-b last:shadow-none">
+              <span class="col-span-4 sm:col-span-3 font-mono text-xs text-surface-muted">
+                {show.date}
+              </span>
+              <span class="col-span-5 sm:col-span-6 font-sans font-medium text-sm text-surface-ink">
+                {show.venue}
+              </span>
+              <span class="col-span-3 text-right font-mono text-xs uppercase tracking-[0.16em] text-surface-subtle">
+                {show.city}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<script is:inline charset="utf-8" src="https://widget.bandsintown.com/main.min.js"></script>
+<script is:inline charset="utf-8" src="https://widget.bandsintown.com/main.min.js" defer></script>
