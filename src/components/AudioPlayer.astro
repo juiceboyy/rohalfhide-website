@@ -1,0 +1,326 @@
+---
+interface Track {
+  id: string;
+  title: string;
+  artist: string;
+  src: string;
+  duration: string;
+  cover: string;
+  description?: string;
+}
+
+const tracks: Track[] = [
+  {
+    id: "1",
+    title: "It's been good",
+    artist: "Ro Halfhide",
+    src: "/audio/its-been-good.mp3",
+    duration: "1:50",
+    cover: "/images/its-been-good.jpg",
+    description: "Laatste single — een reflectie op de wendingen en schoonheid van het leven."
+  },
+  {
+    id: "2",
+    title: "Evening Sun",
+    artist: "Ro Halfhide",
+    src: "/audio/evening-sun.mp3",
+    duration: "3:06",
+    cover: "/images/evening-sun.jpg",
+    description: "Een meeslepende melodie over loslaten en troost vinden in het licht."
+  },
+  {
+    id: "3",
+    title: "Pirate's Dirge (Oh Oh Oh)",
+    artist: "Ro Halfhide",
+    src: "/audio/pirates-dirge.mp3",
+    duration: "3:02",
+    cover: "/images/hero-portrait.jpg",
+    description: "Krachtige akoestische ritmes en meerstemmige pop/folk harmonieën."
+  }
+];
+---
+
+<section id="music" class="py-24 bg-[#0e1014] relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <span class="text-brand-accent text-sm font-semibold tracking-widest uppercase">Discografie & Releases</span>
+      <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-2 mb-4">Luister naar de Muziek</h2>
+      <p class="text-zinc-400 text-base sm:text-lg">
+        Beluister tracks hier direct via de audiospeler, of stream op Spotify en steun rechtstreeks via Bandcamp.
+      </p>
+    </div>
+
+    <!-- Main Music Player Container -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-6xl mx-auto">
+      <!-- Player Card (Left / Top) -->
+      <div class="lg:col-span-5 bg-[#161820] border border-zinc-800/80 rounded-2xl p-6 sm:p-8 shadow-2xl sticky top-24">
+        <!-- Album Artwork Preview -->
+        <div class="relative aspect-square rounded-xl overflow-hidden mb-6 bg-zinc-900 border border-zinc-800">
+          <img
+            id="player-cover"
+            src={tracks[0].cover}
+            alt={tracks[0].title}
+            class="w-full h-full object-cover transition-opacity duration-300"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+          <span class="absolute bottom-3 right-3 px-2.5 py-1 bg-black/70 backdrop-blur-md rounded text-xs text-zinc-300 font-mono" id="player-time-badge">
+            0:00 / {tracks[0].duration}
+          </span>
+        </div>
+
+        <!-- Track Info -->
+        <div class="mb-6">
+          <h3 id="player-title" class="font-display text-2xl font-bold text-white truncate">
+            {tracks[0].title}
+          </h3>
+          <p id="player-artist" class="text-brand-amber text-sm font-medium">
+            {tracks[0].artist}
+          </p>
+          <p id="player-desc" class="text-zinc-400 text-xs mt-2 italic">
+            {tracks[0].description}
+          </p>
+        </div>
+
+        <!-- Custom Timeline / Progress bar -->
+        <div class="mb-6">
+          <div id="progress-container" class="w-full bg-zinc-800 h-2 rounded-full cursor-pointer relative group">
+            <div id="progress-bar" class="bg-brand-accent h-2 rounded-full w-0 transition-all duration-100"></div>
+            <div id="progress-thumb" class="w-3.5 h-3.5 bg-white rounded-full absolute top-1/2 -translate-y-1/2 -ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
+          <div class="flex justify-between text-xs text-zinc-400 font-mono mt-2">
+            <span id="current-time">0:00</span>
+            <span id="total-duration">{tracks[0].duration}</span>
+          </div>
+        </div>
+
+        <!-- Player Controls -->
+        <div class="flex items-center justify-between">
+          <button id="prev-btn" aria-label="Vorig nummer" class="text-zinc-400 hover:text-white transition-colors p-2">
+            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+          </button>
+
+          <button
+            id="play-btn"
+            aria-label="Afspelen of pauzeren"
+            class="w-14 h-14 rounded-full bg-brand-accent hover:bg-orange-500 text-black flex items-center justify-center shadow-lg hover:scale-105 transition-all"
+          >
+            <!-- Play Icon -->
+            <svg id="play-icon" class="w-7 h-7 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <!-- Pause Icon -->
+            <svg id="pause-icon" class="w-7 h-7 fill-current hidden" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          </button>
+
+          <button id="next-btn" aria-label="Volgend nummer" class="text-zinc-400 hover:text-white transition-colors p-2">
+            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+          </button>
+        </div>
+
+        <!-- Hidden Audio Element -->
+        <audio id="audio-element" preload="metadata" src={tracks[0].src}></audio>
+      </div>
+
+      <!-- Tracklist (Right) -->
+      <div class="lg:col-span-7 space-y-4">
+        <h3 class="text-lg font-semibold text-white uppercase tracking-wider mb-2 flex items-center justify-between">
+          <span>Afspeellijst</span>
+          <span class="text-xs text-zinc-400 font-normal font-mono">{tracks.length} nummers</span>
+        </h3>
+
+        <div class="space-y-3">
+          {tracks.map((track, idx) => (
+            <div
+              data-track-index={idx}
+              data-src={track.src}
+              data-title={track.title}
+              data-artist={track.artist}
+              data-duration={track.duration}
+              data-cover={track.cover}
+              data-description={track.description}
+              class={`track-item cursor-pointer flex items-center justify-between p-4 rounded-xl border transition-all ${
+                idx === 0
+                  ? "bg-[#181a24] border-brand-accent/50 text-white"
+                  : "bg-[#13151b] border-zinc-800/80 hover:border-zinc-700 text-zinc-300 hover:text-white"
+              }`}
+            >
+              <div class="flex items-center gap-4">
+                <span class="w-6 text-center font-mono text-xs text-zinc-400 track-number">
+                  {idx + 1}
+                </span>
+                <img
+                  src={track.cover}
+                  alt={track.title}
+                  class="w-12 h-12 rounded-lg object-cover bg-zinc-900 border border-zinc-800"
+                />
+                <div>
+                  <h4 class="font-semibold text-sm sm:text-base track-name">{track.title}</h4>
+                  <p class="text-xs text-zinc-400">{track.artist}</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-4">
+                <span class="font-mono text-xs text-zinc-400">{track.duration}</span>
+                <button
+                  type="button"
+                  aria-label={`Speel ${track.title}`}
+                  class="w-9 h-9 rounded-full bg-zinc-800/90 hover:bg-brand-accent hover:text-black flex items-center justify-center transition-colors text-zinc-200"
+                >
+                  <svg class="w-4 h-4 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <!-- Bandcamp & Streaming CTA Box -->
+        <div class="mt-8 p-6 rounded-2xl bg-gradient-to-r from-zinc-900 to-zinc-850 border border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <h4 class="text-white font-bold text-base mb-1">Koop direct op Bandcamp</h4>
+            <p class="text-zinc-400 text-xs sm:text-sm">
+              Steun de muziek rechtstreeks in hoge audiokwaliteit (FLAC/WAV).
+            </p>
+          </div>
+          <a
+            href="https://rohalfhide.bandcamp.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-5 py-2.5 bg-[#629aa9] hover:bg-[#528795] text-white font-semibold rounded-lg text-xs uppercase tracking-wider transition-all hover:scale-105 shrink-0 flex items-center gap-2"
+          >
+            <span>Bandcamp Store</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Audio Player Script -->
+<script>
+  let currentIdx = 0;
+  const audio = document.getElementById('audio-element') as HTMLAudioElement;
+  const playBtn = document.getElementById('play-btn');
+  const playIcon = document.getElementById('play-icon');
+  const pauseIcon = document.getElementById('pause-icon');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+
+  const titleEl = document.getElementById('player-title');
+  const artistEl = document.getElementById('player-artist');
+  const descEl = document.getElementById('player-desc');
+  const coverEl = document.getElementById('player-cover') as HTMLImageElement;
+  const timeBadge = document.getElementById('player-time-badge');
+  const currentTimeEl = document.getElementById('current-time');
+  const totalDurationEl = document.getElementById('total-duration');
+  const progressContainer = document.getElementById('progress-container');
+  const progressBar = document.getElementById('progress-bar');
+  const progressThumb = document.getElementById('progress-thumb');
+
+  const trackItems = document.querySelectorAll<HTMLElement>('.track-item');
+
+  function formatTime(seconds: number): string {
+    const min = Math.floor(seconds / 60);
+    const sec = Math.floor(seconds % 60);
+    return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+  }
+
+  function setTrack(index: number, autoPlay: boolean = false) {
+    if (index < 0) index = trackItems.length - 1;
+    if (index >= trackItems.length) index = 0;
+    currentIdx = index;
+
+    const item = trackItems[index];
+    const src = item.getAttribute('data-src') || '';
+    const title = item.getAttribute('data-title') || '';
+    const artist = item.getAttribute('data-artist') || '';
+    const duration = item.getAttribute('data-duration') || '0:00';
+    const cover = item.getAttribute('data-cover') || '';
+    const desc = item.getAttribute('data-description') || '';
+
+    if (titleEl) titleEl.textContent = title;
+    if (artistEl) artistEl.textContent = artist;
+    if (descEl) descEl.textContent = desc;
+    if (coverEl) coverEl.src = cover;
+    if (totalDurationEl) totalDurationEl.textContent = duration;
+    if (timeBadge) timeBadge.textContent = `0:00 / ${duration}`;
+
+    trackItems.forEach((el, i) => {
+      if (i === index) {
+        el.classList.add('bg-[#181a24]', 'border-brand-accent/50');
+        el.classList.remove('bg-[#13151b]', 'border-zinc-800/80');
+      } else {
+        el.classList.remove('bg-[#181a24]', 'border-brand-accent/50');
+        el.classList.add('bg-[#13151b]', 'border-zinc-800/80');
+      }
+    });
+
+    audio.src = src;
+    if (autoPlay) {
+      audio.play().then(() => updatePlayState(true)).catch(console.error);
+    } else {
+      updatePlayState(false);
+    }
+  }
+
+  function updatePlayState(isPlaying: boolean) {
+    if (isPlaying) {
+      playIcon?.classList.add('hidden');
+      pauseIcon?.classList.remove('hidden');
+    } else {
+      playIcon?.classList.remove('hidden');
+      pauseIcon?.classList.add('hidden');
+    }
+  }
+
+  if (playBtn) {
+    playBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play().then(() => updatePlayState(true)).catch(console.error);
+      } else {
+        audio.pause();
+        updatePlayState(false);
+      }
+    });
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => setTrack(currentIdx - 1, !audio.paused));
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => setTrack(currentIdx + 1, !audio.paused));
+  }
+
+  trackItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
+      setTrack(index, true);
+    });
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    if (!audio.duration) return;
+    const progress = (audio.currentTime / audio.duration) * 100;
+    if (progressBar) progressBar.style.width = `${progress}%`;
+    if (progressThumb) progressThumb.style.left = `${progress}%`;
+
+    const cur = formatTime(audio.currentTime);
+    const dur = formatTime(audio.duration);
+    if (currentTimeEl) currentTimeEl.textContent = cur;
+    if (timeBadge) timeBadge.textContent = `${cur} / ${dur}`;
+  });
+
+  audio.addEventListener('ended', () => {
+    setTrack(currentIdx + 1, true);
+  });
+
+  if (progressContainer) {
+    progressContainer.addEventListener('click', (e) => {
+      const rect = progressContainer.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const width = rect.width;
+      const seekRatio = Math.max(0, Math.min(1, clickX / width));
+      if (audio.duration) {
+        audio.currentTime = seekRatio * audio.duration;
+      }
+    });
+  }
+</script>

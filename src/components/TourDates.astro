@@ -1,0 +1,108 @@
+---
+interface PastShow {
+  date: string;
+  venue: string;
+  city: string;
+  event: string;
+}
+
+const pastShows: PastShow[] = [
+  {
+    date: "21 Sep 2025",
+    venue: "De Vos",
+    city: "Tilburg",
+    event: "Live Show Ro Halfhide"
+  },
+  {
+    date: "25 Mei 2025",
+    venue: "Café de Bruine Pij",
+    city: "Breda",
+    event: "Live Acoustic Pop"
+  },
+  {
+    date: "14 Feb 2025",
+    venue: "Studio Jupiter",
+    city: "Den Haag",
+    event: "Acoustic Showcase"
+  }
+];
+---
+
+<section id="shows" class="py-24 bg-[#0a0b0e] relative border-t border-zinc-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <span class="text-brand-accent text-sm font-semibold tracking-widest uppercase">Live On Stage</span>
+      <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-2 mb-4">Tourdata & Optredens</h2>
+      <p class="text-zinc-400 text-base sm:text-lg">
+        Kom luisteren naar de live vertolking van de nummers. Gesynchroniseerd met Bandsintown & Spotify.
+      </p>
+    </div>
+
+    <!-- Bandsintown Container -->
+    <div class="max-w-4xl mx-auto bg-[#121319] border border-zinc-800/80 rounded-2xl p-6 sm:p-10 shadow-xl mb-12">
+      <!-- Bandsintown Official Widget Element -->
+      <div id="bandsintown-widget-wrap">
+        <a
+          class="bit-widget-initializer"
+          data-artist-name="Ro Halfhide"
+          data-background-color="transparent"
+          data-text-color="#FFFFFF"
+          data-link-color="#E28743"
+          data-auto-style="true"
+          data-display-limit="10"
+          data-display-lineup="false"
+          data-display-play-my-city="true"
+          data-separator-color="rgba(255, 255, 255, 0.1)"
+        ></a>
+      </div>
+
+      <!-- Follow / Request a Show CTA -->
+      <div class="pt-8 mt-8 border-t border-zinc-800/60 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <h4 class="text-white font-semibold text-sm">Geen show bij jou in de buurt?</h4>
+          <p class="text-zinc-400 text-xs">Vraag een optreden aan of volg Ro op Bandsintown en Spotify.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <a
+            href="https://www.bandsintown.com/a/15535948-ro-halfhide"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-4 py-2 bg-[#00e4bb] hover:bg-[#00c9a5] text-black text-xs font-bold uppercase tracking-wider rounded-lg transition-all"
+          >
+            Volg op Bandsintown
+          </a>
+          <a
+            href="#contact"
+            class="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-medium rounded-lg transition-colors"
+          >
+            Boek Ro
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Past Shows Archive -->
+    <div class="max-w-4xl mx-auto">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-xs uppercase tracking-widest text-zinc-400 font-semibold">Recente eerdere optredens</h3>
+      </div>
+      <div class="bg-[#101217] border border-zinc-800/60 rounded-xl overflow-hidden divide-y divide-zinc-800/60">
+        {pastShows.map((show) => (
+          <div class="p-4 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm">
+            <div class="flex items-center gap-4">
+              <span class="font-mono text-brand-amber font-medium w-28 shrink-0">{show.date}</span>
+              <span class="text-white font-medium">{show.event}</span>
+            </div>
+            <div class="text-zinc-400 text-xs sm:text-sm flex items-center gap-1">
+              <svg class="w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+              {show.venue}, {show.city}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Load Bandsintown Widget Script Async -->
+<script is:inline charset="utf-8" src="https://widget.bandsintown.com/main.min.js"></script>
