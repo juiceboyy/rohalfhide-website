@@ -159,38 +159,26 @@ function handleUpcomingError() {
 }
 
 function renderPastShows(apiPastEvents: BandsintownEvent[]) {
+  const sectionEl = document.getElementById('past-shows-section');
   const container = document.getElementById('past-shows-list');
-  if (!container) return;
+  if (!container || !sectionEl) return;
 
-  const existingItems: PastShowItem[] = [
-    { date: 'Sep 21, 2025', timestamp: new Date('2025-09-21').getTime(), venue: 'De Vos', city: 'Tilburg' },
-    { date: 'May 25, 2025', timestamp: new Date('2025-05-25').getTime(), venue: 'Café de Bruine Pij', city: 'Breda' },
-  ];
+  if (apiPastEvents.length === 0) {
+    sectionEl.classList.add('hidden');
+    return;
+  }
 
-  apiPastEvents.forEach((ev) => {
-    const formatted = formatEventDate(ev.datetime);
-    const venueName = ev.venue?.name || 'Live Show';
-    const cityName = ev.venue?.city || '';
-    const timestamp = new Date(ev.datetime).getTime();
+  const items: PastShowItem[] = apiPastEvents.map((ev) => ({
+    date: formatEventDate(ev.datetime),
+    timestamp: new Date(ev.datetime).getTime(),
+    venue: ev.venue?.name || ev.title || 'Live Show',
+    city: ev.venue?.city || '',
+  }));
 
-    const isDuplicate = existingItems.some(
-      (item) => item.venue.toLowerCase() === venueName.toLowerCase() || item.date === formatted
-    );
-
-    if (!isDuplicate) {
-      existingItems.push({
-        date: formatted,
-        timestamp: isNaN(timestamp) ? 0 : timestamp,
-        venue: venueName,
-        city: cityName,
-      });
-    }
-  });
-
-  existingItems.sort((a, b) => b.timestamp - a.timestamp);
+  items.sort((a, b) => b.timestamp - a.timestamp);
 
   container.innerHTML = '';
-  existingItems.forEach((show) => {
+  items.forEach((show) => {
     const row = document.createElement('div');
     row.className = 'py-4 grid grid-cols-12 gap-4 items-center shadow-divider-b last:shadow-none past-show-item';
 
@@ -199,11 +187,11 @@ function renderPastShows(apiPastEvents: BandsintownEvent[]) {
     dateSpan.textContent = show.date;
 
     const venueSpan = document.createElement('span');
-    venueSpan.className = 'col-span-5 sm:col-span-6 font-sans font-medium text-sm text-surface-ink';
+    venueSpan.className = 'col-span-5 sm:col-span-6 font-sans font-medium text-sm text-surface-ink truncate';
     venueSpan.textContent = show.venue;
 
     const citySpan = document.createElement('span');
-    citySpan.className = 'col-span-3 text-right font-mono text-xs uppercase tracking-[0.16em] text-surface-subtle';
+    citySpan.className = 'col-span-3 text-right font-mono text-xs uppercase tracking-[0.16em] text-surface-subtle truncate';
     citySpan.textContent = show.city;
 
     row.appendChild(dateSpan);
@@ -211,6 +199,8 @@ function renderPastShows(apiPastEvents: BandsintownEvent[]) {
     row.appendChild(citySpan);
     container.appendChild(row);
   });
+
+  sectionEl.classList.remove('hidden');
 }
 
 async function initTourDates() {
@@ -220,17 +210,16 @@ async function initTourDates() {
   try {
     const upcomingEvents = await fetchUpcomingEvents();
     renderUpcomingShows(upcomingEvents);
-  } catch (err) {
+  } catch {
     handleUpcomingError();
   }
 
   try {
     const pastEvents = await fetchPastEvents();
-    if (pastEvents.length > 0) {
-      renderPastShows(pastEvents);
-    }
+    renderPastShows(pastEvents);
   } catch {
-    // Keep statically rendered fallback list if past events fetch fails
+    const sectionEl = document.getElementById('past-shows-section');
+    if (sectionEl) sectionEl.classList.add('hidden');
   }
 }
 

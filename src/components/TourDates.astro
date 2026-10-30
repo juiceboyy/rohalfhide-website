@@ -1,22 +1,4 @@
 ---
-interface PastShow {
-  date: string;
-  venue: string;
-  city: string;
-}
-
-const fallbackPastShows: PastShow[] = [
-  {
-    date: "Sep 21, 2025",
-    venue: "De Vos",
-    city: "Tilburg"
-  },
-  {
-    date: "May 25, 2025",
-    venue: "Café de Bruine Pij",
-    city: "Breda"
-  }
-];
 ---
 
 <section id="shows" class="py-24 bg-surface-base shadow-divider-t">
@@ -75,26 +57,12 @@ const fallbackPastShows: PastShow[] = [
         </div>
       </div>
 
-      <!-- Past Shows Ledger -->
-      <div class="pt-8 shadow-divider-t">
+      <!-- Past Shows Ledger: rendered dynamically from Bandsintown API -->
+      <div id="past-shows-section" class="hidden pt-8 shadow-divider-t">
         <h3 class="font-mono font-medium text-xs uppercase tracking-[0.2em] text-surface-subtle mb-4">
           Past Dates
         </h3>
-        <div id="past-shows-list">
-          {fallbackPastShows.map((show) => (
-            <div class="py-4 grid grid-cols-12 gap-4 items-center shadow-divider-b last:shadow-none past-show-item">
-              <span class="col-span-4 sm:col-span-3 font-mono text-xs text-surface-muted">
-                {show.date}
-              </span>
-              <span class="col-span-5 sm:col-span-6 font-sans font-medium text-sm text-surface-ink">
-                {show.venue}
-              </span>
-              <span class="col-span-3 text-right font-mono text-xs uppercase tracking-[0.16em] text-surface-subtle">
-                {show.city}
-              </span>
-            </div>
-          ))}
-        </div>
+        <div id="past-shows-list"></div>
       </div>
     </div>
   </div>
