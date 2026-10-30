@@ -5,7 +5,7 @@ interface PastShow {
   city: string;
 }
 
-const pastShows: PastShow[] = [
+const fallbackPastShows: PastShow[] = [
   {
     date: "Sep 21, 2025",
     venue: "De Vos",
@@ -26,25 +26,53 @@ const pastShows: PastShow[] = [
         Shows
       </h2>
       <p class="font-sans font-normal text-base text-surface-muted leading-relaxed">
-        Upcoming dates synced via Bandsintown &amp; Spotify.
+        Live dates, intimate acoustic performances, and tour announcements.
       </p>
     </div>
 
     <div class="lg:col-span-8 space-y-12">
-      <!-- Bandsintown Widget Surface -->
+      <!-- Upcoming Shows Ledger Surface -->
       <div class="bg-surface-raised/60 rounded-2xl shadow-hairline p-6 sm:p-8">
-        <a
-          class="bit-widget-initializer"
-          data-artist-name="Ro Halfhide"
-          data-background-color="transparent"
-          data-text-color="#F5F5F5"
-          data-link-color="#D4954A"
-          data-auto-style="true"
-          data-display-limit="10"
-          data-display-lineup="false"
-          data-display-play-my-city="true"
-          data-separator-color="rgba(255, 255, 255, 0.08)"
-        ></a>
+        <div class="flex items-center justify-between pb-6 shadow-divider-b">
+          <h3 class="font-mono font-medium text-xs uppercase tracking-[0.2em] text-surface-subtle">
+            Upcoming Dates
+          </h3>
+          <span id="shows-count" class="font-mono text-xs text-surface-muted hidden"></span>
+        </div>
+
+        <div id="upcoming-shows-container" class="pt-2">
+          <!-- Loading skeleton state -->
+          <div id="shows-skeleton" class="space-y-4 py-4 animate-pulse" aria-hidden="true">
+            <div class="h-4 bg-white/[0.06] rounded w-3/4"></div>
+            <div class="h-4 bg-white/[0.03] rounded w-1/2"></div>
+          </div>
+
+          <!-- Empty state: shown when there are no upcoming tour dates -->
+          <div id="shows-empty-state" class="hidden py-6 space-y-3">
+            <p class="font-serif italic text-lg sm:text-xl text-surface-ink">
+              No upcoming tour dates scheduled at the moment.
+            </p>
+            <p class="font-sans text-sm text-surface-muted leading-relaxed max-w-xl">
+              For intimate house concerts, festival bookings, or private events, please
+              <a href="#contact" class="text-accent hover:text-accent-hover underline underline-offset-4 transition-colors">get in touch</a>
+              directly or join the
+              <a href="#newsletter" class="text-accent hover:text-accent-hover underline underline-offset-4 transition-colors">newsletter</a>
+              for upcoming announcements.
+            </p>
+          </div>
+
+          <!-- Shows list: rendered dynamically when shows exist -->
+          <div id="shows-list" class="hidden"></div>
+
+          <!-- Error fallback state -->
+          <div id="shows-error-state" class="hidden py-6 space-y-2 text-sm text-surface-muted">
+            <p>Schedule updates are temporarily unavailable.</p>
+            <p>
+              For bookings and live inquiries, please
+              <a href="#contact" class="text-accent hover:text-accent-hover underline underline-offset-4 transition-colors">contact Ro directly</a>.
+            </p>
+          </div>
+        </div>
       </div>
 
       <!-- Past Shows Ledger -->
@@ -52,9 +80,9 @@ const pastShows: PastShow[] = [
         <h3 class="font-mono font-medium text-xs uppercase tracking-[0.2em] text-surface-subtle mb-4">
           Past Dates
         </h3>
-        <div>
-          {pastShows.map((show) => (
-            <div class="py-4 grid grid-cols-12 gap-4 items-center shadow-divider-b last:shadow-none">
+        <div id="past-shows-list">
+          {fallbackPastShows.map((show) => (
+            <div class="py-4 grid grid-cols-12 gap-4 items-center shadow-divider-b last:shadow-none past-show-item">
               <span class="col-span-4 sm:col-span-3 font-mono text-xs text-surface-muted">
                 {show.date}
               </span>
@@ -72,4 +100,4 @@ const pastShows: PastShow[] = [
   </div>
 </section>
 
-<script is:inline charset="utf-8" src="https://widget.bandsintown.com/main.min.js" defer></script>
+<script src="../scripts/tour-dates.ts"></script>
