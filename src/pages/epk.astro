@@ -3,140 +3,77 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout
-  title="Electronic Press Kit (EPK) — Ro Halfhide"
-  description="Official press kit for festival bookers, venue programmers, media, and journalists featuring biography, hi-res press photos, music, and booking details."
+  title="EPK — Ro Halfhide"
+  description="Electronic Press Kit for programmers, venues, and media."
 >
-  <div class="py-16 sm:py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+  <div class="py-16 max-w-4xl mx-auto px-4 sm:px-6 space-y-12">
     <!-- Header -->
-    <div class="border-b border-zinc-800 pb-8">
-      <span class="text-brand-accent text-xs uppercase tracking-widest font-semibold">For Bookers, Programmers & Press</span>
-      <h1 class="font-display text-4xl sm:text-6xl font-extrabold text-white mt-2">Electronic Press Kit (EPK)</h1>
-      <p class="text-zinc-400 text-lg mt-3 max-w-2xl">
-        Official artist materials, bios, high-resolution promotional photos, and technical details for bookings and media coverage.
-      </p>
+    <div class="border-b border-zinc-800/80 pb-6">
+      <h1 class="font-display text-3xl sm:text-4xl font-bold text-white">Electronic Press Kit</h1>
+      <p class="text-zinc-400 text-sm mt-1">Official materials for bookers, programmers, and press.</p>
     </div>
 
-    <!-- Quick Facts Box -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-[#14161f] border border-zinc-800 p-6 rounded-2xl">
-      <div>
-        <p class="text-xs uppercase tracking-wider text-zinc-500">Genre</p>
-        <p class="text-white font-semibold text-base mt-1">Alternative Pop / Soul</p>
-      </div>
-      <div>
-        <p class="text-xs uppercase tracking-wider text-zinc-500">Location</p>
-        <p class="text-white font-semibold text-base mt-1">The Hague / Amsterdam (NL)</p>
-      </div>
-      <div>
-        <p class="text-xs uppercase tracking-wider text-zinc-500">Live Format</p>
-        <p class="text-white font-semibold text-base mt-1">Solo (Acoustic) / Trio / Full Band</p>
-      </div>
-      <div>
-        <p class="text-xs uppercase tracking-wider text-zinc-500">Bookings Contact</p>
-        <p class="text-brand-amber font-semibold text-base mt-1">halfhide@gmail.com</p>
-      </div>
-    </div>
-
-    <!-- Press Photos Download Section -->
-    <section class="space-y-6">
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="font-display text-2xl font-bold text-white">Official Press Photos</h2>
-          <p class="text-zinc-400 text-sm">Click on any image to view or download full print-quality resolution.</p>
+    <!-- Photos Section -->
+    <section class="space-y-4">
+      <h2 class="font-display text-xl font-bold text-white">Photos</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="space-y-2">
+          <img src="/images/hero-portrait.jpg" alt="Ro Halfhide Portrait" class="w-full h-56 object-cover rounded bg-zinc-900" />
+          <a href="/images/hero-portrait.jpg" download class="text-xs text-zinc-300 underline hover:text-white block">
+            Download portrait (High-Res)
+          </a>
         </div>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div class="bg-[#13151b] border border-zinc-800 rounded-xl overflow-hidden group">
-          <img src="/images/hero-portrait.jpg" alt="Ro Halfhide Press Portrait" class="w-full h-64 object-cover object-center group-hover:scale-105 transition-transform" />
-          <div class="p-4 flex items-center justify-between">
-            <span class="text-xs text-zinc-300">Portrait (High-Res JPG)</span>
-            <a href="/images/hero-portrait.jpg" download="ro-halfhide-portrait.jpg" class="text-xs font-semibold text-brand-accent hover:underline">
-              Download ↓
-            </a>
-          </div>
+        <div class="space-y-2">
+          <img src="/images/about-banner.webp" alt="Ro Halfhide Live" class="w-full h-56 object-cover rounded bg-zinc-900" />
+          <a href="/images/about-banner.webp" download class="text-xs text-zinc-300 underline hover:text-white block">
+            Download live shot (High-Res)
+          </a>
         </div>
-
-        <div class="bg-[#13151b] border border-zinc-800 rounded-xl overflow-hidden group">
-          <img src="/images/about-banner.webp" alt="Ro Halfhide Live on Stage" class="w-full h-64 object-cover object-center group-hover:scale-105 transition-transform" />
-          <div class="p-4 flex items-center justify-between">
-            <span class="text-xs text-zinc-300">Live on Stage (Banner)</span>
-            <a href="/images/about-banner.webp" download="ro-halfhide-live.webp" class="text-xs font-semibold text-brand-accent hover:underline">
-              Download ↓
-            </a>
-          </div>
-        </div>
-
-        <div class="bg-[#13151b] border border-zinc-800 rounded-xl overflow-hidden group">
-          <img src="/images/its-been-good.jpg" alt="Artwork It's been good" class="w-full h-64 object-cover object-center group-hover:scale-105 transition-transform" />
-          <div class="p-4 flex items-center justify-between">
-            <span class="text-xs text-zinc-300">Single Artwork (It's been good)</span>
-            <a href="/images/its-been-good.jpg" download="single-artwork-its-been-good.jpg" class="text-xs font-semibold text-brand-accent hover:underline">
-              Download ↓
-            </a>
-          </div>
+        <div class="space-y-2">
+          <img src="/images/its-been-good.jpg" alt="It's been good artwork" class="w-full h-56 object-cover rounded bg-zinc-900" />
+          <a href="/images/its-been-good.jpg" download class="text-xs text-zinc-300 underline hover:text-white block">
+            Download single artwork
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- Biography Versions -->
+    <!-- Bio Section -->
     <section class="space-y-6">
-      <h2 class="font-display text-2xl font-bold text-white">Artist Biographies</h2>
-      
-      <div class="space-y-4">
-        <!-- Short Bio -->
-        <div class="bg-[#13151b] border border-zinc-800 p-6 rounded-xl space-y-2">
-          <div class="flex items-center justify-between">
-            <h3 class="text-xs uppercase tracking-wider text-brand-amber font-semibold">Short Bio (Festival Programs & Socials)</h3>
-            <button onclick="navigator.clipboard.writeText(this.nextElementSibling.innerText); alert('Short bio copied to clipboard!');" class="text-xs text-zinc-400 hover:text-white border border-zinc-700 px-2.5 py-1 rounded">
-              Copy text
-            </button>
-          </div>
-          <p class="text-zinc-300 text-sm leading-relaxed">
-            Ro Halfhide is an alternative pop singer-songwriter and producer from The Netherlands. Known for his soulful vocal delivery and heartfelt melodies that speak straight to the heart, his music reflects real life experiences with an unwavering message of hope, connection, and belonging.
+      <h2 class="font-display text-xl font-bold text-white">Bio</h2>
+
+      <div class="space-y-3">
+        <h3 class="text-xs uppercase tracking-wider text-zinc-400 font-semibold">Short Bio</h3>
+        <p class="text-zinc-300 text-sm leading-relaxed">
+          Ro Halfhide is an alternative pop singer-songwriter and producer from The Netherlands. Known for his soulful vocal delivery and heartfelt melodies that speak straight to the heart, his music reflects real life experiences with an unwavering message of hope, connection, and belonging.
+        </p>
+      </div>
+
+      <div class="space-y-3 pt-4 border-t border-zinc-800/60">
+        <h3 class="text-xs uppercase tracking-wider text-zinc-400 font-semibold">Full Bio</h3>
+        <div class="text-zinc-300 text-sm leading-relaxed space-y-3">
+          <p>
+            Ro Halfhide is a singer-songwriter whose music aims to recharge listeners, provide hope, and foster connection. His pop songs are infused with soul and offer a reflection of real life experiences, both the highs and lows, with lyrics and melodies that speak directly to the heart.
+          </p>
+          <p>
+            Ro's background as a fusion of two cultures is a source of inspiration for him in his search for connection in his music and life. The central theme in his music is the message that everyone belongs.
+          </p>
+          <p>
+            Ro has been on Dutch national TV numerous times, in the last years with his band for mentally handicapped people Wimpie & de Domino's. He has also produced albums for well-known singer-songwriters like Lucky Fonz III and Case Mayfield, toured across Indonesia with Robin Block, and co-founded the Amsterdam Songwriters Guild.
           </p>
         </div>
-
-        <!-- Full Bio -->
-        <div class="bg-[#13151b] border border-zinc-800 p-6 rounded-xl space-y-2">
-          <div class="flex items-center justify-between">
-            <h3 class="text-xs uppercase tracking-wider text-brand-amber font-semibold">Full Biography</h3>
-            <button onclick="navigator.clipboard.writeText(this.nextElementSibling.innerText); alert('Full bio copied to clipboard!');" class="text-xs text-zinc-400 hover:text-white border border-zinc-700 px-2.5 py-1 rounded">
-              Copy text
-            </button>
-          </div>
-          <div class="text-zinc-300 text-sm leading-relaxed space-y-3">
-            <p>
-              Ro Halfhide is a singer-songwriter whose music aims to recharge listeners, provide hope, and foster connection. His pop songs are infused with soul and offer a reflection of real life experiences, both the highs and lows, with lyrics and melodies that speak directly to the heart.
-            </p>
-            <p>
-              Ro's background as a fusion of two cultures is a source of inspiration for him in his search for connection in his music and life. The central theme in his music is the message that everyone belongs.
-            </p>
-            <p>
-              Ro has been on Dutch national TV numerous times, in the last years with his band for mentally handicapped people Wimpie & de Domino's. He has also produced albums for well-known singer-songwriters like Lucky Fonz III and Case Mayfield, toured across Indonesia with Robin Block, and co-founded the Amsterdam Songwriters Guild.
-            </p>
-          </div>
-        </div>
       </div>
     </section>
 
-    <!-- Technical & Stage Details -->
-    <section class="bg-[#151720] border border-zinc-800 p-8 rounded-2xl space-y-4">
-      <h2 class="font-display text-2xl font-bold text-white">Stage & Technical Rider</h2>
-      <p class="text-zinc-300 text-sm leading-relaxed">
-        For solo and duo acoustic performances, Ro Halfhide tours self-contained with premium acoustic/electric guitars, vocal microphones, and dedicated DI channels. Standard stage monitoring and PA support are sufficient for most venues.
+    <!-- Tech / Booking -->
+    <section class="pt-6 border-t border-zinc-800/60 space-y-2 text-sm text-zinc-400">
+      <h2 class="font-display text-xl font-bold text-white mb-2">Technical & Booking</h2>
+      <p>
+        Available for solo, acoustic duo, and band setups. Standard stage monitoring and DI channels required.
       </p>
-      <p class="text-xs text-zinc-400">
-        For full band channel lists, stage plots, and input lists: please contact directly via <a href="mailto:halfhide@gmail.com" class="text-brand-accent underline">halfhide@gmail.com</a>.
+      <p>
+        Direct inquiries & stage plot requests: <a href="mailto:halfhide@gmail.com" class="text-zinc-200 underline">halfhide@gmail.com</a> / +31 6 28884143.
       </p>
     </section>
-
-    <!-- Contact & Booking Footer -->
-    <div class="text-center pt-8 border-t border-zinc-800">
-      <h3 class="text-white font-display text-xl font-bold mb-2">Bookings, Press & Sync Inquiries</h3>
-      <p class="text-zinc-400 text-sm mb-6">Reach out directly at halfhide@gmail.com or call +31 6 28884143.</p>
-      <a href="/#contact" class="px-6 py-3 bg-brand-accent hover:bg-orange-500 text-black font-semibold rounded-full text-sm transition-all hover:scale-105">
-        To Contact Form →
-      </a>
-    </div>
   </div>
 </Layout>
