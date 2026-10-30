@@ -1,0 +1,114 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const allNews = await getCollection('news');
+const posts = allNews.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  }).toUpperCase();
+}
+---
+
+<Layout
+  title="Latest News & Stories - Ro Halfhide"
+  description="Official news, song releases, videos, and reflections from singer-songwriter Ro Halfhide."
+>
+  <main class="py-20 sm:py-28 bg-surface-void">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 space-y-16">
+      <!-- Breadcrumb & Header -->
+      <div class="space-y-6 pb-8 shadow-divider-b">
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-surface-muted hover:text-surface-ink transition-colors duration-150 rounded-sm focus-ring"
+        >
+          <svg aria-hidden="true" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M7 16l-4-4m0 0l4-4m-4 4h18"></path>
+          </svg>
+          <span>Back to Home</span>
+        </a>
+
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+          <div class="space-y-3 max-w-2xl">
+            <h1 class="font-serif font-semibold text-4xl sm:text-6xl tracking-[-0.04em] leading-[1.05] text-surface-ink">
+              Latest News
+            </h1>
+            <p class="font-sans font-normal text-lg text-surface-muted leading-relaxed">
+              Stories from the studio, new single releases, music videos, and creative reflections.
+            </p>
+          </div>
+
+          <a
+            href="/rss.xml"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent hover:text-accent-hover transition-colors duration-150 rounded-sm focus-ring self-start sm:self-auto"
+          >
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z" />
+            </svg>
+            <span>RSS Feed</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Articles Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {posts.map((post) => (
+          <article class="group relative flex flex-col bg-surface-raised/40 hover:bg-surface-raised/80 rounded-2xl overflow-hidden shadow-hairline hover:shadow-hairline-strong transition-all duration-300">
+            <div class="aspect-[16/10] overflow-hidden bg-surface-base relative">
+              <img
+                src={post.data.image}
+                alt={post.data.imageAlt}
+                loading="lazy"
+                class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+              />
+              {post.data.mediaType === 'video' && (
+                <div class="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-surface-void/80 backdrop-blur-sm flex items-center justify-center text-surface-ink shadow-hairline">
+                  <svg class="w-3.5 h-3.5 translate-x-0.5 fill-current" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              )}
+              {post.data.mediaType === 'audio' && (
+                <div class="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-surface-void/80 backdrop-blur-sm flex items-center justify-center text-accent shadow-hairline">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                  </svg>
+                </div>
+              )}
+            </div>
+
+            <div class="p-6 flex flex-col flex-grow justify-between gap-6">
+              <div class="space-y-3">
+                <time datetime={post.data.pubDate.toISOString()} class="block font-mono text-xs uppercase tracking-[0.16em] text-accent">
+                  {formatDate(post.data.pubDate)}
+                </time>
+                <h2 class="font-serif font-medium text-xl sm:text-2xl text-surface-ink group-hover:text-accent transition-colors duration-150 leading-snug">
+                  <a href={`/news/${post.slug}`} class="focus-ring rounded-sm">
+                    <span class="absolute inset-0 z-10" aria-hidden="true"></span>
+                    {post.data.title}
+                  </a>
+                </h2>
+                <p class="font-sans text-sm text-surface-muted leading-relaxed line-clamp-3">
+                  {post.data.description}
+                </p>
+              </div>
+
+              <div class="pt-4 shadow-divider-t flex items-center gap-1.5 font-mono text-xs text-accent uppercase tracking-[0.16em]">
+                <span>Read article</span>
+                <svg aria-hidden="true" class="w-3.5 h-3.5 transition-transform duration-150 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </main>
+</Layout>

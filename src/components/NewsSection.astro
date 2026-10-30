@@ -1,0 +1,96 @@
+---
+import { getCollection } from 'astro:content';
+
+const allNews = await getCollection('news');
+const latestPosts = allNews
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 3);
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  }).toUpperCase();
+}
+---
+
+<section id="news" class="py-24 bg-surface-void shadow-divider-t">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 space-y-12">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-6 shadow-divider-b">
+      <div class="space-y-3 max-w-xl">
+        <h2 class="font-serif font-semibold text-4xl sm:text-5xl tracking-[-0.04em] leading-[1.05] text-surface-ink">
+          Latest News
+        </h2>
+        <p class="font-sans font-normal text-base text-surface-muted leading-relaxed">
+          Releases, studio reflections, and updates from the journey.
+        </p>
+      </div>
+
+      <a
+        href="/news"
+        class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent hover:text-accent-hover transition-colors duration-150 rounded-sm focus-ring self-start sm:self-auto"
+      >
+        <span>View all updates</span>
+        <svg aria-hidden="true" class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+        </svg>
+      </a>
+    </div>
+
+    <!-- 3-Column Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {latestPosts.map((post) => (
+        <article class="group relative flex flex-col bg-surface-raised/40 hover:bg-surface-raised/80 rounded-2xl overflow-hidden shadow-hairline hover:shadow-hairline-strong transition-all duration-300">
+          <div class="aspect-[16/10] overflow-hidden bg-surface-base relative">
+            <img
+              src={post.data.image}
+              alt={post.data.imageAlt}
+              loading="lazy"
+              class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+            />
+            {post.data.mediaType === 'video' && (
+              <div class="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-surface-void/80 backdrop-blur-sm flex items-center justify-center text-surface-ink shadow-hairline">
+                <svg class="w-3.5 h-3.5 translate-x-0.5 fill-current" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
+            )}
+            {post.data.mediaType === 'audio' && (
+              <div class="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-surface-void/80 backdrop-blur-sm flex items-center justify-center text-accent shadow-hairline">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                </svg>
+              </div>
+            )}
+          </div>
+
+          <div class="p-6 flex flex-col flex-grow justify-between gap-6">
+            <div class="space-y-3">
+              <time datetime={post.data.pubDate.toISOString()} class="block font-mono text-xs uppercase tracking-[0.16em] text-accent">
+                {formatDate(post.data.pubDate)}
+              </time>
+              <h3 class="font-serif font-medium text-xl sm:text-2xl text-surface-ink group-hover:text-accent transition-colors duration-150 leading-snug">
+                <a href={`/news/${post.slug}`} class="focus-ring rounded-sm">
+                  <span class="absolute inset-0 z-10" aria-hidden="true"></span>
+                  {post.data.title}
+                </a>
+              </h3>
+              <p class="font-sans text-sm text-surface-muted leading-relaxed line-clamp-3">
+                {post.data.description}
+              </p>
+            </div>
+
+            <div class="pt-4 shadow-divider-t flex items-center gap-1.5 font-mono text-xs text-accent uppercase tracking-[0.16em]">
+              <span>Read more</span>
+              <svg aria-hidden="true" class="w-3.5 h-3.5 transition-transform duration-150 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
