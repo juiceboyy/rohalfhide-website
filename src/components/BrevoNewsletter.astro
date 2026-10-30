@@ -5,22 +5,18 @@
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-accent/15 border border-brand-accent/30 text-brand-amber text-xs uppercase tracking-widest font-semibold mb-6">
       <svg class="w-4 h-4 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-      Brevo Mailinglist
+      Mailing List
     </div>
 
     <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mb-4">
-      Blijf Verbonden met Ro Halfhide
+      Join the Inner Circle
     </h2>
 
     <p class="text-zinc-400 text-sm sm:text-base max-w-xl mx-auto mb-8">
-      Ontvang als eerste exclusieve akoestische opnames, updates over nieuwe releases en uitnodigingen voor intieme live optredens. Geen spam, alleen muziek.
+      Sign up for the mailing list so you won't miss any news! Receive acoustic previews, release alerts, and intimate concert invitations. No spam, ever.
     </p>
 
     <!-- Brevo Form -->
-    <!-- 
-      TIP: Plak eventueel de action-URL van je Brevo inschrijfformulier in het 'action' attribuut hieronder.
-      Standaard stuurt dit formulier netjes een verzoek of vangt dit af via JavaScript.
-    -->
     <form
       id="brevo-form"
       class="max-w-lg mx-auto bg-[#171922] p-4 sm:p-6 rounded-2xl border border-zinc-800 shadow-xl space-y-4"
@@ -31,21 +27,21 @@
           name="EMAIL"
           id="brevo-email"
           required
-          placeholder="Jouw e-mailadres..."
+          placeholder="Your email address..."
           class="flex-grow px-4 py-3 bg-[#0d0e12] border border-zinc-700/80 rounded-xl text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-brand-accent transition-colors"
         />
         <button
           type="submit"
           class="px-6 py-3 bg-brand-accent hover:bg-orange-500 text-black font-semibold rounded-xl text-sm transition-all hover:scale-105 shrink-0"
         >
-          Inschrijven
+          Subscribe
         </button>
       </div>
 
       <div class="text-left text-xs text-zinc-500 flex items-start gap-2 pt-1">
         <input type="checkbox" id="brevo-consent" required checked class="mt-0.5 rounded border-zinc-700 bg-zinc-900 text-brand-accent focus:ring-0" />
         <label for="brevo-consent">
-          Ik geef toestemming om per e-mail updates te ontvangen via Brevo. Uitschrijven kan op ieder moment via de link onderaan de mails.
+          I agree to receive occasional updates via email. You can unsubscribe at any time using the link in the footer of any email.
         </label>
       </div>
 
@@ -65,7 +61,7 @@
       
       statusEl.classList.remove('hidden', 'text-red-400');
       statusEl.classList.add('text-emerald-400');
-      statusEl.textContent = `Bedankt voor je inschrijving met ${email}! Je staat op de lijst.`;
+      statusEl.textContent = `Thank you for subscribing with ${email}! You're on the list.`;
       
       brevoForm.reset();
     });

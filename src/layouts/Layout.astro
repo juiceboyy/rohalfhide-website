@@ -63,10 +63,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://rohalfhi
 
         <!-- Desktop Navigation Links -->
         <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
-          <a href="/#music" class="text-zinc-300 hover:text-brand-accent transition-colors">Muziek</a>
+          <a href="/#music" class="text-zinc-300 hover:text-brand-accent transition-colors">Music</a>
           <a href="/#shows" class="text-zinc-300 hover:text-brand-accent transition-colors">Shows</a>
-          <a href="/#bio" class="text-zinc-300 hover:text-brand-accent transition-colors">Over Ro</a>
-          <a href="/#newsletter" class="text-zinc-300 hover:text-brand-accent transition-colors">Nieuwsbrief</a>
+          <a href="/#bio" class="text-zinc-300 hover:text-brand-accent transition-colors">Bio</a>
+          <a href="/#newsletter" class="text-zinc-300 hover:text-brand-accent transition-colors">Newsletter</a>
           <a href="https://reaumusic.nl" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-brand-amber transition-colors flex items-center gap-1">
             Reau (Cover Act)
             <svg class="w-3.5 h-3.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
@@ -75,7 +75,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://rohalfhi
             EPK
           </a>
           <a href="/#contact" class="px-4 py-2 bg-brand-accent hover:bg-orange-500 text-black font-semibold rounded-full shadow-lg transition-all hover:scale-105">
-            Contact & Boekingen
+            Bookings & Contact
           </a>
         </nav>
 
@@ -89,16 +89,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://rohalfhi
 
       <!-- Mobile Dropdown Menu -->
       <div id="mobile-menu" class="hidden md:hidden bg-[#121319] border-b border-zinc-800 px-4 py-6 space-y-4">
-        <a href="/#music" class="block text-zinc-200 hover:text-brand-accent text-lg font-medium">Muziek</a>
+        <a href="/#music" class="block text-zinc-200 hover:text-brand-accent text-lg font-medium">Music</a>
         <a href="/#shows" class="block text-zinc-200 hover:text-brand-accent text-lg font-medium">Shows</a>
-        <a href="/#bio" class="block text-zinc-200 hover:text-brand-accent text-lg font-medium">Over Ro</a>
-        <a href="/#newsletter" class="block text-zinc-200 hover:text-brand-accent text-lg font-medium">Nieuwsbrief</a>
+        <a href="/#bio" class="block text-zinc-200 hover:text-brand-accent text-lg font-medium">Bio</a>
+        <a href="/#newsletter" class="block text-zinc-200 hover:text-brand-accent text-lg font-medium">Newsletter</a>
         <a href="https://reaumusic.nl" target="_blank" rel="noopener noreferrer" class="block text-zinc-400 hover:text-brand-amber text-lg">
           Reau (Cover Act) ↗
         </a>
-        <a href="/epk" class="block text-zinc-400 hover:text-brand-accent text-lg font-medium">EPK (Perskit)</a>
+        <a href="/epk" class="block text-zinc-400 hover:text-brand-accent text-lg font-medium">EPK (Press Kit)</a>
         <a href="/#contact" class="block text-center px-4 py-3 bg-brand-accent text-black font-semibold rounded-lg shadow-md">
-          Contact & Boekingen
+          Bookings & Contact
         </a>
       </div>
     </header>
@@ -118,7 +118,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://rohalfhi
               <span class="font-display font-bold text-xl uppercase tracking-wider text-white">Ro Halfhide</span>
             </div>
             <p class="text-zinc-400 text-sm leading-relaxed max-w-md">
-              Alternative pop singer-songwriter & producer. Muziek vol ziel, verbinding en de overtuiging dat iedereen erbij hoort.
+              Alternative pop singer-songwriter & producer. Music infused with soul, connection, and the central message that everyone belongs.
             </p>
             <div class="flex items-center gap-4 pt-2">
               <a href="https://instagram.com/rohalfhide" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-10 h-10 rounded-full bg-zinc-800/70 hover:bg-brand-accent hover:text-black flex items-center justify-center transition-colors text-white">
@@ -138,12 +138,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://rohalfhi
 
           <!-- Col 2: Navigation Links -->
           <div>
-            <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Navigatie</h3>
+            <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Navigation</h3>
             <ul class="space-y-2 text-sm">
-              <li><a href="/#music" class="hover:text-brand-accent transition-colors">Muziek & Releases</a></li>
-              <li><a href="/#shows" class="hover:text-brand-accent transition-colors">Shows & Agenda</a></li>
-              <li><a href="/#bio" class="hover:text-brand-accent transition-colors">Biografie</a></li>
-              <li><a href="/#newsletter" class="hover:text-brand-accent transition-colors">Nieuwsbrief</a></li>
+              <li><a href="/#music" class="hover:text-brand-accent transition-colors">Music & Releases</a></li>
+              <li><a href="/#shows" class="hover:text-brand-accent transition-colors">Shows & Tour Dates</a></li>
+              <li><a href="/#bio" class="hover:text-brand-accent transition-colors">Biography</a></li>
+              <li><a href="/#newsletter" class="hover:text-brand-accent transition-colors">Newsletter</a></li>
               <li><a href="/epk" class="hover:text-brand-accent transition-colors">Electronic Press Kit (EPK)</a></li>
               <li><a href="https://reaumusic.nl" target="_blank" rel="noopener noreferrer" class="hover:text-brand-amber transition-colors">Reau Cover Act ↗</a></li>
             </ul>
@@ -151,11 +151,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://rohalfhi
 
           <!-- Col 3: Studio & Contact -->
           <div>
-            <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Studio & Boekingen</h3>
+            <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Studio & Bookings</h3>
             <div class="space-y-2 text-sm text-zinc-300">
               <p class="flex items-center gap-2">
                 <svg class="w-4 h-4 text-brand-accent shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                Jupiterkade 2, Den Haag
+                Jupiterkade 2, The Hague (NL)
               </p>
               <p class="flex items-center gap-2">
                 <svg class="w-4 h-4 text-brand-accent shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
@@ -172,7 +172,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://rohalfhi
         <div class="pt-8 border-t border-zinc-800/60 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-400 gap-4">
           <p>© {currentYear} Ro Halfhide. All rights reserved.</p>
           <p class="flex items-center gap-1">
-            Gebouwd met <span class="text-brand-accent">Astro</span> & gehost op <span class="text-brand-accent font-medium">Netlify</span>.
+            Built with <span class="text-brand-accent">Astro</span> & hosted on <span class="text-brand-accent font-medium">Netlify</span>.
           </p>
         </div>
       </div>

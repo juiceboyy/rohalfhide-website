@@ -8,21 +8,21 @@ interface PastShow {
 
 const pastShows: PastShow[] = [
   {
-    date: "21 Sep 2025",
+    date: "Sep 21, 2025",
     venue: "De Vos",
-    city: "Tilburg",
+    city: "Tilburg, NL",
     event: "Live Show Ro Halfhide"
   },
   {
-    date: "25 Mei 2025",
+    date: "May 25, 2025",
     venue: "Café de Bruine Pij",
-    city: "Breda",
+    city: "Breda, NL",
     event: "Live Acoustic Pop"
   },
   {
-    date: "14 Feb 2025",
+    date: "Feb 14, 2025",
     venue: "Studio Jupiter",
-    city: "Den Haag",
+    city: "The Hague, NL",
     event: "Acoustic Showcase"
   }
 ];
@@ -32,9 +32,9 @@ const pastShows: PastShow[] = [
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center max-w-3xl mx-auto mb-16">
       <span class="text-brand-accent text-sm font-semibold tracking-widest uppercase">Live On Stage</span>
-      <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-2 mb-4">Tourdata & Optredens</h2>
+      <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-2 mb-4">Tour Dates & Shows</h2>
       <p class="text-zinc-400 text-base sm:text-lg">
-        Kom luisteren naar de live vertolking van de nummers. Gesynchroniseerd met Bandsintown & Spotify.
+        Come and check me out live. I'd love to see you there! Synced directly with Bandsintown & Spotify.
       </p>
     </div>
 
@@ -59,8 +59,8 @@ const pastShows: PastShow[] = [
       <!-- Follow / Request a Show CTA -->
       <div class="pt-8 mt-8 border-t border-zinc-800/60 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
-          <h4 class="text-white font-semibold text-sm">Geen show bij jou in de buurt?</h4>
-          <p class="text-zinc-400 text-xs">Vraag een optreden aan of volg Ro op Bandsintown en Spotify.</p>
+          <h4 class="text-white font-semibold text-sm">No show near your city?</h4>
+          <p class="text-zinc-400 text-xs">Request a performance or follow Ro on Bandsintown & Spotify for tour alerts.</p>
         </div>
         <div class="flex items-center gap-3">
           <a
@@ -69,13 +69,13 @@ const pastShows: PastShow[] = [
             rel="noopener noreferrer"
             class="px-4 py-2 bg-[#00e4bb] hover:bg-[#00c9a5] text-black text-xs font-bold uppercase tracking-wider rounded-lg transition-all"
           >
-            Volg op Bandsintown
+            Follow on Bandsintown
           </a>
           <a
             href="#contact"
             class="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-medium rounded-lg transition-colors"
           >
-            Boek Ro
+            Book Ro
           </a>
         </div>
       </div>
@@ -84,7 +84,7 @@ const pastShows: PastShow[] = [
     <!-- Past Shows Archive -->
     <div class="max-w-4xl mx-auto">
       <div class="flex items-center justify-between mb-4">
-        <h3 class="text-xs uppercase tracking-widest text-zinc-400 font-semibold">Recente eerdere optredens</h3>
+        <h3 class="text-xs uppercase tracking-widest text-zinc-400 font-semibold">Recent Past Shows</h3>
       </div>
       <div class="bg-[#101217] border border-zinc-800/60 rounded-xl overflow-hidden divide-y divide-zinc-800/60">
         {pastShows.map((show) => (

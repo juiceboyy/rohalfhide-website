@@ -17,7 +17,7 @@ const tracks: Track[] = [
     src: "/audio/its-been-good.mp3",
     duration: "1:50",
     cover: "/images/its-been-good.jpg",
-    description: "Laatste single — een reflectie op de wendingen en schoonheid van het leven."
+    description: "Latest single — a heartfelt reflection on life's unexpected turns and enduring beauty."
   },
   {
     id: "2",
@@ -26,7 +26,7 @@ const tracks: Track[] = [
     src: "/audio/evening-sun.mp3",
     duration: "3:06",
     cover: "/images/evening-sun.jpg",
-    description: "Een meeslepende melodie over loslaten en troost vinden in het licht."
+    description: "A poignant ballad exploring loss, letting go, and finding solace in the light."
   },
   {
     id: "3",
@@ -35,7 +35,7 @@ const tracks: Track[] = [
     src: "/audio/pirates-dirge.mp3",
     duration: "3:02",
     cover: "/images/hero-portrait.jpg",
-    description: "Krachtige akoestische ritmes en meerstemmige pop/folk harmonieën."
+    description: "Driving acoustic groove with layered vocal harmonies and spirited soul-pop energy."
   }
 ];
 ---
@@ -43,10 +43,10 @@ const tracks: Track[] = [
 <section id="music" class="py-24 bg-[#0e1014] relative">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center max-w-3xl mx-auto mb-16">
-      <span class="text-brand-accent text-sm font-semibold tracking-widest uppercase">Discografie & Releases</span>
-      <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-2 mb-4">Luister naar de Muziek</h2>
+      <span class="text-brand-accent text-sm font-semibold tracking-widest uppercase">Discography & Releases</span>
+      <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-2 mb-4">Listen to the Music</h2>
       <p class="text-zinc-400 text-base sm:text-lg">
-        Beluister tracks hier direct via de audiospeler, of stream op Spotify en steun rechtstreeks via Bandcamp.
+        Play songs directly in the player below, stream on Spotify, or support independent music via Bandcamp.
       </p>
     </div>
 
@@ -95,13 +95,13 @@ const tracks: Track[] = [
 
         <!-- Player Controls -->
         <div class="flex items-center justify-between">
-          <button id="prev-btn" aria-label="Vorig nummer" class="text-zinc-400 hover:text-white transition-colors p-2">
+          <button id="prev-btn" aria-label="Previous track" class="text-zinc-400 hover:text-white transition-colors p-2">
             <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
           </button>
 
           <button
             id="play-btn"
-            aria-label="Afspelen of pauzeren"
+            aria-label="Play or pause"
             class="w-14 h-14 rounded-full bg-brand-accent hover:bg-orange-500 text-black flex items-center justify-center shadow-lg hover:scale-105 transition-all"
           >
             <!-- Play Icon -->
@@ -110,7 +110,7 @@ const tracks: Track[] = [
             <svg id="pause-icon" class="w-7 h-7 fill-current hidden" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
           </button>
 
-          <button id="next-btn" aria-label="Volgend nummer" class="text-zinc-400 hover:text-white transition-colors p-2">
+          <button id="next-btn" aria-label="Next track" class="text-zinc-400 hover:text-white transition-colors p-2">
             <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
           </button>
         </div>
@@ -122,8 +122,8 @@ const tracks: Track[] = [
       <!-- Tracklist (Right) -->
       <div class="lg:col-span-7 space-y-4">
         <h3 class="text-lg font-semibold text-white uppercase tracking-wider mb-2 flex items-center justify-between">
-          <span>Afspeellijst</span>
-          <span class="text-xs text-zinc-400 font-normal font-mono">{tracks.length} nummers</span>
+          <span>Tracklist</span>
+          <span class="text-xs text-zinc-400 font-normal font-mono">{tracks.length} tracks</span>
         </h3>
 
         <div class="space-y-3">
@@ -161,7 +161,7 @@ const tracks: Track[] = [
                 <span class="font-mono text-xs text-zinc-400">{track.duration}</span>
                 <button
                   type="button"
-                  aria-label={`Speel ${track.title}`}
+                  aria-label={`Play ${track.title}`}
                   class="w-9 h-9 rounded-full bg-zinc-800/90 hover:bg-brand-accent hover:text-black flex items-center justify-center transition-colors text-zinc-200"
                 >
                   <svg class="w-4 h-4 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -174,9 +174,9 @@ const tracks: Track[] = [
         <!-- Bandcamp & Streaming CTA Box -->
         <div class="mt-8 p-6 rounded-2xl bg-gradient-to-r from-zinc-900 to-zinc-850 border border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <h4 class="text-white font-bold text-base mb-1">Koop direct op Bandcamp</h4>
+            <h4 class="text-white font-bold text-base mb-1">Buy & Support on Bandcamp</h4>
             <p class="text-zinc-400 text-xs sm:text-sm">
-              Steun de muziek rechtstreeks in hoge audiokwaliteit (FLAC/WAV).
+              Support the artist directly with high-quality lossless downloads (FLAC/WAV).
             </p>
           </div>
           <a

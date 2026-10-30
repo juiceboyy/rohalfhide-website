@@ -4,15 +4,15 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout
   title="Electronic Press Kit (EPK) — Ro Halfhide"
-  description="Officiële perskit voor programmeurs, festivals, media en journalisten met biografie, persfoto's, audio en boekingsinformatie."
+  description="Official press kit for festival bookers, venue programmers, media, and journalists featuring biography, hi-res press photos, music, and booking details."
 >
   <div class="py-16 sm:py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
     <!-- Header -->
     <div class="border-b border-zinc-800 pb-8">
-      <span class="text-brand-accent text-xs uppercase tracking-widest font-semibold">Voor Programmeurs & Media</span>
+      <span class="text-brand-accent text-xs uppercase tracking-widest font-semibold">For Bookers, Programmers & Press</span>
       <h1 class="font-display text-4xl sm:text-6xl font-extrabold text-white mt-2">Electronic Press Kit (EPK)</h1>
       <p class="text-zinc-400 text-lg mt-3 max-w-2xl">
-        Alle officiële informatie, biografieën, persfoto's op hoge resolutie en technische details voor boekingen en media-aandacht.
+        Official artist materials, bios, high-resolution promotional photos, and technical details for bookings and media coverage.
       </p>
     </div>
 
@@ -23,15 +23,15 @@ import Layout from '../layouts/Layout.astro';
         <p class="text-white font-semibold text-base mt-1">Alternative Pop / Soul</p>
       </div>
       <div>
-        <p class="text-xs uppercase tracking-wider text-zinc-500">Herkomst</p>
-        <p class="text-white font-semibold text-base mt-1">Den Haag / Amsterdam</p>
+        <p class="text-xs uppercase tracking-wider text-zinc-500">Location</p>
+        <p class="text-white font-semibold text-base mt-1">The Hague / Amsterdam (NL)</p>
       </div>
       <div>
-        <p class="text-xs uppercase tracking-wider text-zinc-500">Live Bezetting</p>
-        <p class="text-white font-semibold text-base mt-1">Solo (Akoestisch) / Trio / Full Band</p>
+        <p class="text-xs uppercase tracking-wider text-zinc-500">Live Format</p>
+        <p class="text-white font-semibold text-base mt-1">Solo (Acoustic) / Trio / Full Band</p>
       </div>
       <div>
-        <p class="text-xs uppercase tracking-wider text-zinc-500">Contact Boekingen</p>
+        <p class="text-xs uppercase tracking-wider text-zinc-500">Bookings Contact</p>
         <p class="text-brand-amber font-semibold text-base mt-1">halfhide@gmail.com</p>
       </div>
     </div>
@@ -40,16 +40,16 @@ import Layout from '../layouts/Layout.astro';
     <section class="space-y-6">
       <div class="flex items-center justify-between">
         <div>
-          <h2 class="font-display text-2xl font-bold text-white">Officiële Persfoto's</h2>
-          <p class="text-zinc-400 text-sm">Klik op een foto om de volledige hoge resolutie te bekijken of op te slaan.</p>
+          <h2 class="font-display text-2xl font-bold text-white">Official Press Photos</h2>
+          <p class="text-zinc-400 text-sm">Click on any image to view or download full print-quality resolution.</p>
         </div>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
         <div class="bg-[#13151b] border border-zinc-800 rounded-xl overflow-hidden group">
-          <img src="/images/hero-portrait.jpg" alt="Ro Halfhide Persfoto Portret" class="w-full h-64 object-cover object-center group-hover:scale-105 transition-transform" />
+          <img src="/images/hero-portrait.jpg" alt="Ro Halfhide Press Portrait" class="w-full h-64 object-cover object-center group-hover:scale-105 transition-transform" />
           <div class="p-4 flex items-center justify-between">
-            <span class="text-xs text-zinc-300">Portret (High-Res JPG)</span>
+            <span class="text-xs text-zinc-300">Portrait (High-Res JPG)</span>
             <a href="/images/hero-portrait.jpg" download="ro-halfhide-portrait.jpg" class="text-xs font-semibold text-brand-accent hover:underline">
               Download ↓
             </a>
@@ -80,36 +80,39 @@ import Layout from '../layouts/Layout.astro';
 
     <!-- Biography Versions -->
     <section class="space-y-6">
-      <h2 class="font-display text-2xl font-bold text-white">Biografie voor Aankondigingen</h2>
+      <h2 class="font-display text-2xl font-bold text-white">Artist Biographies</h2>
       
       <div class="space-y-4">
-        <!-- Korte Bio -->
+        <!-- Short Bio -->
         <div class="bg-[#13151b] border border-zinc-800 p-6 rounded-xl space-y-2">
           <div class="flex items-center justify-between">
-            <h3 class="text-xs uppercase tracking-wider text-brand-amber font-semibold">Korte Bio (Festivalboekjes / Socials)</h3>
-            <button onclick="navigator.clipboard.writeText(this.nextElementSibling.innerText); alert('Korte bio gekopieerd!');" class="text-xs text-zinc-400 hover:text-white border border-zinc-700 px-2.5 py-1 rounded">
-              Kopieer tekst
+            <h3 class="text-xs uppercase tracking-wider text-brand-amber font-semibold">Short Bio (Festival Programs & Socials)</h3>
+            <button onclick="navigator.clipboard.writeText(this.nextElementSibling.innerText); alert('Short bio copied to clipboard!');" class="text-xs text-zinc-400 hover:text-white border border-zinc-700 px-2.5 py-1 rounded">
+              Copy text
             </button>
           </div>
           <p class="text-zinc-300 text-sm leading-relaxed">
-            Ro Halfhide is een Haagse/Amsterdamse singer-songwriter en producer die soulful popliedjes schrijft over de pieken en dalen van het leven. Met zijn warme stemgeluid en melodieën die recht naar het hart gaan, brengt hij een universele boodschap van hoop, verbinding en de overtuiging dat iedereen erbij hoort.
+            Ro Halfhide is an alternative pop singer-songwriter and producer from The Netherlands. Known for his soulful vocal delivery and heartfelt melodies that speak straight to the heart, his music reflects real life experiences with an unwavering message of hope, connection, and belonging.
           </p>
         </div>
 
-        <!-- Volledige Bio -->
+        <!-- Full Bio -->
         <div class="bg-[#13151b] border border-zinc-800 p-6 rounded-xl space-y-2">
           <div class="flex items-center justify-between">
-            <h3 class="text-xs uppercase tracking-wider text-brand-amber font-semibold">Volledige Biografie</h3>
-            <button onclick="navigator.clipboard.writeText(this.nextElementSibling.innerText); alert('Volledige bio gekopieerd!');" class="text-xs text-zinc-400 hover:text-white border border-zinc-700 px-2.5 py-1 rounded">
-              Kopieer tekst
+            <h3 class="text-xs uppercase tracking-wider text-brand-amber font-semibold">Full Biography</h3>
+            <button onclick="navigator.clipboard.writeText(this.nextElementSibling.innerText); alert('Full bio copied to clipboard!');" class="text-xs text-zinc-400 hover:text-white border border-zinc-700 px-2.5 py-1 rounded">
+              Copy text
             </button>
           </div>
           <div class="text-zinc-300 text-sm leading-relaxed space-y-3">
             <p>
-              Ro Halfhide is een singer-songwriter wiens muziek erop gericht is luisteraars op te laden, hoop te bieden en verbinding te creëren. Zijn popsongs zijn doordrenkt met soul en vormen een oprechte weerspiegeling van echte levenservaringen, zowel de highs als de lows.
+              Ro Halfhide is a singer-songwriter whose music aims to recharge listeners, provide hope, and foster connection. His pop songs are infused with soul and offer a reflection of real life experiences, both the highs and lows, with lyrics and melodies that speak directly to the heart.
             </p>
             <p>
-              Als fusie van twee culturen vormt zijn achtergrond een continue bron van inspiratie in zijn zoektocht naar verbinding. Naast zijn solo-werk was Ro veelvuldig op landelijke televisie te zien met 'Wimpie & de Domino's', produceerde hij albums voor artiesten als Lucky Fonz III en Case Mayfield, toerde hij door Indonesië met Robin Block en richtte hij de Amsterdam Songwriters Guild op.
+              Ro's background as a fusion of two cultures is a source of inspiration for him in his search for connection in his music and life. The central theme in his music is the message that everyone belongs.
+            </p>
+            <p>
+              Ro has been on Dutch national TV numerous times, in the last years with his band for mentally handicapped people Wimpie & de Domino's. He has also produced albums for well-known singer-songwriters like Lucky Fonz III and Case Mayfield, toured across Indonesia with Robin Block, and co-founded the Amsterdam Songwriters Guild.
             </p>
           </div>
         </div>
@@ -118,21 +121,21 @@ import Layout from '../layouts/Layout.astro';
 
     <!-- Technical & Stage Details -->
     <section class="bg-[#151720] border border-zinc-800 p-8 rounded-2xl space-y-4">
-      <h2 class="font-display text-2xl font-bold text-white">Stage & Tech Rider</h2>
+      <h2 class="font-display text-2xl font-bold text-white">Stage & Technical Rider</h2>
       <p class="text-zinc-300 text-sm leading-relaxed">
-        Voor solo en duo-bezettingen reist Ro Halfhide met eigen kwaliteitsinstrumenten (akoestische/elektrische gitaren, zangmicrofoon en effectpedalen). Een standaard monitoring en DI-kanalen volstaan voor de meeste podia.
+        For solo and duo acoustic performances, Ro Halfhide tours self-contained with premium acoustic/electric guitars, vocal microphones, and dedicated DI channels. Standard stage monitoring and PA support are sufficient for most venues.
       </p>
       <p class="text-xs text-zinc-400">
-        Voor een op maat gemaakte priklijst of stage plan voor full band opstellingen: mail direct naar <a href="mailto:halfhide@gmail.com" class="text-brand-accent underline">halfhide@gmail.com</a>.
+        For full band channel lists, stage plots, and input lists: please contact directly via <a href="mailto:halfhide@gmail.com" class="text-brand-accent underline">halfhide@gmail.com</a>.
       </p>
     </section>
 
     <!-- Contact & Booking Footer -->
     <div class="text-center pt-8 border-t border-zinc-800">
-      <h3 class="text-white font-display text-xl font-bold mb-2">Direct Boeken of Interview Aanvragen?</h3>
-      <p class="text-zinc-400 text-sm mb-6">Neem rechtstreeks contact op via halfhide@gmail.com of bel +31 6 28884143.</p>
+      <h3 class="text-white font-display text-xl font-bold mb-2">Bookings, Press & Sync Inquiries</h3>
+      <p class="text-zinc-400 text-sm mb-6">Reach out directly at halfhide@gmail.com or call +31 6 28884143.</p>
       <a href="/#contact" class="px-6 py-3 bg-brand-accent hover:bg-orange-500 text-black font-semibold rounded-full text-sm transition-all hover:scale-105">
-        Naar Boekingsformulier →
+        To Contact Form →
       </a>
     </div>
   </div>
