@@ -124,6 +124,15 @@
             <option value="Studio & Production">Studio &amp; Production</option>
             <option value="General Inquiry">General Inquiry</option>
           </select>
+          <p id="booking-hint" class="text-xs text-surface-muted pt-2.5 leading-relaxed">
+            For private parties, corporate events, weddings, or acoustic cover sets, you can also book Ro's live act directly at
+            <a
+              href="https://reaumusic.nl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-accent hover:text-accent-hover underline underline-offset-4 font-mono transition-colors"
+            >reaumusic.nl &rarr;</a>
+          </p>
         </div>
 
         <div>
@@ -165,6 +174,20 @@
     const form = document.getElementById('contact-form') as HTMLFormElement | null;
     const submitBtn = document.getElementById('contact-submit') as HTMLButtonElement | null;
     const statusEl = document.getElementById('contact-status');
+    const subjectSelect = document.getElementById('contact-subject') as HTMLSelectElement | null;
+    const bookingHint = document.getElementById('booking-hint');
+
+    if (subjectSelect && bookingHint) {
+      const updateBookingHint = () => {
+        if (subjectSelect.value === 'Booking & Live Shows') {
+          bookingHint.classList.remove('hidden');
+        } else {
+          bookingHint.classList.add('hidden');
+        }
+      };
+      subjectSelect.addEventListener('change', updateBookingHint);
+      updateBookingHint();
+    }
 
     if (!form || !submitBtn) return;
 
