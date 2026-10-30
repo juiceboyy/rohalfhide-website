@@ -43,7 +43,7 @@ async function sendBrevoEmail(payload) {
 }
 
 export async function sendSubscriptionEmails({ email, isUpdate = false, country = '' }) {
-  const senderEmail = getEnv('SENDER_EMAIL') || getEnv('EMAIL_USER') || 'info@haagseopenmic.nl';
+  const senderEmail = getEnv('SENDER_EMAIL') || getEnv('EMAIL_USER') || 'halfhide@gmail.com';
   const senderName = getEnv('SENDER_NAME') || 'Ro Halfhide';
   const notificationEmail = getEnv('NOTIFICATION_EMAIL') || 'halfhide@gmail.com';
   const safeEmail = escapeHtml(email);
@@ -97,7 +97,7 @@ export async function sendSubscriptionEmails({ email, isUpdate = false, country 
 }
 
 export async function sendContactInquiryEmails({ name, email, subject, message }) {
-  const senderEmail = getEnv('SENDER_EMAIL') || getEnv('EMAIL_USER') || 'info@haagseopenmic.nl';
+  const senderEmail = getEnv('SENDER_EMAIL') || getEnv('EMAIL_USER') || 'halfhide@gmail.com';
   const senderName = getEnv('SENDER_NAME') || 'Ro Halfhide Website';
   const notificationEmail = getEnv('NOTIFICATION_EMAIL') || 'halfhide@gmail.com';
 
