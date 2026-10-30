@@ -8,6 +8,40 @@ interface Track {
   cover: string;
 }
 
+interface StreamingPlatform {
+  name: string;
+  url: string;
+  iconPath: string;
+}
+
+const streamingPlatforms: StreamingPlatform[] = [
+  {
+    name: "Spotify",
+    url: "https://open.spotify.com/artist/79dS9zvJ6QCjz54EUdjs9u",
+    iconPath: "M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.309c-.216.354-.675.467-1.03.25-2.822-1.724-6.375-2.114-10.56-1.159-.404.092-.81-.161-.902-.565-.092-.404.161-.81.565-.902 4.58-1.047 8.508-.604 11.677 1.346.355.217.467.676.25 1.03zm1.47-3.27c-.272.443-.852.585-1.295.313-3.23-1.986-8.156-2.56-11.977-1.4-4.99.151-.97-.184-1.12-.684-.152-.499.184-.97.683-1.121 4.38-1.33 9.808-.686 13.396 1.597.443.272.585.852.313 1.295zm.127-3.407C15.23 8.358 8.847 8.147 5.153 9.269c-.59.179-1.218-.16-1.397-.75-.179-.59.16-1.218.75-1.397 4.244-1.288 11.294-1.043 15.753 1.603.531.315.703 1.002.388 1.533-.314.531-1.002.703-1.533.388z"
+  },
+  {
+    name: "Apple Music",
+    url: "https://music.apple.com/artist/ro-halfhide/473722769",
+    iconPath: "M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.88c.61-.74 1.03-1.77.92-2.8-.89.04-1.97.6-2.61 1.35-.57.65-1.07 1.7-0.93 2.71 1 .08 2.01-.52 2.62-1.26z"
+  },
+  {
+    name: "Bandcamp",
+    url: "https://rohalfhide.bandcamp.com",
+    iconPath: "M0 18.75l7.437-13.5H24l-7.438 13.5H0z"
+  },
+  {
+    name: "SoundCloud",
+    url: "https://soundcloud.com/rohalfhide",
+    iconPath: "M11.56 8.87V17h9.72c1.5 0 2.72-1.22 2.72-2.72 0-1.47-1.17-2.66-2.63-2.71-.31-2.48-2.41-4.4-4.97-4.4-1.07 0-2.07.34-2.88.92-.48-.73-1.18-1.32-2-1.68v2.46zm-2.04 1.54v6.59H10.6V9.28c-.39.31-.76.7-1.08 1.13zm-2.04 1.83v4.76h1.08v-5.4c-.39.18-.75.4-1.08.64zm-2.04.59v4.17h1.08v-4.59c-.38.11-.75.25-1.08.42zm-2.04 1.25v2.92h1.08v-3.32c-.37.1-.73.23-1.08.4zm-2.04.91v2.01h1.08v-2.31c-.37.07-.73.17-1.08.3zm-1.36.9v1.11H1.08V16c-.36.03-.73.08-1.08.16z"
+  },
+  {
+    name: "YouTube",
+    url: "https://youtube.com/rohalfhide",
+    iconPath: "M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"
+  }
+];
+
 const tracks: Track[] = [
   {
     id: "1",
@@ -57,18 +91,39 @@ const tracks: Track[] = [
   <!-- 12-Column Asymmetric Spread -->
   <div class="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
     <!-- Editorial Section Column -->
-    <div class="lg:col-span-4 space-y-4">
-      <h2 class="font-serif font-semibold text-4xl sm:text-5xl tracking-[-0.04em] leading-[1.05] text-surface-ink">
-        Music
-      </h2>
-      <p class="font-sans font-normal text-base text-surface-muted leading-relaxed">
-        Stream tracks or visit <a
-          href="https://rohalfhide.bandcamp.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-accent hover:text-accent-hover underline underline-offset-4 transition-colors duration-150 rounded-sm focus-ring"
-        >Bandcamp</a>.
-      </p>
+    <div class="lg:col-span-4 space-y-6">
+      <div class="space-y-3">
+        <h2 class="font-serif font-semibold text-4xl sm:text-5xl tracking-[-0.04em] leading-[1.05] text-surface-ink">
+          Music
+        </h2>
+        <p class="font-sans font-normal text-base text-surface-muted leading-relaxed">
+          Stream tracks or visit <a
+            href="https://rohalfhide.bandcamp.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-accent hover:text-accent-hover underline underline-offset-4 transition-colors duration-150 rounded-sm focus-ring"
+          >Bandcamp</a>.
+        </p>
+      </div>
+
+      <!-- Streaming Platforms Links -->
+      <div class="flex flex-wrap items-center gap-2 pt-1">
+        {streamingPlatforms.map((platform) => (
+          <a
+            href={platform.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-raised/80 hover:bg-surface-raised text-surface-muted hover:text-surface-ink shadow-hairline hover:shadow-hairline-strong transition-all duration-150 text-xs font-sans font-medium focus-ring"
+            title={platform.name}
+            aria-label={`Listen on ${platform.name}`}
+          >
+            <svg class="w-4 h-4 fill-current text-surface-subtle group-hover:text-accent transition-colors duration-150 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+              <path d={platform.iconPath} />
+            </svg>
+            <span>{platform.name}</span>
+          </a>
+        ))}
+      </div>
     </div>
 
     <!-- Translucent Frosted-Glass Audio Deck -->
