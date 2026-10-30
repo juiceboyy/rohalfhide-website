@@ -8,8 +8,15 @@ import Layout from '../layouts/Layout.astro';
 >
   <div class="py-24 max-w-6xl mx-auto px-6 lg:px-8 space-y-24">
     <!-- Asymmetric Editorial Header -->
-    <div class="pb-12 shadow-divider-b grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">
-      <div class="lg:col-span-8">
+    <div class="pb-12 shadow-divider-b grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+      <div class="lg:col-span-8 space-y-6">
+        <img
+          src="/images/logo-header.webp"
+          alt="Ro Halfhide"
+          width="478"
+          height="265"
+          class="h-12 sm:h-14 w-auto object-contain"
+        />
         <h1 class="font-serif font-semibold text-4xl sm:text-6xl lg:text-7xl tracking-[-0.04em] leading-[1.02] text-surface-ink">
           Electronic Press Kit
         </h1>
@@ -21,14 +28,14 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </div>
 
-    <!-- Asymmetric Bento Press Photos Spread -->
+    <!-- Asymmetric Bento Press Photos & Brand Assets Spread -->
     <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
       <div class="lg:col-span-4 space-y-3">
         <h2 class="font-serif font-semibold text-3xl sm:text-4xl tracking-[-0.035em] leading-[1.08] text-surface-ink">
-          Photos
+          Photos &amp; Brand Assets
         </h2>
         <p class="font-sans font-normal text-sm text-surface-muted leading-relaxed">
-          High-resolution downloads for editorial and promotional use.
+          High-resolution downloads for editorial, festival posters, and promotional use.
         </p>
       </div>
 
@@ -109,6 +116,40 @@ import Layout from '../layouts/Layout.astro';
             >
               Acoustic Portrait (High-Res) &darr;
             </a>
+          </div>
+        </div>
+
+        <!-- Row 3: Official Brand Asset Card -->
+        <div class="md:col-span-12 bg-surface-raised rounded-2xl overflow-hidden shadow-hairline flex flex-col justify-between">
+          <div class="p-8 sm:p-12 flex items-center justify-center bg-surface-base/60 min-h-[160px] sm:min-h-[180px]">
+            <img
+              src="/images/logo-header.webp"
+              alt="Ro Halfhide Official Logo"
+              width="478"
+              height="265"
+              class="h-14 sm:h-16 w-auto object-contain opacity-95"
+            />
+          </div>
+          <div class="px-6 py-4 shadow-divider-t flex flex-wrap items-center justify-between gap-4">
+            <span class="font-mono font-medium text-xs uppercase tracking-[0.16em] text-surface-subtle">
+              Official Wordmark Logo
+            </span>
+            <div class="flex items-center gap-6">
+              <a
+                href="/images/logo-transparent.png"
+                download="ro-halfhide-logo-transparent.png"
+                class="font-mono font-medium text-xs uppercase tracking-[0.16em] text-accent hover:text-accent-hover transition-colors duration-150 rounded-sm focus-ring"
+              >
+                Transparent PNG (High-Res) &darr;
+              </a>
+              <a
+                href="/images/logo.png"
+                download="ro-halfhide-logo.png"
+                class="font-mono font-medium text-xs uppercase tracking-[0.16em] text-surface-muted hover:text-surface-ink transition-colors duration-150 rounded-sm focus-ring"
+              >
+                Original Master &darr;
+              </a>
+            </div>
           </div>
         </div>
       </div>
