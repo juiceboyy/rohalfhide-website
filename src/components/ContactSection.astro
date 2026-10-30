@@ -46,6 +46,7 @@
     <!-- Right Column: Netlify Contact Form -->
     <div class="lg:col-span-8">
       <form
+        id="contact-form"
         name="contact"
         method="POST"
         data-netlify="true"
@@ -97,6 +98,9 @@
               name="email"
               required
               autocomplete="email"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
               aria-describedby="contact-email-hint"
               aria-errormessage="contact-email-error"
               class="form-input"
@@ -143,12 +147,77 @@
         </div>
 
         <button
+          id="contact-submit"
           type="submit"
-          class="px-8 py-4 bg-surface-ink hover:bg-white text-surface-void font-mono font-medium text-xs uppercase tracking-[0.16em] rounded-lg transition-colors duration-150 focus-ring"
+          class="px-8 py-4 bg-surface-ink hover:bg-white text-surface-void font-mono font-medium text-xs uppercase tracking-[0.16em] rounded-lg transition-colors duration-150 focus-ring disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Send Message
         </button>
+
+        <div id="contact-status" role="status" aria-live="polite" class="hidden font-mono text-xs text-red-400 pt-1"></div>
       </form>
     </div>
   </div>
 </section>
+
+<script>
+  function initContactForm() {
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    const submitBtn = document.getElementById('contact-submit') as HTMLButtonElement | null;
+    const statusEl = document.getElementById('contact-status');
+
+    if (!form || !submitBtn) return;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const originalLabel = submitBtn.textContent || 'Send Message';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+      if (statusEl) {
+        statusEl.classList.add('hidden');
+        statusEl.textContent = '';
+      }
+
+      try {
+        const formData = new FormData(form);
+        const encoded = new URLSearchParams();
+        formData.forEach((value, key) => {
+          if (typeof value === 'string') {
+            encoded.append(key, value);
+          }
+        });
+
+        const response = await fetch('/__forms.html', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: encoded.toString(),
+        });
+
+        if (response.ok) {
+          window.location.assign('/success');
+          return;
+        }
+
+        throw new Error(`Submission returned status ${response.status}`);
+      } catch {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+        if (statusEl) {
+          statusEl.textContent = 'Could not send message right now. Please try again or email halfhide@gmail.com directly.';
+          statusEl.classList.remove('hidden');
+        }
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initContactForm);
+  } else {
+    initContactForm();
+  }
+</script>

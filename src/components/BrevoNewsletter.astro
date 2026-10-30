@@ -14,7 +14,7 @@
       </div>
 
       <div class="lg:col-span-6">
-        <form id="brevo-form" class="space-y-2">
+        <form id="brevo-form" action="/api/subscribe" method="POST" class="space-y-2">
           <label for="brevo-email" class="block font-mono font-medium text-xs uppercase tracking-[0.16em] text-surface-muted">
             Email Address
           </label>
@@ -30,6 +30,9 @@
                 id="brevo-email"
                 required
                 autocomplete="email"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
                 aria-describedby="brevo-email-hint"
                 aria-errormessage="brevo-email-error"
                 placeholder="you@example.com"
@@ -44,14 +47,15 @@
             </div>
 
             <button
+              id="brevo-submit"
               type="submit"
-              class="w-full sm:w-auto px-8 py-3 bg-surface-ink hover:bg-white text-surface-void font-mono font-medium text-xs uppercase tracking-[0.16em] rounded-lg transition-colors duration-150 shrink-0 focus-ring"
+              class="w-full sm:w-auto px-8 py-3 bg-surface-ink hover:bg-white text-surface-void font-mono font-medium text-xs uppercase tracking-[0.16em] rounded-lg transition-colors duration-150 shrink-0 focus-ring disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Subscribe
             </button>
           </div>
 
-          <div id="brevo-status" role="status" aria-live="polite" class="hidden font-mono text-xs text-accent pt-2"></div>
+          <div id="brevo-status" role="status" aria-live="polite" class="hidden font-mono text-xs pt-2"></div>
         </form>
       </div>
     </div>
@@ -63,15 +67,53 @@
     const brevoForm = document.getElementById('brevo-form') as HTMLFormElement | null;
     const statusEl = document.getElementById('brevo-status');
     const emailInput = document.getElementById('brevo-email') as HTMLInputElement | null;
+    const submitBtn = document.getElementById('brevo-submit') as HTMLButtonElement | null;
 
-    if (!brevoForm || !statusEl) return;
+    if (!brevoForm || !statusEl || !submitBtn) return;
 
-    brevoForm.addEventListener('submit', (e) => {
+    brevoForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = emailInput?.value || '';
-      statusEl.classList.remove('hidden');
-      statusEl.textContent = `Thank you! You are subscribed with ${email}.`;
-      brevoForm.reset();
+      if (!brevoForm.checkValidity()) {
+        brevoForm.reportValidity();
+        return;
+      }
+
+      const email = emailInput?.value.trim() || '';
+      if (!email) return;
+
+      const originalLabel = submitBtn.textContent || 'Subscribe';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Subscribing...';
+      statusEl.classList.add('hidden');
+      statusEl.classList.remove('text-accent', 'text-red-400');
+
+      try {
+        const response = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (response.ok) {
+          statusEl.classList.add('text-accent');
+          statusEl.classList.remove('hidden');
+          statusEl.textContent = `Thank you! You are subscribed with ${email}.`;
+          brevoForm.reset();
+        } else {
+          statusEl.classList.add('text-red-400');
+          statusEl.classList.remove('hidden');
+          statusEl.textContent = data?.error || 'Could not subscribe right now. Please try again later.';
+        }
+      } catch {
+        statusEl.classList.add('text-red-400');
+        statusEl.classList.remove('hidden');
+        statusEl.textContent = 'Network error. Please try again in a moment.';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+      }
     });
   }
 
