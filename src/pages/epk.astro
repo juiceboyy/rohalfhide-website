@@ -3,137 +3,215 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout
-  title="Electronic Press Kit (EPK) — Ro Halfhide"
-  description="Officiële perskit voor programmeurs, festivals, media en journalisten met biografie, persfoto's, audio en boekingsinformatie."
+  title="EPK - Ro Halfhide"
+  description="Electronic Press Kit for programmers, venues, and media."
 >
-  <div class="py-16 sm:py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-    <!-- Header -->
-    <div class="border-b border-zinc-800 pb-8">
-      <span class="text-brand-accent text-xs uppercase tracking-widest font-semibold">Voor Programmeurs & Media</span>
-      <h1 class="font-display text-4xl sm:text-6xl font-extrabold text-white mt-2">Electronic Press Kit (EPK)</h1>
-      <p class="text-zinc-400 text-lg mt-3 max-w-2xl">
-        Alle officiële informatie, biografieën, persfoto's op hoge resolutie en technische details voor boekingen en media-aandacht.
-      </p>
-    </div>
-
-    <!-- Quick Facts Box -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-[#14161f] border border-zinc-800 p-6 rounded-2xl">
-      <div>
-        <p class="text-xs uppercase tracking-wider text-zinc-500">Genre</p>
-        <p class="text-white font-semibold text-base mt-1">Alternative Pop / Soul</p>
+  <div class="py-24 max-w-6xl mx-auto px-6 lg:px-8 space-y-24">
+    <!-- Asymmetric Editorial Header -->
+    <div class="pb-12 shadow-divider-b grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">
+      <div class="lg:col-span-8">
+        <h1 class="font-serif font-semibold text-4xl sm:text-6xl lg:text-7xl tracking-[-0.04em] leading-[1.02] text-surface-ink">
+          Electronic Press Kit
+        </h1>
       </div>
-      <div>
-        <p class="text-xs uppercase tracking-wider text-zinc-500">Herkomst</p>
-        <p class="text-white font-semibold text-base mt-1">Den Haag / Amsterdam</p>
-      </div>
-      <div>
-        <p class="text-xs uppercase tracking-wider text-zinc-500">Live Bezetting</p>
-        <p class="text-white font-semibold text-base mt-1">Solo (Akoestisch) / Trio / Full Band</p>
-      </div>
-      <div>
-        <p class="text-xs uppercase tracking-wider text-zinc-500">Contact Boekingen</p>
-        <p class="text-brand-amber font-semibold text-base mt-1">halfhide@gmail.com</p>
+      <div class="lg:col-span-4 lg:text-right">
+        <p class="font-sans font-normal text-base text-surface-muted leading-relaxed">
+          Official materials for bookers, programmers, and press.
+        </p>
       </div>
     </div>
 
-    <!-- Press Photos Download Section -->
-    <section class="space-y-6">
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="font-display text-2xl font-bold text-white">Officiële Persfoto's</h2>
-          <p class="text-zinc-400 text-sm">Klik op een foto om de volledige hoge resolutie te bekijken of op te slaan.</p>
-        </div>
+    <!-- Asymmetric Bento Press Photos & Brand Assets Spread -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      <div class="lg:col-span-4 space-y-3">
+        <h2 class="font-serif font-semibold text-3xl sm:text-4xl tracking-[-0.035em] leading-[1.08] text-surface-ink">
+          Photos &amp; Brand Assets
+        </h2>
+        <p class="font-sans font-normal text-sm text-surface-muted leading-relaxed">
+          High-resolution downloads for editorial, festival posters, and promotional use.
+        </p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div class="bg-[#13151b] border border-zinc-800 rounded-xl overflow-hidden group">
-          <img src="/images/hero-portrait.jpg" alt="Ro Halfhide Persfoto Portret" class="w-full h-64 object-cover object-center group-hover:scale-105 transition-transform" />
-          <div class="p-4 flex items-center justify-between">
-            <span class="text-xs text-zinc-300">Portret (High-Res JPG)</span>
-            <a href="/images/hero-portrait.jpg" download="ro-halfhide-portrait.jpg" class="text-xs font-semibold text-brand-accent hover:underline">
-              Download ↓
+      <div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-12 gap-6">
+        <!-- Row 1: 7 / 5 Asymmetric Split -->
+        <div class="md:col-span-7 bg-surface-raised rounded-2xl overflow-hidden shadow-hairline flex flex-col justify-between">
+          <img
+            src="/images/about-banner.webp"
+            alt="Ro Halfhide Live"
+            width="2880"
+            height="1680"
+            fetchpriority="high"
+            class="w-full h-64 sm:h-72 object-cover"
+          />
+          <div class="px-6 py-4 shadow-divider-t flex items-center justify-between">
+            <a
+              href="/images/about-banner.webp"
+              download
+              class="font-mono font-medium text-xs uppercase tracking-[0.16em] text-accent hover:text-accent-hover transition-colors duration-150 rounded-sm focus-ring"
+            >
+              Live Shot (High-Res) &darr;
             </a>
           </div>
         </div>
 
-        <div class="bg-[#13151b] border border-zinc-800 rounded-xl overflow-hidden group">
-          <img src="/images/about-banner.webp" alt="Ro Halfhide Live on Stage" class="w-full h-64 object-cover object-center group-hover:scale-105 transition-transform" />
-          <div class="p-4 flex items-center justify-between">
-            <span class="text-xs text-zinc-300">Live on Stage (Banner)</span>
-            <a href="/images/about-banner.webp" download="ro-halfhide-live.webp" class="text-xs font-semibold text-brand-accent hover:underline">
-              Download ↓
+        <div class="md:col-span-5 bg-surface-raised rounded-2xl overflow-hidden shadow-hairline flex flex-col justify-between">
+          <img
+            src="/images/hero-portrait.jpg"
+            alt="Ro Halfhide Portrait"
+            width="1748"
+            height="1748"
+            class="w-full h-64 sm:h-72 object-cover object-top"
+          />
+          <div class="px-6 py-4 shadow-divider-t flex items-center justify-between">
+            <a
+              href="/images/hero-portrait.jpg"
+              download
+              class="font-mono font-medium text-xs uppercase tracking-[0.16em] text-accent hover:text-accent-hover transition-colors duration-150 rounded-sm focus-ring"
+            >
+              Portrait (High-Res) &darr;
             </a>
           </div>
         </div>
 
-        <div class="bg-[#13151b] border border-zinc-800 rounded-xl overflow-hidden group">
-          <img src="/images/its-been-good.jpg" alt="Artwork It's been good" class="w-full h-64 object-cover object-center group-hover:scale-105 transition-transform" />
-          <div class="p-4 flex items-center justify-between">
-            <span class="text-xs text-zinc-300">Single Artwork (It's been good)</span>
-            <a href="/images/its-been-good.jpg" download="single-artwork-its-been-good.jpg" class="text-xs font-semibold text-brand-accent hover:underline">
-              Download ↓
+        <!-- Row 2: 5 / 7 Asymmetric Split -->
+        <div class="md:col-span-5 bg-surface-raised rounded-2xl overflow-hidden shadow-hairline flex flex-col justify-between">
+          <img
+            src="/images/its-been-good.jpg"
+            alt="It's been good artwork"
+            width="3024"
+            height="3024"
+            class="w-full h-60 sm:h-64 object-cover"
+          />
+          <div class="px-6 py-4 shadow-divider-t flex items-center justify-between">
+            <a
+              href="/images/its-been-good.jpg"
+              download
+              class="font-mono font-medium text-xs uppercase tracking-[0.16em] text-accent hover:text-accent-hover transition-colors duration-150 rounded-sm focus-ring"
+            >
+              Single Artwork &darr;
             </a>
+          </div>
+        </div>
+
+        <div class="md:col-span-7 bg-surface-raised rounded-2xl overflow-hidden shadow-hairline flex flex-col justify-between">
+          <img
+            src="/images/cover-act.jpg"
+            alt="Ro Halfhide Acoustic"
+            width="1413"
+            height="2000"
+            class="w-full h-60 sm:h-64 object-cover object-[center_22%]"
+          />
+          <div class="px-6 py-4 shadow-divider-t flex items-center justify-between">
+            <a
+              href="/images/cover-act.jpg"
+              download
+              class="font-mono font-medium text-xs uppercase tracking-[0.16em] text-accent hover:text-accent-hover transition-colors duration-150 rounded-sm focus-ring"
+            >
+              Acoustic Portrait (High-Res) &darr;
+            </a>
+          </div>
+        </div>
+
+        <!-- Row 3: Official Brand Asset Card -->
+        <div class="md:col-span-12 bg-surface-raised rounded-2xl overflow-hidden shadow-hairline flex flex-col justify-between">
+          <div class="p-8 sm:p-12 flex items-center justify-center bg-surface-base/60 min-h-[160px] sm:min-h-[180px]">
+            <img
+              src="/images/logo-header.webp"
+              alt="Ro Halfhide Official Logo"
+              width="478"
+              height="265"
+              class="h-14 sm:h-16 w-auto object-contain opacity-95"
+            />
+          </div>
+          <div class="px-6 py-4 shadow-divider-t flex flex-wrap items-center justify-between gap-4">
+            <span class="font-mono font-medium text-xs uppercase tracking-[0.16em] text-surface-subtle">
+              Official Wordmark Logo
+            </span>
+            <div class="flex items-center gap-6">
+              <a
+                href="/images/logo-transparent.png"
+                download="ro-halfhide-logo-transparent.png"
+                class="font-mono font-medium text-xs uppercase tracking-[0.16em] text-accent hover:text-accent-hover transition-colors duration-150 rounded-sm focus-ring"
+              >
+                Transparent PNG (High-Res) &darr;
+              </a>
+              <a
+                href="/images/logo.png"
+                download="ro-halfhide-logo.png"
+                class="font-mono font-medium text-xs uppercase tracking-[0.16em] text-surface-muted hover:text-surface-ink transition-colors duration-150 rounded-sm focus-ring"
+              >
+                Original Master &darr;
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Biography Versions -->
-    <section class="space-y-6">
-      <h2 class="font-display text-2xl font-bold text-white">Biografie voor Aankondigingen</h2>
-      
-      <div class="space-y-4">
-        <!-- Korte Bio -->
-        <div class="bg-[#13151b] border border-zinc-800 p-6 rounded-xl space-y-2">
-          <div class="flex items-center justify-between">
-            <h3 class="text-xs uppercase tracking-wider text-brand-amber font-semibold">Korte Bio (Festivalboekjes / Socials)</h3>
-            <button onclick="navigator.clipboard.writeText(this.nextElementSibling.innerText); alert('Korte bio gekopieerd!');" class="text-xs text-zinc-400 hover:text-white border border-zinc-700 px-2.5 py-1 rounded">
-              Kopieer tekst
-            </button>
-          </div>
-          <p class="text-zinc-300 text-sm leading-relaxed">
-            Ro Halfhide is een Haagse/Amsterdamse singer-songwriter en producer die soulful popliedjes schrijft over de pieken en dalen van het leven. Met zijn warme stemgeluid en melodieën die recht naar het hart gaan, brengt hij een universele boodschap van hoop, verbinding en de overtuiging dat iedereen erbij hoort.
+    <!-- Bio Spread -->
+    <section class="pt-16 shadow-divider-t grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      <div class="lg:col-span-4">
+        <h2 class="font-serif font-semibold text-3xl sm:text-4xl tracking-[-0.035em] leading-[1.08] text-surface-ink">
+          Bio
+        </h2>
+      </div>
+
+      <div class="lg:col-span-8 space-y-12">
+        <div class="space-y-4">
+          <h3 class="font-mono font-medium text-xs uppercase tracking-[0.2em] text-surface-subtle">
+            Short Bio
+          </h3>
+          <p class="font-sans font-normal text-lg leading-relaxed text-surface-ink">
+            Ro Halfhide is an alternative pop singer-songwriter and producer from The Netherlands. Known for his soulful vocal delivery and heartfelt melodies that speak straight to the heart, his music reflects real life experiences with an unwavering message of hope, connection, and belonging.
           </p>
         </div>
 
-        <!-- Volledige Bio -->
-        <div class="bg-[#13151b] border border-zinc-800 p-6 rounded-xl space-y-2">
-          <div class="flex items-center justify-between">
-            <h3 class="text-xs uppercase tracking-wider text-brand-amber font-semibold">Volledige Biografie</h3>
-            <button onclick="navigator.clipboard.writeText(this.nextElementSibling.innerText); alert('Volledige bio gekopieerd!');" class="text-xs text-zinc-400 hover:text-white border border-zinc-700 px-2.5 py-1 rounded">
-              Kopieer tekst
-            </button>
-          </div>
-          <div class="text-zinc-300 text-sm leading-relaxed space-y-3">
+        <div class="pt-8 shadow-divider-t space-y-4">
+          <h3 class="font-mono font-medium text-xs uppercase tracking-[0.2em] text-surface-subtle">
+            Full Bio
+          </h3>
+          <div class="font-sans font-normal text-base leading-relaxed text-surface-ink/85 space-y-4">
             <p>
-              Ro Halfhide is een singer-songwriter wiens muziek erop gericht is luisteraars op te laden, hoop te bieden en verbinding te creëren. Zijn popsongs zijn doordrenkt met soul en vormen een oprechte weerspiegeling van echte levenservaringen, zowel de highs als de lows.
+              Ro Halfhide is a singer-songwriter whose music aims to recharge listeners, provide hope, and foster connection. His pop songs are infused with soul and offer a reflection of real life experiences, both the highs and lows, with lyrics and melodies that speak directly to the heart.
             </p>
             <p>
-              Als fusie van twee culturen vormt zijn achtergrond een continue bron van inspiratie in zijn zoektocht naar verbinding. Naast zijn solo-werk was Ro veelvuldig op landelijke televisie te zien met 'Wimpie & de Domino's', produceerde hij albums voor artiesten als Lucky Fonz III en Case Mayfield, toerde hij door Indonesië met Robin Block en richtte hij de Amsterdam Songwriters Guild op.
+              Ro's background as a fusion of two cultures is a source of inspiration for him in his search for connection in his music and life. The central theme in his music is the message that everyone belongs.
+            </p>
+            <p>
+              Ro has been on Dutch national TV numerous times, in the last years with his band for mentally handicapped people <a
+                href="https://www.wimpieendedominos.nl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-accent hover:text-accent-hover underline underline-offset-4 transition-colors duration-150 rounded-sm focus-ring"
+              >Wimpie &amp; de Domino's</a>. He has also produced albums for well-known singer-songwriters like Lucky Fonz III and Case Mayfield, toured across Indonesia with Robin Block, and co-founded the Amsterdam Songwriters Guild.
             </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Technical & Stage Details -->
-    <section class="bg-[#151720] border border-zinc-800 p-8 rounded-2xl space-y-4">
-      <h2 class="font-display text-2xl font-bold text-white">Stage & Tech Rider</h2>
-      <p class="text-zinc-300 text-sm leading-relaxed">
-        Voor solo en duo-bezettingen reist Ro Halfhide met eigen kwaliteitsinstrumenten (akoestische/elektrische gitaren, zangmicrofoon en effectpedalen). Een standaard monitoring en DI-kanalen volstaan voor de meeste podia.
-      </p>
-      <p class="text-xs text-zinc-400">
-        Voor een op maat gemaakte priklijst of stage plan voor full band opstellingen: mail direct naar <a href="mailto:halfhide@gmail.com" class="text-brand-accent underline">halfhide@gmail.com</a>.
-      </p>
-    </section>
+    <!-- Technical & Booking Spread -->
+    <section class="pt-16 shadow-divider-t grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      <div class="lg:col-span-4">
+        <h2 class="font-serif font-semibold text-3xl sm:text-4xl tracking-[-0.035em] leading-[1.08] text-surface-ink">
+          Technical &amp; Booking
+        </h2>
+      </div>
 
-    <!-- Contact & Booking Footer -->
-    <div class="text-center pt-8 border-t border-zinc-800">
-      <h3 class="text-white font-display text-xl font-bold mb-2">Direct Boeken of Interview Aanvragen?</h3>
-      <p class="text-zinc-400 text-sm mb-6">Neem rechtstreeks contact op via halfhide@gmail.com of bel +31 6 28884143.</p>
-      <a href="/#contact" class="px-6 py-3 bg-brand-accent hover:bg-orange-500 text-black font-semibold rounded-full text-sm transition-all hover:scale-105">
-        Naar Boekingsformulier →
-      </a>
-    </div>
+      <div class="lg:col-span-8 space-y-4 font-sans font-normal text-base text-surface-muted leading-relaxed">
+        <p class="text-surface-ink">
+          Available for solo, acoustic duo, and band setups. Standard stage monitoring and DI channels required.
+        </p>
+        <p>
+          Direct inquiries &amp; stage plot requests: <a
+            href="mailto:halfhide@gmail.com"
+            class="text-accent hover:text-accent-hover underline underline-offset-4 transition-colors duration-150 rounded-sm focus-ring"
+          >halfhide@gmail.com</a> / <a
+            href="tel:+31628884143"
+            class="font-mono text-sm text-surface-ink hover:text-accent transition-colors duration-150 rounded-sm focus-ring"
+          >+31 6 28884143</a>.
+        </p>
+      </div>
+    </section>
   </div>
 </Layout>

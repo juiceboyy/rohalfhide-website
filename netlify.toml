@@ -20,3 +20,58 @@
   for = "/images/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+[[redirects]]
+  from = "/blogs/blog.rss"
+  to = "/rss.xml"
+  status = 301
+
+[[redirects]]
+  from = "/blogs/blog.atom"
+  to = "/rss.xml"
+  status = 301
+
+[[redirects]]
+  from = "/blogs/blog"
+  to = "/news"
+  status = 301
+
+[[redirects]]
+  from = "/home/blog/new-website-for-my-cover-act"
+  to = "/news/new-website-for-my-cover-act"
+  status = 301
+
+[[redirects]]
+  from = "/home/blog/new-song-it-s-been-good"
+  to = "/news/new-song-its-been-good"
+  status = 301
+
+[[redirects]]
+  from = "/home/blog/new-video-it-s-getting-better"
+  to = "/news/new-video-its-getting-better"
+  status = 301
+
+[[redirects]]
+  from = "/home/blog/new-song-evening-sun"
+  to = "/news/new-song-evening-sun"
+  status = 301
+
+[[redirects]]
+  from = "/home/blog/new-song-for-yasser-murtaja-free-palestine"
+  to = "/news/new-song-for-yasser-murtaja-free-palestine"
+  status = 301
+
+[[redirects]]
+  from = "/home/blog/*"
+  to = "/news"
+  status = 301
+
+[[redirects]]
+  from = "/blog/*"
+  to = "/news/:splat"
+  status = 301
+
+[[redirects]]
+  from = "/blog"
+  to = "/news"
+  status = 301

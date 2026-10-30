@@ -1,73 +1,125 @@
 ---
 ---
 
-<section id="newsletter" class="py-20 bg-gradient-to-b from-[#0e1014] to-[#121319] border-y border-zinc-800/80 relative">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-accent/15 border border-brand-accent/30 text-brand-amber text-xs uppercase tracking-widest font-semibold mb-6">
-      <svg class="w-4 h-4 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-      Brevo Mailinglist
+<section id="newsletter" class="py-24 bg-surface-base shadow-divider-t">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8">
+    <div class="bg-surface-raised/60 rounded-2xl shadow-hairline p-8 sm:p-12 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <div class="lg:col-span-6 space-y-3">
+        <h2 class="font-serif font-semibold text-3xl sm:text-4xl tracking-[-0.035em] leading-[1.08] text-surface-ink">
+          Mailing List
+        </h2>
+        <p class="font-sans font-normal text-base text-surface-muted leading-relaxed max-w-md">
+          Sign up so you won't miss any news, new songs, or show announcements.
+        </p>
+      </div>
+
+      <div class="lg:col-span-6">
+        <form id="brevo-form" action="/api/subscribe" method="POST" class="space-y-2">
+          <label for="brevo-email" class="block font-mono font-medium text-xs uppercase tracking-[0.16em] text-surface-muted">
+            Email Address
+          </label>
+          <span id="brevo-email-hint" class="block text-xs text-surface-subtle pb-1">
+            Format: name@example.com
+          </span>
+
+          <div class="flex flex-col sm:flex-row items-start gap-4">
+            <div class="flex-grow w-full">
+              <input
+                type="email"
+                name="EMAIL"
+                id="brevo-email"
+                required
+                autocomplete="email"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                aria-describedby="brevo-email-hint"
+                aria-errormessage="brevo-email-error"
+                placeholder="you@example.com"
+                class="form-input bg-surface-void"
+              />
+              <p id="brevo-email-error" class="field-error items-center gap-2 text-xs text-red-400 mt-2">
+                <svg aria-hidden="true" class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path>
+                </svg>
+                <span>Please enter a valid email address.</span>
+              </p>
+            </div>
+
+            <button
+              id="brevo-submit"
+              type="submit"
+              class="w-full sm:w-auto px-8 py-3 bg-surface-ink hover:bg-white text-surface-void font-mono font-medium text-xs uppercase tracking-[0.16em] rounded-lg transition-colors duration-150 shrink-0 focus-ring disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Subscribe
+            </button>
+          </div>
+
+          <div id="brevo-status" role="status" aria-live="polite" class="hidden font-mono text-xs pt-2"></div>
+        </form>
+      </div>
     </div>
-
-    <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mb-4">
-      Blijf Verbonden met Ro Halfhide
-    </h2>
-
-    <p class="text-zinc-400 text-sm sm:text-base max-w-xl mx-auto mb-8">
-      Ontvang als eerste exclusieve akoestische opnames, updates over nieuwe releases en uitnodigingen voor intieme live optredens. Geen spam, alleen muziek.
-    </p>
-
-    <!-- Brevo Form -->
-    <!-- 
-      TIP: Plak eventueel de action-URL van je Brevo inschrijfformulier in het 'action' attribuut hieronder.
-      Standaard stuurt dit formulier netjes een verzoek of vangt dit af via JavaScript.
-    -->
-    <form
-      id="brevo-form"
-      class="max-w-lg mx-auto bg-[#171922] p-4 sm:p-6 rounded-2xl border border-zinc-800 shadow-xl space-y-4"
-    >
-      <div class="flex flex-col sm:flex-row gap-3">
-        <input
-          type="email"
-          name="EMAIL"
-          id="brevo-email"
-          required
-          placeholder="Jouw e-mailadres..."
-          class="flex-grow px-4 py-3 bg-[#0d0e12] border border-zinc-700/80 rounded-xl text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-brand-accent transition-colors"
-        />
-        <button
-          type="submit"
-          class="px-6 py-3 bg-brand-accent hover:bg-orange-500 text-black font-semibold rounded-xl text-sm transition-all hover:scale-105 shrink-0"
-        >
-          Inschrijven
-        </button>
-      </div>
-
-      <div class="text-left text-xs text-zinc-500 flex items-start gap-2 pt-1">
-        <input type="checkbox" id="brevo-consent" required checked class="mt-0.5 rounded border-zinc-700 bg-zinc-900 text-brand-accent focus:ring-0" />
-        <label for="brevo-consent">
-          Ik geef toestemming om per e-mail updates te ontvangen via Brevo. Uitschrijven kan op ieder moment via de link onderaan de mails.
-        </label>
-      </div>
-
-      <div id="brevo-status" class="hidden text-sm pt-2"></div>
-    </form>
   </div>
 </section>
 
 <script>
-  const brevoForm = document.getElementById('brevo-form');
-  const statusEl = document.getElementById('brevo-status');
+  function initBrevoForm() {
+    const brevoForm = document.getElementById('brevo-form') as HTMLFormElement | null;
+    const statusEl = document.getElementById('brevo-status');
+    const emailInput = document.getElementById('brevo-email') as HTMLInputElement | null;
+    const submitBtn = document.getElementById('brevo-submit') as HTMLButtonElement | null;
 
-  if (brevoForm && statusEl) {
-    brevoForm.addEventListener('submit', (e) => {
+    if (!brevoForm || !statusEl || !submitBtn) return;
+
+    brevoForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = (document.getElementById('brevo-email') as HTMLInputElement)?.value;
-      
-      statusEl.classList.remove('hidden', 'text-red-400');
-      statusEl.classList.add('text-emerald-400');
-      statusEl.textContent = `Bedankt voor je inschrijving met ${email}! Je staat op de lijst.`;
-      
-      brevoForm.reset();
+      if (!brevoForm.checkValidity()) {
+        brevoForm.reportValidity();
+        return;
+      }
+
+      const email = emailInput?.value.trim() || '';
+      if (!email) return;
+
+      const originalLabel = submitBtn.textContent || 'Subscribe';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Subscribing...';
+      statusEl.classList.add('hidden');
+      statusEl.classList.remove('text-accent', 'text-red-400');
+
+      try {
+        const response = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (response.ok) {
+          statusEl.classList.add('text-accent');
+          statusEl.classList.remove('hidden');
+          statusEl.textContent = `Thank you! You are subscribed with ${email}.`;
+          brevoForm.reset();
+        } else {
+          statusEl.classList.add('text-red-400');
+          statusEl.classList.remove('hidden');
+          statusEl.textContent = data?.error || 'Could not subscribe right now. Please try again later.';
+        }
+      } catch {
+        statusEl.classList.add('text-red-400');
+        statusEl.classList.remove('hidden');
+        statusEl.textContent = 'Network error. Please try again in a moment.';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+      }
     });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBrevoForm);
+  } else {
+    initBrevoForm();
   }
 </script>

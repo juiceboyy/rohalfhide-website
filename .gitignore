@@ -1,4 +1,8 @@
 # Environment & Tools
+.env
+.env.*
+!.env.example
+.netlify/
 .tools/
 node_modules/
 dist/

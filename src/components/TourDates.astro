@@ -1,108 +1,92 @@
 ---
-interface PastShow {
-  date: string;
-  venue: string;
-  city: string;
-  event: string;
-}
-
-const pastShows: PastShow[] = [
-  {
-    date: "21 Sep 2025",
-    venue: "De Vos",
-    city: "Tilburg",
-    event: "Live Show Ro Halfhide"
-  },
-  {
-    date: "25 Mei 2025",
-    venue: "Café de Bruine Pij",
-    city: "Breda",
-    event: "Live Acoustic Pop"
-  },
-  {
-    date: "14 Feb 2025",
-    venue: "Studio Jupiter",
-    city: "Den Haag",
-    event: "Acoustic Showcase"
-  }
-];
 ---
 
-<section id="shows" class="py-24 bg-[#0a0b0e] relative border-t border-zinc-900">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center max-w-3xl mx-auto mb-16">
-      <span class="text-brand-accent text-sm font-semibold tracking-widest uppercase">Live On Stage</span>
-      <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-2 mb-4">Tourdata & Optredens</h2>
-      <p class="text-zinc-400 text-base sm:text-lg">
-        Kom luisteren naar de live vertolking van de nummers. Gesynchroniseerd met Bandsintown & Spotify.
+<section id="shows" class="py-24 bg-surface-base shadow-divider-t">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    <div class="lg:col-span-4 space-y-4">
+      <h2 class="font-serif font-semibold text-4xl sm:text-5xl tracking-[-0.04em] leading-[1.05] text-surface-ink">
+        Shows
+      </h2>
+      <p class="font-sans font-normal text-base text-surface-muted leading-relaxed">
+        Live dates, intimate acoustic performances, and tour announcements.
       </p>
     </div>
 
-    <!-- Bandsintown Container -->
-    <div class="max-w-4xl mx-auto bg-[#121319] border border-zinc-800/80 rounded-2xl p-6 sm:p-10 shadow-xl mb-12">
-      <!-- Bandsintown Official Widget Element -->
-      <div id="bandsintown-widget-wrap">
-        <a
-          class="bit-widget-initializer"
-          data-artist-name="Ro Halfhide"
-          data-background-color="transparent"
-          data-text-color="#FFFFFF"
-          data-link-color="#E28743"
-          data-auto-style="true"
-          data-display-limit="10"
-          data-display-lineup="false"
-          data-display-play-my-city="true"
-          data-separator-color="rgba(255, 255, 255, 0.1)"
-        ></a>
-      </div>
-
-      <!-- Follow / Request a Show CTA -->
-      <div class="pt-8 mt-8 border-t border-zinc-800/60 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div>
-          <h4 class="text-white font-semibold text-sm">Geen show bij jou in de buurt?</h4>
-          <p class="text-zinc-400 text-xs">Vraag een optreden aan of volg Ro op Bandsintown en Spotify.</p>
+    <div class="lg:col-span-8 space-y-12">
+      <!-- Upcoming Shows Ledger Surface -->
+      <div class="bg-surface-raised/60 rounded-2xl shadow-hairline p-6 sm:p-8">
+        <div class="flex items-center justify-between pb-6 shadow-divider-b">
+          <h3 class="font-mono font-medium text-xs uppercase tracking-[0.2em] text-surface-subtle">
+            Upcoming Dates
+          </h3>
+          <span id="shows-count" class="font-mono text-xs text-surface-muted hidden"></span>
         </div>
-        <div class="flex items-center gap-3">
-          <a
-            href="https://www.bandsintown.com/a/15535948-ro-halfhide"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="px-4 py-2 bg-[#00e4bb] hover:bg-[#00c9a5] text-black text-xs font-bold uppercase tracking-wider rounded-lg transition-all"
-          >
-            Volg op Bandsintown
-          </a>
-          <a
-            href="#contact"
-            class="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-medium rounded-lg transition-colors"
-          >
-            Boek Ro
-          </a>
-        </div>
-      </div>
-    </div>
 
-    <!-- Past Shows Archive -->
-    <div class="max-w-4xl mx-auto">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-xs uppercase tracking-widest text-zinc-400 font-semibold">Recente eerdere optredens</h3>
-      </div>
-      <div class="bg-[#101217] border border-zinc-800/60 rounded-xl overflow-hidden divide-y divide-zinc-800/60">
-        {pastShows.map((show) => (
-          <div class="p-4 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm">
-            <div class="flex items-center gap-4">
-              <span class="font-mono text-brand-amber font-medium w-28 shrink-0">{show.date}</span>
-              <span class="text-white font-medium">{show.event}</span>
-            </div>
-            <div class="text-zinc-400 text-xs sm:text-sm flex items-center gap-1">
-              <svg class="w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
-              {show.venue}, {show.city}
-            </div>
+        <div id="upcoming-shows-container" class="pt-2">
+          <!-- Loading skeleton state -->
+          <div id="shows-skeleton" class="space-y-4 py-4 animate-pulse" aria-hidden="true">
+            <div class="h-4 bg-white/[0.06] rounded w-3/4"></div>
+            <div class="h-4 bg-white/[0.03] rounded w-1/2"></div>
           </div>
-        ))}
+
+          <!-- Empty state: shown when there are no upcoming tour dates -->
+          <div id="shows-empty-state" class="hidden py-6 space-y-3">
+            <p class="font-serif text-lg sm:text-xl text-surface-ink">
+              No upcoming tour dates scheduled at the moment.
+            </p>
+            <p class="font-sans text-sm text-surface-muted leading-relaxed max-w-xl">
+              For intimate house concerts, festival bookings, or private events, please
+              <a href="#contact" class="text-accent hover:text-accent-hover underline underline-offset-4 transition-colors">get in touch</a>
+              directly or join the
+              <a href="#newsletter" class="text-accent hover:text-accent-hover underline underline-offset-4 transition-colors">newsletter</a>
+              for upcoming announcements.
+            </p>
+          </div>
+
+          <!-- Shows list: rendered dynamically when shows exist -->
+          <div id="shows-list" class="hidden"></div>
+
+          <!-- Error fallback state -->
+          <div id="shows-error-state" class="hidden py-6 space-y-2 text-sm text-surface-muted">
+            <p>Schedule updates are temporarily unavailable.</p>
+            <p>
+              For bookings and live inquiries, please
+              <a href="#contact" class="text-accent hover:text-accent-hover underline underline-offset-4 transition-colors">contact Ro directly</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Past Shows Ledger: rendered dynamically from Bandsintown API -->
+      <div id="past-shows-section" class="hidden pt-8 shadow-divider-t">
+        <h3 class="font-mono font-medium text-xs uppercase tracking-[0.2em] text-surface-subtle mb-4">
+          Past Dates
+        </h3>
+        <div id="past-shows-list"></div>
+      </div>
+
+      <!-- Editorial Bridge: Live & Event Bookings (Reau) -->
+      <div class="bg-surface-raised/40 border border-white/[0.06] rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div class="space-y-1.5 max-w-xl">
+          <p class="font-mono font-medium text-xs uppercase tracking-[0.2em] text-surface-subtle">
+            Private Events &amp; Live Bookings
+          </p>
+          <p class="font-sans text-sm text-surface-muted leading-relaxed">
+            Looking to book live music for private events, weddings, corporate functions, or acoustic sets? Discover Ro's dedicated live performance project.
+          </p>
+        </div>
+        <a
+          href="https://reaumusic.nl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 px-5 py-3 bg-surface-raised hover:bg-white/[0.1] text-surface-ink text-xs font-mono font-medium uppercase tracking-[0.16em] rounded-lg transition-colors border border-white/[0.08] shrink-0 focus-ring"
+        >
+          <span>Discover Reau</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Load Bandsintown Widget Script Async -->
-<script is:inline charset="utf-8" src="https://widget.bandsintown.com/main.min.js"></script>
+<script src="../scripts/tour-dates.ts"></script>

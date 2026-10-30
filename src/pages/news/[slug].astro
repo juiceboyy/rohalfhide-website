@@ -1,0 +1,125 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const newsEntries = await getCollection('news');
+  return newsEntries.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<'news'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+---
+
+<Layout
+  title={`${post.data.title} - Ro Halfhide`}
+  description={post.data.description}
+  image={post.data.image}
+>
+  <article class="py-20 sm:py-28 bg-surface-void">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8 space-y-12">
+      <!-- Breadcrumb Navigation -->
+      <nav aria-label="Breadcrumb" class="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.16em] text-surface-muted">
+        <a href="/" class="hover:text-surface-ink transition-colors duration-150 rounded-sm focus-ring">Home</a>
+        <span class="text-surface-subtle">/</span>
+        <a href="/news" class="hover:text-surface-ink transition-colors duration-150 rounded-sm focus-ring">News</a>
+      </nav>
+
+      <!-- Article Header -->
+      <header class="space-y-6">
+        <time datetime={post.data.pubDate.toISOString()} class="block font-mono text-xs uppercase tracking-[0.2em] text-accent font-medium">
+          {formatDate(post.data.pubDate)}
+        </time>
+
+        <h1 class="font-serif font-semibold text-3xl sm:text-5xl lg:text-6xl tracking-[-0.04em] leading-[1.08] text-surface-ink">
+          {post.data.title}
+        </h1>
+
+        <p class="font-sans text-lg sm:text-xl text-surface-muted leading-relaxed">
+          {post.data.description}
+        </p>
+      </header>
+
+      <!-- Featured Media -->
+      <div class="space-y-6">
+        {post.data.mediaType === 'video' && post.data.mediaEmbedUrl ? (
+          <div class="aspect-video w-full rounded-2xl overflow-hidden bg-surface-base shadow-hairline">
+            <iframe
+              src={post.data.mediaEmbedUrl}
+              title={post.data.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              class="w-full h-full border-0"
+              loading="lazy"
+            ></iframe>
+          </div>
+        ) : (
+          <div class="rounded-2xl overflow-hidden bg-surface-base shadow-hairline">
+            <img
+              src={post.data.image}
+              alt={post.data.imageAlt}
+              class="w-full h-auto max-h-[560px] object-cover"
+            />
+          </div>
+        )}
+
+        {post.data.mediaType === 'audio' && post.data.mediaEmbedUrl && (
+          <div class="rounded-xl overflow-hidden bg-surface-raised/80 shadow-hairline p-2">
+            <iframe
+              width="100%"
+              height="166"
+              scrolling="no"
+              frameborder="no"
+              allow="autoplay"
+              src={post.data.mediaEmbedUrl}
+              class="w-full border-0 rounded-lg"
+              loading="lazy"
+            ></iframe>
+          </div>
+        )}
+      </div>
+
+      <!-- Article Body -->
+      <div class="pt-8 shadow-divider-t prose prose-invert max-w-none font-sans text-base sm:text-lg text-surface-ink/90 leading-relaxed space-y-6 [&_a]:text-accent [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-accent-hover [&_p]:leading-relaxed">
+        <Content />
+      </div>
+
+      <!-- Article Footer -->
+      <footer class="pt-12 shadow-divider-t flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <a
+          href="/news"
+          class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-surface-muted hover:text-surface-ink transition-colors duration-150 rounded-sm focus-ring"
+        >
+          <svg aria-hidden="true" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M7 16l-4-4m0 0l4-4m-4 4h18"></path>
+          </svg>
+          <span>All News & Updates</span>
+        </a>
+
+        <div class="flex items-center gap-4 text-xs font-mono uppercase tracking-[0.16em]">
+          <a
+            href="/#music"
+            class="text-accent hover:text-accent-hover transition-colors duration-150 rounded-sm focus-ring"
+          >
+            Listen to More Music →
+          </a>
+        </div>
+      </footer>
+    </div>
+  </article>
+</Layout>

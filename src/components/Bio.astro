@@ -1,90 +1,65 @@
 ---
 ---
 
-<section id="bio" class="py-24 bg-[#0d0e13] relative overflow-hidden">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-      <!-- Left: Visual Banner & Collage -->
-      <div class="lg:col-span-5 relative">
-        <div class="relative rounded-2xl overflow-hidden border border-zinc-800 shadow-2xl group">
-          <img
-            src="/images/about-banner.webp"
-            alt="Ro Halfhide Live on Stage"
-            class="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-          <div class="absolute bottom-6 left-6 right-6">
-            <span class="text-xs uppercase tracking-widest text-brand-amber font-semibold">Artist & Producer</span>
-            <p class="text-white font-display text-xl font-bold mt-1">"The central theme: everyone belongs."</p>
-          </div>
-        </div>
-
-        <!-- Floating Accent Card -->
-        <div class="hidden sm:block absolute -bottom-6 -right-6 bg-[#161822] border border-zinc-700/80 rounded-xl p-4 shadow-2xl max-w-xs">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-brand-accent/20 flex items-center justify-center text-brand-accent shrink-0">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
-            </div>
-            <div>
-              <p class="text-white text-xs font-bold">Amsterdam Songwriters Guild</p>
-              <p class="text-zinc-400 text-[11px]">Mede-oprichter & host</p>
-            </div>
-          </div>
-        </div>
+<section id="bio" class="py-24 bg-surface-void shadow-divider-t">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+    <!-- Left Column: Section Heading & Editorial Photography -->
+    <div class="lg:col-span-5 space-y-8">
+      <div class="space-y-3">
+        <h2 class="font-serif font-semibold text-4xl sm:text-5xl tracking-[-0.04em] leading-[1.05] text-surface-ink">
+          Bio
+        </h2>
+        <p class="font-sans font-normal text-base text-surface-muted leading-relaxed">
+          Connection through music.
+        </p>
       </div>
 
-      <!-- Right: Story & Details -->
-      <div class="lg:col-span-7 space-y-6">
-        <div>
-          <span class="text-brand-accent text-sm font-semibold tracking-widest uppercase">Biografie</span>
-          <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-2 mb-4">
-            Connection Through Music
-          </h2>
-        </div>
-
-        <p class="text-zinc-300 text-base sm:text-lg leading-relaxed font-light">
-          <strong class="text-white font-semibold">Ro Halfhide</strong> is een singer-songwriter wiens muziek erop gericht is luisteraars op te laden, hoop te bieden en verbinding te creëren. Zijn popsongs zijn doordrenkt met soul en vormen een oprechte weerspiegeling van echte levenservaringen — zowel de pieken als de dalen — met teksten en melodieën die recht naar het hart gaan.
-        </p>
-
-        <p class="text-zinc-400 text-sm sm:text-base leading-relaxed">
-          Ro’s achtergrond als fusie van twee culturen is een continue bron van inspiratie in zijn zoektocht naar verbinding in muziek en het dagelijks leven. Het centrale thema dat als een rode draad door zijn werk loopt: <span class="text-brand-amber font-medium">iedereen hoort erbij</span>.
-        </p>
-
-        <!-- Highlights & Collaborations -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-zinc-800/80">
-          <div class="bg-[#13151b] border border-zinc-800 p-4 rounded-xl">
-            <h4 class="text-white font-semibold text-sm mb-1">Wimpie & de Domino's</h4>
-            <p class="text-zinc-400 text-xs">
-              Diverse malen op de Nederlandse nationale televisie met zijn band voor mensen met een verstandelijke beperking.
-            </p>
-          </div>
-
-          <div class="bg-[#13151b] border border-zinc-800 p-4 rounded-xl">
-            <h4 class="text-white font-semibold text-sm">Producer & Tours</h4>
-            <p class="text-zinc-400 text-xs">
-              Produceerde albums voor o.a. Lucky Fonz III en Case Mayfield. Toerde in Indonesië met Robin Block.
-            </p>
-          </div>
-        </div>
-
-        <!-- Secondary project: Reau Music -->
-        <div class="p-5 rounded-xl bg-gradient-to-r from-[#171922] to-[#12141a] border border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <span class="text-[11px] uppercase tracking-wider text-brand-amber font-semibold">Acoustic Cover Project</span>
-            <h4 class="text-white font-bold text-base">Reau Music</h4>
-            <p class="text-zinc-400 text-xs">Zoek je een sfeervol akoestisch duo of coveract voor bruiloften of feesten?</p>
-          </div>
-          <a
-            href="https://reaumusic.nl"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors shrink-0 flex items-center gap-1.5"
-          >
-            <span>Bezoek ReauMusic.nl</span>
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-          </a>
-        </div>
+      <div class="rounded-2xl overflow-hidden shadow-hairline bg-surface-raised">
+        <img
+          src="/images/about-banner.webp"
+          alt="Ro Halfhide"
+          width="2880"
+          height="1680"
+          loading="lazy"
+          class="w-full h-auto object-cover"
+        />
       </div>
+    </div>
+
+    <!-- Right Column: Offset Verbatim Narrative -->
+    <div class="lg:col-span-7 lg:pt-16 space-y-6 font-sans font-normal">
+      <p class="text-lg sm:text-xl leading-relaxed text-surface-ink">
+        Ro Halfhide is a singer-songwriter whose music aims to recharge listeners, provide hope, and foster connection. His pop songs are infused with soul and offer a reflection of real life experiences, both the highs and lows, with lyrics and melodies that speak directly to the heart.
+      </p>
+
+      <p class="text-base leading-relaxed text-surface-ink/85">
+        Ro's background as a fusion of two cultures is a source of inspiration for him in his search for connection in his music and life. The central theme in his music is the message that everyone belongs.
+      </p>
+
+      <p class="text-base leading-relaxed text-surface-ink/85">
+        Ro has been on Dutch national TV numerous times, in the last years with his band for mentally handicapped people <a
+          href="https://www.wimpieendedominos.nl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-accent hover:text-accent-hover underline underline-offset-4 transition-colors duration-150 rounded-sm focus-ring"
+        >Wimpie &amp; de Domino's</a>.
+      </p>
+
+      <p class="text-base leading-relaxed text-surface-ink/85">
+        Ro has produced albums for well known singer-songwriters like Lucky Fonz III and Case Mayfield. He also toured in Indonesia with Robin Block, a Dutch artist of Indonesian descent.
+      </p>
+
+      <p class="pt-6 shadow-divider-t text-sm text-surface-muted leading-relaxed">
+        For sync &amp; licensing, contact <a
+          href="mailto:halfhide@gmail.com"
+          class="text-accent hover:text-accent-hover underline underline-offset-4 transition-colors duration-150 rounded-sm focus-ring"
+        >halfhide@gmail.com</a>. Looking for an acoustic cover duo for private events? Visit <a
+          href="https://reaumusic.nl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-accent hover:text-accent-hover underline underline-offset-4 transition-colors duration-150 rounded-sm focus-ring"
+        >ReauMusic.nl</a>.
+      </p>
     </div>
   </div>
 </section>

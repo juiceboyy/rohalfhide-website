@@ -1,70 +1,81 @@
 ---
 ---
 
-<section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
-  <!-- Background Image with Gradient Overlay -->
-  <div class="absolute inset-0 z-0">
+<section class="relative w-full min-h-[min(88vh,880px)] lg:min-h-[min(calc(100vh-4rem),900px)] bg-surface-void text-surface-ink overflow-hidden flex flex-col justify-between">
+  <!-- Right-Anchored Full-Bleed Portrait Canvas (Top-Anchored on Mobile so Text Never Crosses Subject's Face) -->
+  <div class="absolute inset-x-0 top-0 h-[56%] sm:inset-y-0 sm:left-auto sm:right-0 sm:h-full sm:w-3/5 lg:w-[54%] xl:w-[50%] pointer-events-none select-none overflow-hidden">
     <img
       src="/images/hero-portrait.jpg"
       alt="Ro Halfhide"
-      class="w-full h-full object-cover object-center filter brightness-[0.6] contrast-[1.1]"
+      width="1748"
+      height="1748"
+      fetchpriority="high"
+      class="w-full h-full object-cover object-[center_14%] sm:object-[center_10%] lg:object-center"
     />
-    <div class="absolute inset-0 bg-gradient-to-t from-[#0c0d11] via-[#0c0d11]/60 to-[#0c0d11]/40"></div>
-    <div class="absolute inset-0 bg-gradient-to-r from-[#0c0d11]/80 via-transparent to-[#0c0d11]/80"></div>
+
+    <!-- Directional Left Edge Feather: Dissolves portrait into full-width #08090A canvas -->
+    <div class="hidden sm:block absolute inset-y-0 left-0 w-32 lg:w-56 bg-gradient-to-r from-surface-void to-transparent"></div>
+    <!-- Directional Bottom Edge Feather -->
+    <div class="absolute inset-x-0 bottom-0 h-28 sm:h-36 bg-gradient-to-t from-surface-void via-surface-void/80 to-transparent"></div>
   </div>
 
-  <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-accent/20 border border-brand-accent/30 text-brand-amber text-xs uppercase tracking-widest font-semibold mb-6 animate-pulse">
-      <span class="w-2 h-2 rounded-full bg-brand-accent"></span>
-      Nieuwe Single: "It's Been Good" Nu Uit
+  <!-- Foreground Editorial Spread -->
+  <div class="relative z-10 max-w-6xl mx-auto w-full flex-grow flex flex-col justify-between px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+    <!-- Top Architectural Coordinate Line (Constrained to dark left column on desktop) -->
+    <div class="hidden sm:flex items-center justify-between gap-6 pb-4 shadow-divider-b max-w-lg lg:max-w-xl text-xs font-mono uppercase tracking-[0.2em] text-surface-subtle">
+      <span>Singer-Songwriter &amp; Producer</span>
+      <span>The Hague, NL</span>
     </div>
 
-    <h1 class="font-display font-extrabold text-5xl sm:text-7xl lg:text-8xl tracking-tight text-white mb-6 uppercase">
-      Ro Halfhide
-    </h1>
+    <!-- Centerpiece Narrative Column -->
+    <div class="mt-[min(42vh,360px)] sm:my-auto py-8 sm:py-12 max-w-lg lg:max-w-xl xl:max-w-2xl space-y-6 sm:space-y-8">
+      <p class="sm:hidden font-mono text-xs uppercase tracking-[0.2em] text-surface-subtle">
+        Singer-Songwriter &amp; Producer
+      </p>
 
-    <p class="text-lg sm:text-2xl text-zinc-300 font-light max-w-2xl mx-auto mb-10 leading-relaxed">
-      Muziek vol ziel die oplaadt, hoop biedt en verbindt.
-      <span class="block text-brand-amber font-normal mt-1">"The central theme: everyone belongs."</span>
-    </p>
+      <h1 class="font-serif font-semibold text-5xl sm:text-7xl lg:text-8xl tracking-[-0.04em] leading-[0.98] text-surface-ink">
+        Ro Halfhide
+      </h1>
 
-    <!-- CTAs -->
-    <div class="flex flex-wrap items-center justify-center gap-4 mb-16">
-      <a
-        href="#music"
-        class="px-8 py-3.5 bg-brand-accent hover:bg-orange-500 text-black font-semibold rounded-full shadow-lg hover:shadow-orange-500/25 transition-all hover:scale-105 flex items-center gap-2"
-      >
-        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        Beluister Muziek
-      </a>
-      <a
-        href="#shows"
-        class="px-8 py-3.5 bg-zinc-900/80 hover:bg-zinc-850 text-white font-medium rounded-full border border-zinc-700 hover:border-brand-accent transition-all hover:scale-105 flex items-center gap-2"
-      >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-        Tourdata & Shows
-      </a>
-      <a
-        href="#contact"
-        class="px-6 py-3.5 text-zinc-300 hover:text-brand-accent font-medium transition-colors"
-      >
-        Boekingen & Contact →
-      </a>
+      <p class="font-sans font-normal text-base sm:text-lg lg:text-xl text-surface-ink/85 leading-relaxed max-w-lg">
+        Alternative pop &amp; soul. Songs about life, hope, and connection.
+      </p>
+
+      <div class="pt-2 flex flex-wrap items-center gap-4">
+        <a
+          href="#music"
+          class="px-8 py-4 bg-surface-ink hover:bg-white text-surface-void font-mono font-medium text-xs uppercase tracking-[0.16em] rounded-full transition-colors duration-150 focus-ring"
+        >
+          Listen
+        </a>
+        <a
+          href="#shows"
+          class="px-8 py-4 bg-white/[0.06] hover:bg-white/[0.12] text-surface-ink backdrop-blur-md shadow-hairline-strong font-mono font-medium text-xs uppercase tracking-[0.16em] rounded-full transition-colors duration-150 focus-ring"
+        >
+          Tour Dates
+        </a>
+        <a
+          href="#contact"
+          class="px-4 py-4 text-accent hover:text-accent-hover font-mono font-medium text-xs uppercase tracking-[0.16em] rounded-sm transition-colors duration-150 focus-ring"
+        >
+          Contact
+        </a>
+      </div>
     </div>
 
-    <!-- Badges / Highlights -->
-    <div class="pt-8 border-t border-zinc-800/80 max-w-3xl mx-auto grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs text-zinc-400">
-      <div>
-        <p class="text-white font-semibold text-sm">Songwriters Guild</p>
-        <p>Mede-oprichter Amsterdam</p>
-      </div>
-      <div>
-        <p class="text-white font-semibold text-sm">Producer & Artist</p>
-        <p>Lucky Fonz III, Case Mayfield</p>
-      </div>
-      <div class="col-span-2 sm:col-span-1">
-        <p class="text-white font-semibold text-sm">Live & TV</p>
-        <p>Wimpie & de Domino's</p>
+    <!-- Bottom Asymmetric Strip -->
+    <div class="pt-6 shadow-divider-t grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+      <p class="sm:col-span-7 font-mono text-xs uppercase tracking-[0.16em] text-surface-subtle">
+        Studio recordings &amp; live performances
+      </p>
+      <div class="sm:col-span-5 sm:text-right">
+        <a
+          href="/epk"
+          class="inline-flex items-center gap-2 font-mono text-xs font-medium uppercase tracking-[0.16em] text-surface-ink/90 hover:text-accent transition-colors duration-150 rounded-sm focus-ring"
+        >
+          <span>Press Kit</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
       </div>
     </div>
   </div>
