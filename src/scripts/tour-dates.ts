@@ -158,9 +158,13 @@ function handleUpcomingError() {
   if (errorEl) errorEl.classList.remove('hidden');
 }
 
+const INITIAL_PAST_SHOWS_COUNT = 3;
+
 function renderPastShows(apiPastEvents: BandsintownEvent[]) {
   const sectionEl = document.getElementById('past-shows-section');
   const container = document.getElementById('past-shows-list');
+  const toggleContainer = document.getElementById('past-shows-toggle-container');
+  const toggleBtn = document.getElementById('past-shows-toggle-btn');
   if (!container || !sectionEl) return;
 
   if (apiPastEvents.length === 0) {
@@ -178,9 +182,15 @@ function renderPastShows(apiPastEvents: BandsintownEvent[]) {
   items.sort((a, b) => b.timestamp - a.timestamp);
 
   container.innerHTML = '';
-  items.forEach((show) => {
+  let isExpanded = false;
+
+  items.forEach((show, index) => {
     const row = document.createElement('div');
-    row.className = 'py-4 grid grid-cols-12 gap-4 items-center shadow-divider-b last:shadow-none past-show-item';
+    const isOverInitial = index >= INITIAL_PAST_SHOWS_COUNT;
+    row.className = `py-4 grid grid-cols-12 gap-4 items-center shadow-divider-b last:shadow-none past-show-item${isOverInitial ? ' hidden' : ''}`;
+    if (isOverInitial) {
+      row.setAttribute('data-past-overflow', 'true');
+    }
 
     const dateSpan = document.createElement('span');
     dateSpan.className = 'col-span-4 sm:col-span-3 font-mono text-xs text-surface-muted';
@@ -199,6 +209,30 @@ function renderPastShows(apiPastEvents: BandsintownEvent[]) {
     row.appendChild(citySpan);
     container.appendChild(row);
   });
+
+  if (toggleContainer && toggleBtn) {
+    if (items.length > INITIAL_PAST_SHOWS_COUNT) {
+      toggleContainer.classList.remove('hidden');
+      toggleBtn.textContent = 'View all past dates';
+      toggleBtn.setAttribute('aria-expanded', 'false');
+
+      toggleBtn.onclick = () => {
+        isExpanded = !isExpanded;
+        const overflowRows = container.querySelectorAll<HTMLElement>('[data-past-overflow="true"]');
+        overflowRows.forEach((r) => {
+          if (isExpanded) {
+            r.classList.remove('hidden');
+          } else {
+            r.classList.add('hidden');
+          }
+        });
+        toggleBtn.textContent = isExpanded ? 'Show fewer' : 'View all past dates';
+        toggleBtn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+      };
+    } else {
+      toggleContainer.classList.add('hidden');
+    }
+  }
 
   sectionEl.classList.remove('hidden');
 }
