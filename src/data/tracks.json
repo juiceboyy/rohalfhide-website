@@ -1,0 +1,53 @@
+[
+  {
+    "id": "1",
+    "title": "It's been good",
+    "artist": "Ro Halfhide",
+    "src": "/audio/its-been-good.mp3",
+    "duration": "1:50",
+    "cover": "/images/its-been-good.jpg",
+    "releaseDate": "2025-04-22",
+    "draft": false,
+    "links": {
+      "spotify": "https://open.spotify.com/artist/79dS9zvJ6QCjz54EUdjs9u",
+      "appleMusic": "https://music.apple.com/us/artist/ro-halfhide/264233984",
+      "bandcamp": "https://rohalfhide.bandcamp.com",
+      "soundcloud": "https://soundcloud.com/rohalfhide",
+      "youtube": "https://youtube.com/rohalfhide"
+    }
+  },
+  {
+    "id": "2",
+    "title": "Evening Sun",
+    "artist": "Ro Halfhide",
+    "src": "/audio/evening-sun.mp3",
+    "duration": "3:06",
+    "cover": "/images/evening-sun.jpg",
+    "releaseDate": "2024-09-15",
+    "draft": false,
+    "links": {
+      "spotify": "https://open.spotify.com/artist/79dS9zvJ6QCjz54EUdjs9u",
+      "appleMusic": "https://music.apple.com/us/artist/ro-halfhide/264233984",
+      "bandcamp": "https://rohalfhide.bandcamp.com",
+      "soundcloud": "https://soundcloud.com/rohalfhide",
+      "youtube": "https://youtube.com/rohalfhide"
+    }
+  },
+  {
+    "id": "3",
+    "title": "Pirate's Dirge (Oh Oh Oh)",
+    "artist": "Ro Halfhide",
+    "src": "/audio/pirates-dirge.mp3",
+    "duration": "3:02",
+    "cover": "/images/pirates-dirge.jpg",
+    "releaseDate": "2024-03-01",
+    "draft": false,
+    "links": {
+      "spotify": "https://open.spotify.com/artist/79dS9zvJ6QCjz54EUdjs9u",
+      "appleMusic": "https://music.apple.com/us/artist/ro-halfhide/264233984",
+      "bandcamp": "https://rohalfhide.bandcamp.com",
+      "soundcloud": "https://soundcloud.com/rohalfhide",
+      "youtube": "https://youtube.com/rohalfhide"
+    }
+  }
+]

@@ -146,3 +146,85 @@ export async function appendComment({
     status,
   };
 }
+
+/**
+ * Fetch all comments for admin moderation (including pending, approved, and rejected).
+ */
+export async function getAllCommentsForModeration() {
+  if (!isSheetsConfigured()) {
+    return [];
+  }
+
+  const spreadsheetId = getEnv('SPREADSHEET_ID');
+  const token = await getAccessToken();
+
+  const { rows } = await ensureTabAndHeaders(
+    spreadsheetId,
+    token,
+    COMMENTS_TAB,
+    COMMENTS_HEADERS
+  );
+
+  return rows
+    .map((row, index) => ({
+      rowIndex: index + 2,
+      id: row[0] || '',
+      date: row[1] || '',
+      postSlug: row[2] || '',
+      name: row[3] || 'Anonymous',
+      email: row[4] || '',
+      comment: row[5] || '',
+      status: row[6] || 'Approved',
+      isArtist: (row[7] || '').trim().toUpperCase() === 'TRUE',
+    }))
+    .filter((c) => c.id && c.status.toLowerCase() !== 'deleted');
+}
+
+/**
+ * Update the moderation status of a specific comment.
+ */
+export async function updateCommentStatus(commentId, newStatus) {
+  if (!isSheetsConfigured()) {
+    throw new Error('Google Sheets is not configured.');
+  }
+
+  const spreadsheetId = getEnv('SPREADSHEET_ID');
+  const token = await getAccessToken();
+
+  const { rows } = await ensureTabAndHeaders(
+    spreadsheetId,
+    token,
+    COMMENTS_TAB,
+    COMMENTS_HEADERS
+  );
+
+  const index = rows.findIndex((r) => (r[0] || '').trim() === commentId.trim());
+  if (index === -1) {
+    throw new Error(`Comment with ID ${commentId} not found.`);
+  }
+
+  const sheetRowNumber = index + 2;
+  await fetch(
+    `${SHEETS_BASE_URL}/${spreadsheetId}/values/${encodeURIComponent(
+      `${COMMENTS_TAB}!G${sheetRowNumber}`
+    )}?valueInputOption=USER_ENTERED`,
+    {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ values: [[newStatus]] }),
+    }
+  );
+
+  return { ok: true, id: commentId, status: newStatus };
+}
+
+/**
+ * Mark a comment as deleted in Google Sheets.
+ */
+export async function deleteComment(commentId) {
+  return updateCommentStatus(commentId, 'Deleted');
+}
+

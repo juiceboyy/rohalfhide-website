@@ -1,0 +1,249 @@
+---
+---
+
+<div
+  id="news-editor-modal"
+  class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md overflow-y-auto p-4 sm:p-6 lg:p-8 flex items-center justify-center"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="news-modal-title"
+>
+  <div class="bg-surface-base border border-white/[0.08] rounded-2xl w-full max-w-5xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden my-auto">
+    <!-- Header -->
+    <div class="px-6 py-4 border-b border-white/[0.08] flex items-center justify-between shrink-0 bg-surface-raised/40">
+      <div>
+        <h2 id="news-modal-title" class="font-serif text-xl font-semibold text-surface-ink">
+          New Article
+        </h2>
+        <p class="font-sans text-xs text-surface-muted">
+          Write news, release announcements, or studio reflections.
+        </p>
+      </div>
+      <button
+        type="button"
+        id="news-modal-close-btn"
+        class="text-surface-subtle hover:text-surface-ink p-2 rounded-lg transition-colors focus-ring"
+        aria-label="Close dialog"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Form Body -->
+    <form id="news-form" class="flex-grow overflow-y-auto p-6 space-y-6">
+      <!-- Title, Slug, Date, Draft -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+        <div class="md:col-span-6 space-y-1">
+          <label for="news-form-title" class="font-mono text-xs text-surface-subtle uppercase">
+            Title *
+          </label>
+          <input
+            id="news-form-title"
+            type="text"
+            required
+            placeholder="e.g. New song: Evening Sun"
+            class="form-input"
+          />
+        </div>
+
+        <div class="md:col-span-6 space-y-1">
+          <label for="news-form-slug" class="font-mono text-xs text-surface-subtle uppercase">
+            Slug *
+          </label>
+          <input
+            id="news-form-slug"
+            type="text"
+            required
+            placeholder="new-song-evening-sun"
+            class="form-input"
+          />
+        </div>
+
+        <div class="md:col-span-6 space-y-1">
+          <label for="news-form-date" class="font-mono text-xs text-surface-subtle uppercase">
+            Publish Date *
+          </label>
+          <input
+            id="news-form-date"
+            type="date"
+            required
+            class="form-input"
+          />
+        </div>
+
+        <div class="md:col-span-6 flex items-center gap-3 pt-6">
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input
+              id="news-form-draft"
+              type="checkbox"
+              class="sr-only peer"
+            />
+            <div class="w-11 h-6 bg-surface-raised peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600/70"></div>
+            <span class="ml-3 font-sans text-sm text-surface-muted">
+              Save as Draft (hidden from public website)
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Description / Excerpt -->
+      <div class="space-y-1">
+        <label for="news-form-description" class="font-mono text-xs text-surface-subtle uppercase">
+          Short Summary / Excerpt *
+        </label>
+        <textarea
+          id="news-form-description"
+          rows="2"
+          required
+          placeholder="Brief intro displayed in news feeds and card previews..."
+          class="form-input"
+        ></textarea>
+      </div>
+
+      <!-- Featured Image & Alt -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
+        <div class="md:col-span-7 space-y-1">
+          <label for="news-form-image" class="font-mono text-xs text-surface-subtle uppercase">
+            Featured Image Path or URL *
+          </label>
+          <div class="flex gap-2">
+            <input
+              id="news-form-image"
+              type="text"
+              required
+              placeholder="/images/evening-sun.jpg"
+              class="form-input"
+            />
+            <label class="px-3 py-2 bg-surface-raised hover:bg-white/[0.08] shadow-hairline text-surface-ink rounded-lg text-xs font-sans font-medium cursor-pointer shrink-0 flex items-center gap-1.5 focus-ring">
+              <span>Upload</span>
+              <input
+                id="news-image-upload"
+                type="file"
+                accept="image/*"
+                class="hidden"
+              />
+            </label>
+          </div>
+        </div>
+
+        <div class="md:col-span-5 space-y-1">
+          <label for="news-form-image-alt" class="font-mono text-xs text-surface-subtle uppercase">
+            Image Alt Text
+          </label>
+          <input
+            id="news-form-image-alt"
+            type="text"
+            placeholder="Description of artwork"
+            class="form-input"
+          />
+        </div>
+
+        <div class="md:col-span-12">
+          <img
+            id="news-image-preview"
+            src=""
+            alt="Preview"
+            class="h-20 w-32 object-cover rounded-lg bg-surface-base shadow-hairline hidden mt-1"
+          />
+        </div>
+      </div>
+
+      <!-- Media Embeds -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+        <div class="md:col-span-4 space-y-1">
+          <label for="news-form-media-type" class="font-mono text-xs text-surface-subtle uppercase">
+            Media Embed Type
+          </label>
+          <select id="news-form-media-type" class="form-input">
+            <option value="standard">None (Standard Article)</option>
+            <option value="audio">Audio Embed</option>
+            <option value="video">Video Embed</option>
+          </select>
+        </div>
+
+        <div class="md:col-span-4 space-y-1">
+          <label for="news-form-media-platform" class="font-mono text-xs text-surface-subtle uppercase">
+            Platform
+          </label>
+          <select id="news-form-media-platform" class="form-input">
+            <option value="">None</option>
+            <option value="soundcloud">SoundCloud</option>
+            <option value="youtube">YouTube</option>
+          </select>
+        </div>
+
+        <div class="md:col-span-4 space-y-1">
+          <label for="news-form-media-embed" class="font-mono text-xs text-surface-subtle uppercase">
+            Embed URL
+          </label>
+          <input
+            id="news-form-media-embed"
+            type="url"
+            placeholder="https://w.soundcloud.com/... or YouTube URL"
+            class="form-input"
+          />
+        </div>
+      </div>
+
+      <!-- Markdown Body & Live Preview -->
+      <div class="space-y-2 pt-2">
+        <div class="flex items-center justify-between pb-1 border-b border-white/[0.06]">
+          <span class="font-mono text-xs text-surface-subtle uppercase">
+            Article Content (Markdown)
+          </span>
+
+          <!-- Markdown Toolbar -->
+          <div class="flex items-center gap-1">
+            <button type="button" data-md-action="h2" class="px-2 py-1 rounded text-xs font-mono text-surface-muted hover:text-surface-ink bg-surface-raised hover:bg-white/[0.06] transition-colors" title="Heading 2">H2</button>
+            <button type="button" data-md-action="h3" class="px-2 py-1 rounded text-xs font-mono text-surface-muted hover:text-surface-ink bg-surface-raised hover:bg-white/[0.06] transition-colors" title="Heading 3">H3</button>
+            <button type="button" data-md-action="bold" class="px-2 py-1 rounded text-xs font-mono font-bold text-surface-muted hover:text-surface-ink bg-surface-raised hover:bg-white/[0.06] transition-colors" title="Bold">B</button>
+            <button type="button" data-md-action="italic" class="px-2 py-1 rounded text-xs font-mono italic text-surface-muted hover:text-surface-ink bg-surface-raised hover:bg-white/[0.06] transition-colors" title="Italic">I</button>
+            <button type="button" data-md-action="quote" class="px-2 py-1 rounded text-xs font-mono text-surface-muted hover:text-surface-ink bg-surface-raised hover:bg-white/[0.06] transition-colors" title="Quote">&ldquo;</button>
+            <button type="button" data-md-action="link" class="px-2 py-1 rounded text-xs font-mono text-surface-muted hover:text-surface-ink bg-surface-raised hover:bg-white/[0.06] transition-colors" title="Link">Link</button>
+            <button type="button" data-md-action="list" class="px-2 py-1 rounded text-xs font-mono text-surface-muted hover:text-surface-ink bg-surface-raised hover:bg-white/[0.06] transition-colors" title="Bullet List">&bull; List</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <!-- Textarea Left -->
+          <div>
+            <textarea
+              id="news-form-body"
+              rows="14"
+              placeholder="Write the full story or reflections here in Markdown..."
+              class="w-full px-4 py-3 bg-surface-raised text-surface-ink text-sm font-mono font-normal rounded-lg shadow-hairline placeholder:text-surface-subtle focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent resize-y"
+            ></textarea>
+          </div>
+
+          <!-- Preview Right -->
+          <div class="bg-surface-raised/40 rounded-lg p-5 border border-white/[0.06] overflow-y-auto max-h-[360px]">
+            <span class="block font-mono text-[10px] uppercase text-surface-subtle mb-3">Live Typography Preview</span>
+            <div id="news-markdown-preview" class="space-y-3 font-sans text-sm text-surface-muted leading-relaxed"></div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- Footer -->
+    <div class="px-6 py-4 border-t border-white/[0.08] flex items-center justify-between shrink-0 bg-surface-raised/40">
+      <button
+        type="button"
+        id="news-modal-cancel-btn"
+        class="px-4 py-2 rounded-lg text-xs font-sans text-surface-muted hover:text-surface-ink transition-colors focus-ring"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="submit"
+        form="news-form"
+        id="news-modal-save-btn"
+        class="px-5 py-2.5 rounded-lg bg-surface-ink hover:bg-white text-surface-void text-xs font-sans font-medium transition-colors focus-ring"
+      >
+        Publish Article
+      </button>
+    </div>
+  </div>
+</div>

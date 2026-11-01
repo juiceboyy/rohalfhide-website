@@ -1,4 +1,6 @@
 ---
+import tracksData from '../data/tracks.json';
+
 interface Track {
   id: string;
   title: string;
@@ -6,6 +8,8 @@ interface Track {
   src: string;
   duration: string;
   cover: string;
+  releaseDate?: string;
+  draft?: boolean;
 }
 
 interface StreamingPlatform {
@@ -42,32 +46,7 @@ const streamingPlatforms: StreamingPlatform[] = [
   }
 ];
 
-const tracks: Track[] = [
-  {
-    id: "1",
-    title: "It's been good",
-    artist: "Ro Halfhide",
-    src: "/audio/its-been-good.mp3",
-    duration: "1:50",
-    cover: "/images/its-been-good.jpg"
-  },
-  {
-    id: "2",
-    title: "Evening Sun",
-    artist: "Ro Halfhide",
-    src: "/audio/evening-sun.mp3",
-    duration: "3:06",
-    cover: "/images/evening-sun.jpg"
-  },
-  {
-    id: "3",
-    title: "Pirate's Dirge (Oh Oh Oh)",
-    artist: "Ro Halfhide",
-    src: "/audio/pirates-dirge.mp3",
-    duration: "3:02",
-    cover: "/images/pirates-dirge.jpg"
-  }
-];
+const tracks: Track[] = (tracksData as Track[]).filter((t) => !t.draft);
 ---
 
 <section id="music" class="relative py-24 bg-surface-void shadow-divider-t overflow-hidden">

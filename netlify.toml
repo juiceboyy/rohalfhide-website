@@ -21,6 +21,41 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+[[headers]]
+  for = "/admin*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/api/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[redirects]]
+  from = "/api/admin/auth"
+  to = "/.netlify/functions/admin-auth"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/news"
+  to = "/.netlify/functions/admin-news"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/music"
+  to = "/.netlify/functions/admin-music"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/media"
+  to = "/.netlify/functions/admin-media"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/comments"
+  to = "/.netlify/functions/admin-comments"
+  status = 200
+
 [[redirects]]
   from = "/blogs/blog.rss"
   to = "/rss.xml"

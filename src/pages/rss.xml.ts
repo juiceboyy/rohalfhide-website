@@ -4,7 +4,9 @@ import type { APIContext } from 'astro';
 
 export async function GET(context: APIContext) {
   const news = await getCollection('news');
-  const sortedNews = news.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+  const sortedNews = news
+    .filter((post) => !post.data.draft)
+    .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 
   return rss({
     title: 'Ro Halfhide - Latest News',

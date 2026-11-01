@@ -1,0 +1,252 @@
+---
+import '../../styles/global.css';
+import NewsEditorModal from '../../components/admin/NewsEditorModal.astro';
+import TrackEditorModal from '../../components/admin/TrackEditorModal.astro';
+---
+
+<!doctype html>
+<html lang="en" class="bg-surface-void text-surface-ink">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CMS Dashboard - Ro Halfhide</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="min-h-screen bg-surface-void text-surface-ink font-sans antialiased selection:bg-accent selection:text-surface-void">
+    <!-- Top Navigation Bar -->
+    <header class="border-b border-white/[0.08] bg-surface-base/80 backdrop-blur-md sticky top-0 z-40">
+      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <a href="/admin" class="font-serif font-bold text-lg tracking-tight text-surface-ink flex items-center gap-2">
+            <span>Ro Halfhide</span>
+            <span class="text-surface-subtle font-mono text-xs font-normal">/ CMS</span>
+          </a>
+          <div id="admin-branch-indicator" class="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-white/[0.04] text-surface-muted shadow-hairline">
+            <span class="w-1.5 h-1.5 rounded-full bg-surface-subtle"></span>
+            <span>Connecting...</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <a
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-xs font-mono text-surface-muted hover:text-surface-ink transition-colors flex items-center gap-1 focus-ring rounded-sm"
+          >
+            <span>View Site</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+            </svg>
+          </a>
+
+          <button
+            type="button"
+            id="admin-logout-btn"
+            class="text-xs font-mono text-surface-subtle hover:text-red-400 transition-colors focus-ring rounded-sm"
+          >
+            Sign Out
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-6 py-10">
+      <!-- 1. Login View -->
+      <section id="admin-login-view" class="max-w-md mx-auto py-20">
+        <div class="bg-surface-raised/70 border border-white/[0.08] rounded-2xl p-8 space-y-6 shadow-2xl">
+          <div class="space-y-2">
+            <h1 class="font-serif text-3xl font-semibold text-surface-ink tracking-tight">
+              Editorial Studio
+            </h1>
+            <p class="font-sans text-sm text-surface-muted leading-relaxed">
+              Enter your master passcode to manage news releases, music tracks, and visitor comments.
+            </p>
+          </div>
+
+          <form id="admin-login-form" class="space-y-4">
+            <div class="space-y-1">
+              <label for="admin-password-input" class="font-mono text-xs text-surface-subtle uppercase">
+                Admin Passcode
+              </label>
+              <input
+                id="admin-password-input"
+                type="password"
+                required
+                autocomplete="current-password"
+                placeholder="Enter password..."
+                class="form-input"
+              />
+            </div>
+
+            <button
+              id="admin-login-submit"
+              type="submit"
+              class="w-full py-3 rounded-lg bg-surface-ink hover:bg-white text-surface-void font-sans text-sm font-medium transition-colors focus-ring"
+            >
+              Access Dashboard
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- 2. Authenticated Dashboard View -->
+      <section id="admin-dashboard-view" class="hidden space-y-8">
+        <!-- Navigation Tabs -->
+        <div class="flex items-center gap-2 border-b border-white/[0.08] pb-4">
+          <button
+            type="button"
+            id="tab-btn-news"
+            class="px-4 py-2 rounded-lg font-sans text-xs font-medium transition-colors bg-surface-raised text-surface-ink shadow-hairline flex items-center gap-2 focus-ring"
+          >
+            <span>News & Stories</span>
+            <span id="news-count-badge" class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-white/[0.08] text-surface-muted">0</span>
+          </button>
+
+          <button
+            type="button"
+            id="tab-btn-music"
+            class="px-4 py-2 rounded-lg font-sans text-xs font-medium transition-colors text-surface-muted hover:text-surface-ink flex items-center gap-2 focus-ring"
+          >
+            <span>Music Playlist</span>
+            <span id="music-count-badge" class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-white/[0.08] text-surface-muted">0</span>
+          </button>
+
+          <button
+            type="button"
+            id="tab-btn-comments"
+            class="px-4 py-2 rounded-lg font-sans text-xs font-medium transition-colors text-surface-muted hover:text-surface-ink flex items-center gap-2 focus-ring"
+          >
+            <span>Comments</span>
+            <span id="comments-count-badge" class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-white/[0.08] text-surface-muted">0</span>
+          </button>
+        </div>
+
+        <!-- Section: News Articles -->
+        <div id="section-news" class="space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="space-y-1">
+              <h2 class="font-serif text-2xl font-semibold text-surface-ink">
+                News & Articles
+              </h2>
+              <p class="font-sans text-xs text-surface-muted">
+                Create and curate stories, video drops, and track releases published to Git.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              id="admin-new-post-btn"
+              class="px-4 py-2 rounded-lg bg-surface-ink hover:bg-white text-surface-void font-sans text-xs font-medium transition-colors self-start sm:self-auto focus-ring"
+            >
+              + New Article
+            </button>
+          </div>
+
+          <div class="bg-surface-raised/40 border border-white/[0.06] rounded-2xl p-6">
+            <div id="news-list-container"></div>
+          </div>
+        </div>
+
+        <!-- Section: Music Playlist -->
+        <div id="section-music" class="hidden space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="space-y-1">
+              <h2 class="font-serif text-2xl font-semibold text-surface-ink">
+                Homepage Audio Deck
+              </h2>
+              <p class="font-sans text-xs text-surface-muted">
+                Manage and reorder audio tracks and artwork featured on the main website player.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              id="admin-add-track-btn"
+              class="px-4 py-2 rounded-lg bg-surface-ink hover:bg-white text-surface-void font-sans text-xs font-medium transition-colors self-start sm:self-auto focus-ring"
+            >
+              + Add Track
+            </button>
+          </div>
+
+          <div class="bg-surface-raised/40 border border-white/[0.06] rounded-2xl p-6">
+            <div id="music-list-container"></div>
+          </div>
+        </div>
+
+        <!-- Section: Comments Moderation -->
+        <div id="section-comments" class="hidden space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="space-y-1">
+              <h2 class="font-serif text-2xl font-semibold text-surface-ink">
+                Comment Moderation
+              </h2>
+              <p class="font-sans text-xs text-surface-muted">
+                Review visitor comments stored in your Google Sheets database before they display live.
+              </p>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex items-center gap-1 bg-surface-base p-1 rounded-lg border border-white/[0.06]">
+              <button
+                type="button"
+                data-comments-filter="all"
+                class="px-3 py-1 rounded text-xs font-mono transition-colors bg-surface-raised text-surface-ink focus-ring"
+              >
+                All
+              </button>
+              <button
+                type="button"
+                data-comments-filter="approved"
+                class="px-3 py-1 rounded text-xs font-mono transition-colors text-surface-muted hover:text-surface-ink focus-ring"
+              >
+                Approved
+              </button>
+              <button
+                type="button"
+                data-comments-filter="pending"
+                class="px-3 py-1 rounded text-xs font-mono transition-colors text-surface-muted hover:text-surface-ink focus-ring"
+              >
+                Pending
+              </button>
+              <button
+                type="button"
+                data-comments-filter="rejected"
+                class="px-3 py-1 rounded text-xs font-mono transition-colors text-surface-muted hover:text-surface-ink focus-ring"
+              >
+                Rejected
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-surface-raised/40 border border-white/[0.06] rounded-2xl p-6">
+            <div id="comments-list-container"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modals -->
+    <NewsEditorModal />
+    <TrackEditorModal />
+
+    <!-- Floating Toast Notifications Layer -->
+    <div
+      id="admin-toast-container"
+      class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-auto"
+      aria-live="polite"
+    ></div>
+
+    <!-- Admin Client Script -->
+    <script src="../../scripts/admin/main.ts"></script>
+  </body>
+</html>

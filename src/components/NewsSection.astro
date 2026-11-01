@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 
 const allNews = await getCollection('news');
 const latestPosts = allNews
+  .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
   .slice(0, 3);
 

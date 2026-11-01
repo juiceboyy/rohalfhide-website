@@ -3,7 +3,9 @@ import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
 const allNews = await getCollection('news');
-const posts = allNews.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+const posts = allNews
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 
 function formatDate(date: Date) {
   return date.toLocaleDateString('en-US', {
