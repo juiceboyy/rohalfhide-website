@@ -158,3 +158,58 @@ export async function sendContactInquiryEmails({ name, email, subject, message }
     ],
   });
 }
+
+export async function sendCommentNotificationEmail({
+  postSlug,
+  postTitle,
+  name,
+  email = '',
+  comment,
+}) {
+  const senderEmail = getEnv('SENDER_EMAIL') || getEnv('EMAIL_USER') || 'halfhide@gmail.com';
+  const senderName = getEnv('SENDER_NAME') || 'Ro Halfhide Website';
+  const notificationEmail = getEnv('NOTIFICATION_EMAIL') || 'halfhide@gmail.com';
+
+  const safeName = escapeHtml(name);
+  const safeEmail = email ? escapeHtml(email) : '';
+  const safePostTitle = escapeHtml(postTitle || postSlug);
+  const safeComment = escapeHtml(comment).replace(/\n/g, '<br />');
+  const postUrl = `https://rohalfhide.com/news/${encodeURIComponent(postSlug)}`;
+
+  const adminHtml = `
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #18181b; max-width: 600px; margin: 0 auto; padding: 24px;">
+      <p style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em; color: #71717a; margin: 0 0 8px;">News Item Comment</p>
+      <h2 style="font-size: 20px; font-weight: 600; margin: 0 0 16px;">New comment on: ${safePostTitle}</h2>
+      <p style="font-size: 14px; color: #3f3f46; line-height: 1.6; margin: 0 0 16px;">
+        <strong>Author:</strong> ${safeName}<br />
+        ${safeEmail ? `<strong>Email:</strong> <a href="mailto:${safeEmail}">${safeEmail}</a><br />` : '<strong>Email:</strong> (Not provided)<br />'}
+        <strong>Article:</strong> <a href="${postUrl}">${postUrl}</a>
+      </p>
+      <div style="padding: 16px 20px; background-color: #f4f4f5; border-radius: 8px; font-size: 14px; line-height: 1.7; color: #18181b; margin-bottom: 20px;">
+        ${safeComment}
+      </div>
+      <p style="font-size: 12px; color: #71717a; line-height: 1.5; margin: 0;">
+        Saved to Google Sheets (Comments tab). Status is Approved. To remove or hide, set Status to Hidden or Spam in the spreadsheet.
+      </p>
+    </div>
+  `;
+
+  const payload = {
+    sender: { name: senderName, email: senderEmail },
+    subject: `[New Comment] ${safeName} on "${postTitle || postSlug}"`,
+    htmlContent: adminHtml,
+    messageVersions: [
+      {
+        to: [{ email: notificationEmail, name: 'Ro Halfhide' }],
+        subject: `[New Comment] ${safeName} on "${postTitle || postSlug}"`,
+        htmlContent: adminHtml,
+      },
+    ],
+  };
+
+  if (safeEmail) {
+    payload.messageVersions[0].replyTo = { email: email.trim(), name: name.trim() };
+  }
+
+  await sendBrevoEmail(payload);
+}

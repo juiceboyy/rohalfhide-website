@@ -1,0 +1,136 @@
+---
+interface Props {
+  slug: string;
+  postTitle: string;
+}
+
+const { slug, postTitle } = Astro.props;
+---
+
+<section
+  id="comments-root"
+  data-slug={slug}
+  data-post-title={postTitle}
+  aria-labelledby="comments-heading"
+  class="pt-16 shadow-divider-t space-y-10"
+>
+  <!-- Section Header -->
+  <div class="space-y-2">
+    <div class="flex items-baseline justify-between gap-4">
+      <h2 id="comments-heading" class="font-serif font-semibold text-2xl sm:text-3xl tracking-tight text-surface-ink">
+        Comments <span id="comments-count" class="font-mono text-sm font-normal text-surface-muted ml-1"></span>
+      </h2>
+    </div>
+    <p class="font-sans text-sm text-surface-muted">
+      Join the conversation or leave your thoughts on this release.
+    </p>
+  </div>
+
+  <!-- Comments Feed -->
+  <div class="space-y-6">
+    <div id="comments-loading" class="py-8 text-center font-mono text-xs uppercase tracking-wider text-surface-subtle animate-pulse">
+      Loading comments...
+    </div>
+
+    <div
+      id="comments-empty"
+      class="hidden py-8 px-6 bg-surface-base rounded-xl shadow-hairline text-center font-sans text-sm text-surface-muted"
+    >
+      No comments yet. Be the first to leave a thought.
+    </div>
+
+    <div id="comments-list" class="space-y-2"></div>
+  </div>
+
+  <!-- Comment Submission Form -->
+  <div class="bg-surface-base rounded-2xl shadow-hairline p-6 sm:p-8 space-y-6">
+    <h3 class="font-serif font-semibold text-lg sm:text-xl tracking-tight text-surface-ink">
+      Leave a Comment
+    </h3>
+
+    <form id="comment-form" class="space-y-5" novalidate>
+      <!-- Anti-spam Honeypot -->
+      <p class="hidden">
+        <label>Do not fill this out: <input name="bot-field" type="text" tabindex="-1" autocomplete="off" /></label>
+      </p>
+      <input type="hidden" id="comment-rendered-at" name="renderedAt" value="" />
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div>
+          <label for="comment-name" class="block font-mono font-medium text-xs uppercase tracking-[0.16em] text-surface-muted mb-2">
+            Name
+          </label>
+          <input
+            type="text"
+            id="comment-name"
+            name="name"
+            required
+            minlength="2"
+            maxlength="80"
+            autocomplete="name"
+            placeholder="Your name"
+            class="form-input"
+          />
+          <p class="field-error items-center gap-2 text-xs text-red-400 mt-2">
+            <span>Please enter your name (at least 2 characters).</span>
+          </p>
+        </div>
+
+        <div>
+          <label for="comment-email" class="block font-mono font-medium text-xs uppercase tracking-[0.16em] text-surface-muted mb-2">
+            Email <span class="text-surface-subtle normal-case tracking-normal">(optional, kept private)</span>
+          </label>
+          <input
+            type="email"
+            id="comment-email"
+            name="email"
+            maxlength="120"
+            autocomplete="email"
+            placeholder="name@example.com"
+            class="form-input"
+          />
+          <p class="field-error items-center gap-2 text-xs text-red-400 mt-2">
+            <span>Please enter a valid email address or leave blank.</span>
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <label for="comment-body" class="block font-mono font-medium text-xs uppercase tracking-[0.16em] text-surface-muted mb-2">
+          Comment
+        </label>
+        <textarea
+          id="comment-body"
+          name="comment"
+          rows="4"
+          required
+          minlength="2"
+          maxlength="2000"
+          placeholder="Share your thoughts..."
+          class="form-input"
+        ></textarea>
+        <p class="field-error items-center gap-2 text-xs text-red-400 mt-2">
+          <span>Please enter a comment.</span>
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+        <button
+          id="comment-submit"
+          type="submit"
+          class="px-8 py-3.5 bg-surface-ink hover:bg-white text-surface-void font-mono font-medium text-xs uppercase tracking-[0.16em] rounded-lg transition-colors duration-150 focus-ring disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+        >
+          Post Comment
+        </button>
+
+        <p class="text-xs text-surface-subtle">
+          Comments appear immediately. Email addresses are never made public.
+        </p>
+      </div>
+
+      <div id="comment-status" role="status" aria-live="polite" class="font-mono text-xs pt-1 hidden"></div>
+    </form>
+  </div>
+</section>
+
+<script src="../scripts/comments.ts"></script>

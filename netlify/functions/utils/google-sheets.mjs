@@ -2,7 +2,7 @@ import { getEnv, getAccessToken, isSheetsConfigured } from './google-auth.mjs';
 
 export { isSheetsConfigured };
 
-const SHEETS_BASE_URL = 'https://sheets.googleapis.com/v4/spreadsheets';
+export const SHEETS_BASE_URL = 'https://sheets.googleapis.com/v4/spreadsheets';
 
 export const SUBSCRIBERS_TAB = 'Subscribers';
 export const SUBSCRIBERS_HEADERS = [
@@ -28,7 +28,7 @@ export const INQUIRIES_HEADERS = [
   'Notes',
 ];
 
-async function ensureTabAndHeaders(spreadsheetId, token, tabName, expectedHeaders) {
+export async function ensureTabAndHeaders(spreadsheetId, token, tabName, expectedHeaders) {
   const metaRes = await fetch(`${SHEETS_BASE_URL}/${spreadsheetId}?fields=sheets.properties`, {
     headers: { Authorization: `Bearer ${token}` },
   });
