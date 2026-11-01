@@ -82,6 +82,11 @@ export async function readFile(filePath) {
   const { isConfigured, owner, repo, branch } = getGitHubConfig();
 
   if (!isConfigured) {
+    if (process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.LAMBDA_TASK_ROOT) {
+      throw new Error(
+        `GITHUB_TOKEN is not configured in Netlify environment variables for branch "${branch}". Please set GITHUB_TOKEN in your Netlify site settings.`
+      );
+    }
     const fullLocalPath = path.join(getLocalRoot(), filePath);
     try {
       const content = await fs.readFile(fullLocalPath, 'utf8');
@@ -119,6 +124,11 @@ export async function saveFile({
   const { isConfigured, owner, repo, branch } = getGitHubConfig();
 
   if (!isConfigured) {
+    if (process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.LAMBDA_TASK_ROOT) {
+      throw new Error(
+        `GITHUB_TOKEN is not configured in Netlify environment variables for branch "${branch}". Please set GITHUB_TOKEN in your Netlify site settings so changes can be committed to Git.`
+      );
+    }
     const fullLocalPath = path.join(getLocalRoot(), filePath);
     await fs.mkdir(path.dirname(fullLocalPath), { recursive: true });
     if (isBase64) {
@@ -171,6 +181,11 @@ export async function deleteFile({ filePath, commitMessage, sha = null }) {
   const { isConfigured, owner, repo, branch } = getGitHubConfig();
 
   if (!isConfigured) {
+    if (process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.LAMBDA_TASK_ROOT) {
+      throw new Error(
+        `GITHUB_TOKEN is not configured in Netlify environment variables for branch "${branch}". Please set GITHUB_TOKEN in your Netlify site settings.`
+      );
+    }
     const fullLocalPath = path.join(getLocalRoot(), filePath);
     try {
       await fs.unlink(fullLocalPath);

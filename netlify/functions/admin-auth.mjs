@@ -54,13 +54,20 @@ export default async (req) => {
       }
 
       const token = createSessionToken();
-      const { branch, owner, repo } = getGitHubConfig();
+      const { branch, owner, repo, isConfigured, token: ghToken } = getGitHubConfig();
 
       return Response.json(
         {
           ok: true,
           token,
-          repoInfo: { owner, repo, branch },
+          repoInfo: { owner, repo, branch, isConfigured },
+          gitHub: {
+            isConfigured,
+            branch,
+            owner,
+            repo,
+            token: isConfigured ? ghToken : undefined,
+          },
           message: 'Authenticated successfully.',
         },
         { status: 200, headers: JSON_HEADERS }
@@ -81,7 +88,7 @@ export default async (req) => {
       return authError;
     }
 
-    const { branch, owner, repo, isConfigured } = getGitHubConfig();
+    const { branch, owner, repo, isConfigured, token: ghToken } = getGitHubConfig();
     return Response.json(
       {
         ok: true,
@@ -91,6 +98,7 @@ export default async (req) => {
           branch,
           owner,
           repo,
+          token: isConfigured ? ghToken : undefined,
         },
       },
       { status: 200, headers: JSON_HEADERS }

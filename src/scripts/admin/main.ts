@@ -38,10 +38,20 @@ async function showDashboard(session: any): Promise<void> {
 
   if (branchIndicator && session.gitHub) {
     const isGit = session.gitHub.isConfigured;
-    branchIndicator.innerHTML = `
-      <span class="w-1.5 h-1.5 rounded-full ${isGit ? 'bg-emerald-400' : 'bg-amber-400'} animate-pulse"></span>
-      <span>${isGit ? `git:${session.gitHub.branch}` : 'local mode'}</span>
-    `;
+    const isHosted = !['localhost', '127.0.0.1'].includes(window.location.hostname);
+
+    if (isHosted && !isGit) {
+      branchIndicator.innerHTML = `
+        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+        <span class="text-amber-300">GITHUB_TOKEN missing in Netlify</span>
+      `;
+      branchIndicator.title = `GITHUB_TOKEN is not set in Netlify environment variables for branch "${session.gitHub.branch}". Set it in Netlify to enable Git publishing.`;
+    } else {
+      branchIndicator.innerHTML = `
+        <span class="w-1.5 h-1.5 rounded-full ${isGit ? 'bg-emerald-400' : 'bg-zinc-400'} animate-pulse"></span>
+        <span>${isGit ? `git:${session.gitHub.branch}` : 'local mode'}</span>
+      `;
+    }
   }
 
   if (!isInitialized) {
