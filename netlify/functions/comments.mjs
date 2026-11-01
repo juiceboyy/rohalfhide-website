@@ -2,6 +2,7 @@ import {
   isCommentsStoreConfigured,
   getCommentsBySlug,
   appendComment,
+  getAllCommentCounts,
 } from './utils/comments-store.mjs';
 import { isBrevoConfigured, sendCommentNotificationEmail } from './utils/brevo-mail.mjs';
 
@@ -22,8 +23,31 @@ function sanitizeText(str = '') {
 export default async (req) => {
   const url = new URL(req.url);
 
-  // 1. GET: Fetch approved comments for a post slug
+  // 1. GET: Fetch approved comments for a post slug, or all comment counts
   if (req.method === 'GET') {
+    const wantsCounts = url.searchParams.get('counts') === 'true' || url.searchParams.has('counts');
+    if (wantsCounts) {
+      try {
+        const counts = await getAllCommentCounts();
+        return Response.json(
+          { ok: true, counts },
+          {
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json',
+              'Cache-Control': 'public, max-age=60, s-maxage=60',
+            },
+          }
+        );
+      } catch (err) {
+        console.error('Error fetching comment counts:', err);
+        return Response.json(
+          { error: 'Unable to retrieve comment counts at this time.', counts: {} },
+          { status: 500 }
+        );
+      }
+    }
+
     const slug = (url.searchParams.get('slug') || '').trim();
     if (!slug) {
       return Response.json({ error: 'Missing slug parameter.' }, { status: 400 });

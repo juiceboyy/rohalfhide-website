@@ -18,6 +18,39 @@ export function isCommentsStoreConfigured() {
 }
 
 /**
+ * Fetch total approved comment counts grouped by post slug.
+ * Returns an object map: { [slug]: number }
+ */
+export async function getAllCommentCounts() {
+  if (!isSheetsConfigured()) {
+    return {};
+  }
+
+  const spreadsheetId = getEnv('SPREADSHEET_ID');
+  const token = await getAccessToken();
+
+  const { rows } = await ensureTabAndHeaders(
+    spreadsheetId,
+    token,
+    COMMENTS_TAB,
+    COMMENTS_HEADERS
+  );
+
+  const counts = {};
+
+  for (const row of rows) {
+    const rowSlug = (row[2] || '').trim().toLowerCase();
+    const status = (row[6] || '').trim().toLowerCase();
+
+    if (rowSlug && status === 'approved') {
+      counts[rowSlug] = (counts[rowSlug] || 0) + 1;
+    }
+  }
+
+  return counts;
+}
+
+/**
  * Fetch approved comments for a specific post slug.
  * Private email addresses are intentionally filtered out to protect visitor privacy.
  */
