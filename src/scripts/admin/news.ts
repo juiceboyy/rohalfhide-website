@@ -1,4 +1,5 @@
 import { fetchWithAuth, showToast, uploadMedia } from './api';
+import { previewLocalFile, setSafeImagePreview } from './media-preview';
 
 export interface NewsPost {
   slug: string;
@@ -229,10 +230,7 @@ export async function openNewsEditor(slug: string | null = null): Promise<void> 
       (document.getElementById('news-form-body') as HTMLTextAreaElement).value = post.body || '';
 
       const imgPreview = document.getElementById('news-image-preview') as HTMLImageElement | null;
-      if (imgPreview && post.image) {
-        imgPreview.src = post.image;
-        imgPreview.classList.remove('hidden');
-      }
+      setSafeImagePreview(imgPreview, post.image || '');
     } catch (err: any) {
       showToast(err.message, 'error');
       return;
@@ -279,19 +277,22 @@ export function setupNewsEvents(): void {
 
   bodyInput?.addEventListener('input', updateNewsPreview);
 
+  const imgField = document.getElementById('news-form-image') as HTMLInputElement | null;
+  const imgPreview = document.getElementById('news-image-preview') as HTMLImageElement | null;
+
+  imgField?.addEventListener('input', () => {
+    setSafeImagePreview(imgPreview, imgField.value);
+  });
+
   imageUploadInput?.addEventListener('change', async () => {
     const file = imageUploadInput.files?.[0];
     if (!file) return;
 
+    previewLocalFile(imgPreview, file);
+
     try {
       const url = await uploadMedia(file, 'image');
-      const imgField = document.getElementById('news-form-image') as HTMLInputElement | null;
-      const imgPreview = document.getElementById('news-image-preview') as HTMLImageElement | null;
       if (imgField) imgField.value = url;
-      if (imgPreview) {
-        imgPreview.src = url;
-        imgPreview.classList.remove('hidden');
-      }
     } catch {
       // Handled in uploadMedia
     }

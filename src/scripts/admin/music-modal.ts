@@ -2,6 +2,7 @@ import { fetchWithAuth, showToast, uploadMedia } from './api';
 import type { MusicTrack } from './music-types';
 import { findKnownSpotifyTrack, buildBandcampUrl } from './streaming-catalog';
 import { detectAudioDuration } from './audio-utils';
+import { previewLocalFile, setSafeImagePreview } from './media-preview';
 
 export async function autoLookupStreamingLinks(
   title: string,
@@ -122,17 +123,17 @@ export function openTrackEditor(track: MusicTrack | null = null): void {
     (document.getElementById('track-form-apple') as HTMLInputElement).value = track.links?.appleMusic || '';
 
     const imgPreview = document.getElementById('track-cover-preview') as HTMLImageElement | null;
-    if (imgPreview && track.cover) {
-      imgPreview.src = track.cover;
-      imgPreview.classList.remove('hidden');
-    }
+    setSafeImagePreview(imgPreview, track.cover);
   } else {
     if (modalTitle) modalTitle.textContent = 'Add Track';
     (document.getElementById('track-form-id') as HTMLInputElement).value = '';
     (document.getElementById('track-form-artist') as HTMLInputElement).value = 'Ro Halfhide';
     (document.getElementById('track-form-date') as HTMLInputElement).value = new Date().toISOString().split('T')[0];
     const imgPreview = document.getElementById('track-cover-preview') as HTMLImageElement | null;
-    if (imgPreview) imgPreview.classList.add('hidden');
+    if (imgPreview) {
+      imgPreview.src = '';
+      imgPreview.classList.add('hidden');
+    }
   }
 
   modal.classList.remove('hidden');
@@ -219,19 +220,23 @@ export function setupTrackModalEvents(onSaveSuccess: () => Promise<void>): void 
     }
   });
 
+  const coverField = document.getElementById('track-form-cover') as HTMLInputElement | null;
+  const imgPreview = document.getElementById('track-cover-preview') as HTMLImageElement | null;
+
+  coverField?.addEventListener('input', () => {
+    setSafeImagePreview(imgPreview, coverField.value);
+  });
+
   coverUploadInput?.addEventListener('change', async () => {
     const file = coverUploadInput.files?.[0];
     if (!file) return;
 
+    // Immediate instant preview from memory (no network wait, no 404)
+    previewLocalFile(imgPreview, file);
+
     try {
       const imgUrl = await uploadMedia(file, 'image');
-      const coverField = document.getElementById('track-form-cover') as HTMLInputElement | null;
-      const imgPreview = document.getElementById('track-cover-preview') as HTMLImageElement | null;
       if (coverField) coverField.value = imgUrl;
-      if (imgPreview) {
-        imgPreview.src = imgUrl;
-        imgPreview.classList.remove('hidden');
-      }
     } catch {
       // Handled in uploadMedia
     }
