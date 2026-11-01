@@ -57,6 +57,11 @@
   status = 200
 
 [[redirects]]
+  from = "/api/admin/lookup-links"
+  to = "/.netlify/functions/admin-lookup-links"
+  status = 200
+
+[[redirects]]
   from = "/blogs/blog.rss"
   to = "/rss.xml"
   status = 301

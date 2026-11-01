@@ -26,6 +26,82 @@ export async function detectAudioDuration(file: File): Promise<string> {
   });
 }
 
+export async function autoLookupStreamingLinks(
+  title: string,
+  artist = 'Ro Halfhide',
+  forceOverwrite = false
+): Promise<void> {
+  const cleanTitle = title.trim();
+  if (!cleanTitle || cleanTitle.length < 2) return;
+
+  const btnText = document.getElementById('track-auto-lookup-text');
+  if (btnText) btnText.textContent = 'Searching...';
+
+  try {
+    const res = await fetchWithAuth(
+      `/api/admin/lookup-links?title=${encodeURIComponent(cleanTitle)}&artist=${encodeURIComponent(artist)}`
+    );
+    if (!res.ok) {
+      if (forceOverwrite) {
+        showToast('Could not look up streaming links.', 'error');
+      }
+      return;
+    }
+
+    const data = await res.json();
+    if (!data.ok || !data.links) {
+      if (forceOverwrite) {
+        showToast('No streaming links found for this track.', 'info');
+      }
+      return;
+    }
+
+    const spotifyInput = document.getElementById('track-form-spotify') as HTMLInputElement | null;
+    const bandcampInput = document.getElementById('track-form-bandcamp') as HTMLInputElement | null;
+    const appleInput = document.getElementById('track-form-apple') as HTMLInputElement | null;
+    const dateInput = document.getElementById('track-form-date') as HTMLInputElement | null;
+    const durationInput = document.getElementById('track-form-duration') as HTMLInputElement | null;
+
+    let prefilledCount = 0;
+
+    if (data.links.spotify && spotifyInput && (!spotifyInput.value.trim() || forceOverwrite)) {
+      if (spotifyInput.value !== data.links.spotify) prefilledCount++;
+      spotifyInput.value = data.links.spotify;
+    }
+
+    if (data.links.bandcamp && bandcampInput && (!bandcampInput.value.trim() || forceOverwrite)) {
+      if (bandcampInput.value !== data.links.bandcamp) prefilledCount++;
+      bandcampInput.value = data.links.bandcamp;
+    }
+
+    if (data.links.appleMusic && appleInput && (!appleInput.value.trim() || forceOverwrite)) {
+      if (appleInput.value !== data.links.appleMusic) prefilledCount++;
+      appleInput.value = data.links.appleMusic;
+    }
+
+    if (data.releaseDate && dateInput && (!dateInput.value || dateInput.value === new Date().toISOString().split('T')[0])) {
+      dateInput.value = data.releaseDate;
+    }
+
+    if (data.duration && durationInput && (!durationInput.value || durationInput.value === '0:00')) {
+      durationInput.value = data.duration;
+    }
+
+    if (prefilledCount > 0) {
+      showToast(`Prefilled streaming links for "${cleanTitle}".`, 'success');
+    } else if (forceOverwrite) {
+      showToast(`Streaming links are already up to date.`, 'info');
+    }
+  } catch (err: any) {
+    console.error('Auto-lookup error:', err);
+    if (forceOverwrite) {
+      showToast('Network error while searching streaming links.', 'error');
+    }
+  } finally {
+    if (btnText) btnText.textContent = 'Auto-Find Links';
+  }
+}
+
 export function openTrackEditor(track: MusicTrack | null = null): void {
   const modal = document.getElementById('track-editor-modal');
   const modalTitle = document.getElementById('track-modal-title');
@@ -74,6 +150,9 @@ export function setupTrackModalEvents(onSaveSuccess: () => Promise<void>): void 
   const addBtn = document.getElementById('admin-add-track-btn');
   const closeBtn = document.getElementById('track-modal-close-btn');
   const cancelBtn = document.getElementById('track-modal-cancel-btn');
+  const titleInput = document.getElementById('track-form-title') as HTMLInputElement | null;
+  const artistInput = document.getElementById('track-form-artist') as HTMLInputElement | null;
+  const lookupBtn = document.getElementById('track-auto-lookup-btn');
   const audioUploadInput = document.getElementById('track-audio-upload') as HTMLInputElement | null;
   const coverUploadInput = document.getElementById('track-cover-upload') as HTMLInputElement | null;
   const form = document.getElementById('track-form') as HTMLFormElement | null;
@@ -81,6 +160,38 @@ export function setupTrackModalEvents(onSaveSuccess: () => Promise<void>): void 
   addBtn?.addEventListener('click', () => openTrackEditor(null));
   closeBtn?.addEventListener('click', closeTrackEditor);
   cancelBtn?.addEventListener('click', closeTrackEditor);
+
+  // Manual Auto-Find button
+  lookupBtn?.addEventListener('click', () => {
+    const title = titleInput?.value || '';
+    const artist = artistInput?.value || 'Ro Halfhide';
+    if (title) autoLookupStreamingLinks(title, artist, true);
+  });
+
+  // Auto-search when title loses focus (blur)
+  let lastSearchedTitle = '';
+  titleInput?.addEventListener('blur', () => {
+    const title = titleInput.value.trim();
+    const artist = artistInput?.value || 'Ro Halfhide';
+    if (title && title.length >= 2 && title !== lastSearchedTitle) {
+      lastSearchedTitle = title;
+      autoLookupStreamingLinks(title, artist);
+    }
+  });
+
+  // Debounced auto-search while typing
+  let debounceTimer: ReturnType<typeof setTimeout>;
+  titleInput?.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      const title = titleInput.value.trim();
+      const artist = artistInput?.value || 'Ro Halfhide';
+      if (title && title.length >= 3 && title !== lastSearchedTitle) {
+        lastSearchedTitle = title;
+        autoLookupStreamingLinks(title, artist);
+      }
+    }, 750);
+  });
 
   audioUploadInput?.addEventListener('change', async () => {
     const file = audioUploadInput.files?.[0];
@@ -95,6 +206,17 @@ export function setupTrackModalEvents(onSaveSuccess: () => Promise<void>): void 
       const audioUrl = await uploadMedia(file, 'audio');
       const srcField = document.getElementById('track-form-src') as HTMLInputElement | null;
       if (srcField) srcField.value = audioUrl;
+
+      // If title is not yet filled, try to infer it from filename
+      if (titleInput && !titleInput.value.trim()) {
+        const inferredTitle = file.name
+          .replace(/\.mp3$/i, '')
+          .replace(/[-_]/g, ' ')
+          .replace(/\b\w/g, (c) => c.toUpperCase());
+        titleInput.value = inferredTitle;
+        lastSearchedTitle = inferredTitle;
+        autoLookupStreamingLinks(inferredTitle, artistInput?.value || 'Ro Halfhide');
+      }
     } catch {
       // Handled in uploadMedia
     }
