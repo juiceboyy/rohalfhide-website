@@ -9,6 +9,24 @@ const SPOTIFY_ARTIST_ID = '79dS9zvJ6QCjz54EUdjs9u';
 const BANDCAMP_ROOT = 'https://rohalfhide.bandcamp.com';
 const TIMEOUT_MS = 4500;
 
+// Verified catalog of Ro Halfhide direct Spotify track URLs
+const KNOWN_SPOTIFY_CATALOG = [
+  { name: 'Surabaya Kutha', url: 'https://open.spotify.com/track/7Efy8Sn5G66PLjl3V7CcHV' },
+  { name: 'Evening Sun', url: 'https://open.spotify.com/track/1cedTVv89YDonTGkwjt72X' },
+  { name: "It's Been Good", url: 'https://open.spotify.com/track/1ZtrRsMJlTWw7g1MDmluJP' },
+  { name: 'Paint the Town', url: 'https://open.spotify.com/track/0M3F2KLZjnFVI6M7CQ5odP' },
+  { name: 'Louise', url: 'https://open.spotify.com/track/5nq7mUZFb0SyKjNtG1ULXc' },
+  { name: 'Malaysiastyle', url: 'https://open.spotify.com/track/4IIyCrXxdmPXcnXp70loUq' },
+  { name: 'Santa Claus Is Here', url: 'https://open.spotify.com/track/4lKPNZKwkcTpeMtsF37WbV' },
+  { name: 'For it is Xmas time', url: 'https://open.spotify.com/track/0cnoapEqroHsDKOD99AhJW' },
+  { name: 'For Yasser Murtaja (Free Palestine)', url: 'https://open.spotify.com/track/4aoMsM4AEMjZTZi1I0owcg' },
+  { name: 'They were only laughing', url: 'https://open.spotify.com/track/1k8cxFlypQfcQZx5cnr22o' },
+  { name: 'Eat The Rich', url: 'https://open.spotify.com/track/2YXTFWSdD4dwRqbwDvfLcH' },
+  { name: "It's Getting Better", url: 'https://open.spotify.com/track/4npjKwlZixwtjQnNF94YDl' },
+  { name: "Why Can't We Be friends? (Cos I Love You Too Much For That)", url: 'https://open.spotify.com/track/1ycCjy7mAft5Uba6QsIPov' },
+  { name: 'Friendship', url: 'https://open.spotify.com/track/62EZyrrmxaVKPa0VVCZ1KH' },
+];
+
 function slugify(text) {
   return String(text || '')
     .toLowerCase()
@@ -71,20 +89,35 @@ async function lookupAppleMusic(title, artist = 'Ro Halfhide') {
 }
 
 async function lookupSpotify(title) {
+  const cleanTarget = cleanString(title);
+  if (!cleanTarget || cleanTarget.length < 2) return null;
+
+  // 1. Instant match from verified catalog (0ms latency, immune to bot challenges)
+  for (const item of KNOWN_SPOTIFY_CATALOG) {
+    const itemClean = cleanString(item.name);
+    if (itemClean === cleanTarget || itemClean.includes(cleanTarget) || cleanTarget.includes(itemClean)) {
+      console.log(`[Spotify Lookup] Matched known track: "${item.name}" -> ${item.url}`);
+      return item.url;
+    }
+  }
+
+  // 2. Dynamic lookup on Spotify artist profile
   try {
     const res = await fetchWithTimeout(
       `https://open.spotify.com/artist/${SPOTIFY_ARTIST_ID}`,
       {
         headers: {
-          'User-Agent':
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.9',
         },
       }
     );
-    if (!res.ok) return null;
-    const html = await res.text();
+    if (!res.ok) {
+      console.warn(`[Spotify Lookup] Artist page returned HTTP ${res.status}`);
+      return null;
+    }
 
-    const cleanTarget = cleanString(title);
+    const html = await res.text();
     let matchedAlbumId = null;
 
     const scriptTags = html.match(/<script[^>]*>([\s\S]*?)<\/script>/g) || [];
@@ -119,7 +152,12 @@ async function lookupSpotify(title) {
     // Fetch album page to extract direct track URL
     const albRes = await fetchWithTimeout(
       `https://open.spotify.com/album/${matchedAlbumId}`,
-      { headers: { 'User-Agent': 'Mozilla/5.0' } }
+      {
+        headers: {
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.9',
+        },
+      }
     );
     if (!albRes.ok) return `https://open.spotify.com/album/${matchedAlbumId}`;
 
@@ -134,7 +172,7 @@ async function lookupSpotify(title) {
 
     return `https://open.spotify.com/album/${matchedAlbumId}`;
   } catch (err) {
-    console.error('Spotify lookup error:', err.message);
+    console.error('Spotify dynamic lookup error:', err.message);
     return null;
   }
 }
@@ -142,32 +180,8 @@ async function lookupSpotify(title) {
 async function lookupBandcamp(title) {
   try {
     const slug = slugify(title);
-    const directTrackUrl = `${BANDCAMP_ROOT}/track/${slug}`;
-
-    try {
-      const headRes = await fetchWithTimeout(directTrackUrl, { method: 'HEAD' });
-      if (headRes.ok) {
-        return directTrackUrl;
-      }
-    } catch {
-      // Ignore head check error and proceed to catalog listing
-    }
-
-    const res = await fetchWithTimeout(`${BANDCAMP_ROOT}/music`);
-    if (!res.ok) return null;
-    const html = await res.text();
-
-    const trackMatch = html.match(new RegExp(`href="(/track/[^"]*${slug}[^"]*)"`));
-    if (trackMatch) {
-      return `${BANDCAMP_ROOT}${trackMatch[1]}`;
-    }
-
-    const albMatch = html.match(new RegExp(`href="(/album/[^"]*${slug}[^"]*)"`));
-    if (albMatch) {
-      return `${BANDCAMP_ROOT}${albMatch[1]}`;
-    }
-
-    return null;
+    if (!slug) return null;
+    return `${BANDCAMP_ROOT}/track/${slug}`;
   } catch (err) {
     console.error('Bandcamp lookup error:', err.message);
     return null;

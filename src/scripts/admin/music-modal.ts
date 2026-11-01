@@ -1,30 +1,7 @@
 import { fetchWithAuth, showToast, uploadMedia } from './api';
 import type { MusicTrack } from './music-types';
-
-export function formatSecondsToDuration(seconds: number): string {
-  if (isNaN(seconds) || seconds <= 0) return '0:00';
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs.toString().padStart(2, '0')}`;
-}
-
-export async function detectAudioDuration(file: File): Promise<string> {
-  return new Promise((resolve) => {
-    const url = URL.createObjectURL(file);
-    const audio = new Audio();
-    audio.preload = 'metadata';
-    audio.onloadedmetadata = () => {
-      const dur = formatSecondsToDuration(audio.duration);
-      URL.revokeObjectURL(url);
-      resolve(dur);
-    };
-    audio.onerror = () => {
-      URL.revokeObjectURL(url);
-      resolve('0:00');
-    };
-    audio.src = url;
-  });
-}
+import { findKnownSpotifyTrack, buildBandcampUrl } from './streaming-catalog';
+import { detectAudioDuration } from './audio-utils';
 
 export async function autoLookupStreamingLinks(
   title: string,
@@ -37,32 +14,50 @@ export async function autoLookupStreamingLinks(
   const btnText = document.getElementById('track-auto-lookup-text');
   if (btnText) btnText.textContent = 'Searching...';
 
+  const spotifyInput = document.getElementById('track-form-spotify') as HTMLInputElement | null;
+  const bandcampInput = document.getElementById('track-form-bandcamp') as HTMLInputElement | null;
+  const appleInput = document.getElementById('track-form-apple') as HTMLInputElement | null;
+  const dateInput = document.getElementById('track-form-date') as HTMLInputElement | null;
+  const durationInput = document.getElementById('track-form-duration') as HTMLInputElement | null;
+
+  let prefilledCount = 0;
+
+  // 1. Instant local match for Spotify & Bandcamp (0ms latency)
+  const localSpotify = findKnownSpotifyTrack(cleanTitle);
+  const localBandcamp = buildBandcampUrl(cleanTitle);
+
+  if (localSpotify && spotifyInput && (!spotifyInput.value.trim() || forceOverwrite)) {
+    if (spotifyInput.value !== localSpotify) prefilledCount++;
+    spotifyInput.value = localSpotify;
+  }
+  if (localBandcamp && bandcampInput && (!bandcampInput.value.trim() || forceOverwrite)) {
+    if (bandcampInput.value !== localBandcamp) prefilledCount++;
+    bandcampInput.value = localBandcamp;
+  }
+
+  // 2. Query serverless endpoint for Apple Music, duration, release date, and dynamic links
   try {
     const res = await fetchWithAuth(
       `/api/admin/lookup-links?title=${encodeURIComponent(cleanTitle)}&artist=${encodeURIComponent(artist)}`
     );
     if (!res.ok) {
-      if (forceOverwrite) {
-        showToast('Could not look up streaming links.', 'error');
+      if (prefilledCount > 0) {
+        showToast(`Prefilled streaming links for "${cleanTitle}".`, 'success');
+      } else if (forceOverwrite) {
+        showToast('Could not look up streaming links from external services.', 'error');
       }
       return;
     }
 
     const data = await res.json();
     if (!data.ok || !data.links) {
-      if (forceOverwrite) {
+      if (prefilledCount > 0) {
+        showToast(`Prefilled streaming links for "${cleanTitle}".`, 'success');
+      } else if (forceOverwrite) {
         showToast('No streaming links found for this track.', 'info');
       }
       return;
     }
-
-    const spotifyInput = document.getElementById('track-form-spotify') as HTMLInputElement | null;
-    const bandcampInput = document.getElementById('track-form-bandcamp') as HTMLInputElement | null;
-    const appleInput = document.getElementById('track-form-apple') as HTMLInputElement | null;
-    const dateInput = document.getElementById('track-form-date') as HTMLInputElement | null;
-    const durationInput = document.getElementById('track-form-duration') as HTMLInputElement | null;
-
-    let prefilledCount = 0;
 
     if (data.links.spotify && spotifyInput && (!spotifyInput.value.trim() || forceOverwrite)) {
       if (spotifyInput.value !== data.links.spotify) prefilledCount++;
@@ -94,7 +89,9 @@ export async function autoLookupStreamingLinks(
     }
   } catch (err: any) {
     console.error('Auto-lookup error:', err);
-    if (forceOverwrite) {
+    if (prefilledCount > 0) {
+      showToast(`Prefilled streaming links for "${cleanTitle}".`, 'success');
+    } else if (forceOverwrite) {
       showToast('Network error while searching streaming links.', 'error');
     }
   } finally {
