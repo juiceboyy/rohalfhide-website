@@ -1,0 +1,178 @@
+---
+import type { ProducerChapter, SongIdea } from '../../scripts/admin/producer-types';
+import VaultStage from './VaultStage.astro';
+
+interface Props {
+  chapters: ProducerChapter[];
+  songIdeas: SongIdea[];
+  instagramHighlightsUrl: string;
+}
+
+const { chapters, songIdeas, instagramHighlightsUrl } = Astro.props;
+
+const activeChapters = chapters.filter((c) => !c.draft);
+const publishedIdeas = songIdeas.filter((i) => !i.draft);
+const initialIdea = publishedIdeas[0] || null;
+const initialChapter = activeChapters.find((c) => c.id === initialIdea?.chapterId) || activeChapters[0] || null;
+---
+
+<section id="song-ideas" class="py-24 bg-surface-base shadow-divider-t">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    <!-- Left Column: Vault Intro, IG Archive Link & Chapter Index -->
+    <div class="lg:col-span-4 space-y-8">
+      <div class="space-y-3">
+        <h2 class="font-serif font-semibold text-4xl sm:text-5xl tracking-[-0.04em] leading-[1.05] text-surface-ink">
+          Song Ideas
+        </h2>
+        <p class="font-sans font-normal text-base text-surface-muted leading-relaxed">
+          Unfinished sketches, late-night chord progressions, and rhythmic frames collected from studio sessions and Instagram Stories.
+        </p>
+      </div>
+
+      <div>
+        <a
+          href={instagramHighlightsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent hover:text-accent-hover transition-colors duration-150 rounded-sm focus-ring"
+        >
+          <span>Instagram Highlights Archive</span>
+          <svg aria-hidden="true" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M7 17L17 7M9 7h8v8"></path>
+          </svg>
+        </a>
+      </div>
+
+      {activeChapters.length > 0 && (
+        <nav aria-label="Song Ideas Chapters" class="pt-4 shadow-divider-t space-y-1">
+          <p class="font-mono font-medium text-xs uppercase tracking-[0.2em] text-surface-subtle pb-3">
+            Curated Crates
+          </p>
+          {activeChapters.map((chapter, idx) => {
+            const count = publishedIdeas.filter((i) => i.chapterId === chapter.id).length;
+            const isInitial = initialChapter ? chapter.id === initialChapter.id : idx === 0;
+            return (
+              <button
+                type="button"
+                data-chapter-tab={chapter.id}
+                aria-expanded={isInitial ? 'true' : 'false'}
+                aria-controls={`chapter-panel-${chapter.id}`}
+                class={`vault-chapter-btn w-full text-left py-3.5 px-3 rounded-lg flex items-center justify-between gap-4 transition-colors duration-150 focus-ring ${
+                  isInitial ? 'bg-white/[0.05] text-surface-ink' : 'text-surface-muted hover:text-surface-ink hover:bg-white/[0.03]'
+                }`}
+              >
+                <span class="flex items-center gap-3 min-w-0">
+                  <span class={`chapter-index font-mono text-xs shrink-0 ${isInitial ? 'text-accent' : 'text-surface-subtle'}`}>
+                    {chapter.indexLabel || String(idx + 1).padStart(2, '0')}
+                  </span>
+                  <span class="font-sans font-medium text-sm truncate">
+                    {chapter.title}
+                  </span>
+                </span>
+                <span class="font-mono text-xs text-surface-subtle shrink-0">
+                  {count}
+                </span>
+              </button>
+            );
+          })}
+        </nav>
+      )}
+    </div>
+
+    <!-- Right Column: Frosted-Glass Stage + Searchable Chapter Crates -->
+    <div class="lg:col-span-8 bg-surface-raised/70 backdrop-blur-2xl rounded-2xl shadow-hairline p-6 sm:p-8 space-y-8">
+      {initialIdea ? (
+        <>
+          <VaultStage initialIdea={initialIdea} />
+
+          <div id="vault-chapters-container" class="pt-4 shadow-divider-t">
+            {activeChapters.map((chapter, chIdx) => {
+              const items = publishedIdeas.filter((i) => i.chapterId === chapter.id);
+              const isInitial = initialChapter ? chapter.id === initialChapter.id : chIdx === 0;
+              return (
+                <div
+                  id={`chapter-panel-${chapter.id}`}
+                  data-chapter-panel={chapter.id}
+                  hidden={isInitial ? undefined : 'until-found'}
+                >
+                  <div class="space-y-4">
+                    <p class="font-sans text-xs text-surface-muted leading-relaxed">
+                      {chapter.description}
+                    </p>
+
+                    {items.length > 0 ? (
+                      <div class="space-y-1">
+                        {items.map((idea, idx) => {
+                          const isSelected = idea.id === initialIdea.id;
+                          return (
+                            <button
+                              type="button"
+                              data-idea-id={idea.id}
+                              data-chapter-id={chapter.id}
+                              data-media-type={idea.mediaType}
+                              data-src={idea.src}
+                              data-poster={idea.poster || idea.cover || ''}
+                              data-cover={idea.cover || idea.poster || '/images/hero-portrait.jpg'}
+                              data-title={idea.title}
+                              data-note={idea.note}
+                              data-duration={idea.duration}
+                              data-aspect={idea.aspectRatio || (idea.mediaType === 'video' ? '9:16' : '1:1')}
+                              data-width={String(idea.width || (idea.mediaType === 'video' ? 360 : 600))}
+                              data-height={String(idea.height || (idea.mediaType === 'video' ? 640 : 600))}
+                              aria-current={isSelected ? 'true' : undefined}
+                              class={`vault-idea-item w-full text-left flex items-start sm:items-center justify-between gap-4 py-4 px-4 rounded-lg shadow-divider-b last:shadow-none hover:bg-white/[0.04] transition-colors duration-150 group focus-ring ${
+                                isSelected ? 'bg-white/[0.05]' : ''
+                              }`}
+                            >
+                              <span class="flex items-start sm:items-center gap-4 min-w-0">
+                                <span class={`idea-index font-mono text-xs w-6 shrink-0 pt-0.5 sm:pt-0 ${isSelected ? 'text-accent' : 'text-surface-subtle'}`}>
+                                  {String(idx + 1).padStart(2, '0')}
+                                </span>
+                                <span class="min-w-0 space-y-0.5">
+                                  <span class={`idea-row-title block font-sans font-medium text-sm truncate transition-colors duration-150 ${isSelected ? 'text-surface-ink' : 'text-surface-muted group-hover:text-surface-ink'}`}>
+                                    {idea.title}
+                                  </span>
+                                  {idea.note && (
+                                    <span class="block font-sans text-xs text-surface-subtle line-clamp-1">
+                                      {idea.note}
+                                    </span>
+                                  )}
+                                </span>
+                              </span>
+
+                              <span class="flex items-center gap-4 shrink-0 pt-0.5 sm:pt-0">
+                                <span class="font-mono text-[11px] uppercase tracking-[0.14em] text-surface-subtle">
+                                  {idea.mediaType === 'video' ? 'Clip' : 'Audio'}
+                                </span>
+                                <span class="font-mono text-xs text-surface-subtle w-10 text-right">
+                                  {idea.duration}
+                                </span>
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <p class="py-6 font-sans text-sm text-surface-muted">
+                        No ideas published in this crate yet. Upload clips in <a href="/admin" class="text-accent underline underline-offset-4">Admin</a> or run <code class="font-mono text-xs text-surface-ink">npm run import:producer</code>.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      ) : (
+        <div class="py-10 space-y-3">
+          <p class="font-serif text-xl text-surface-ink">Song Ideas Vault</p>
+          <p class="font-sans text-sm text-surface-muted leading-relaxed">
+            No published song ideas yet. Import clips from your Instagram Highlights or add tracks in the CMS.
+          </p>
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<script src="../../scripts/producer-vault.ts"></script>

@@ -1,0 +1,118 @@
+---
+---
+
+<div id="section-producer" class="hidden space-y-8">
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="space-y-1">
+      <h2 class="font-serif text-2xl font-semibold text-surface-ink">
+        Producer Portfolio &amp; Song Ideas
+      </h2>
+      <p class="font-sans text-xs text-surface-muted">
+        Manage curated Song Ideas crates (audio &amp; video clips), production credits, collaborator quotes, and studio copy for <a href="/producer" target="_blank" rel="noopener noreferrer" class="text-accent underline underline-offset-4">/producer</a>.
+      </p>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-2">
+      <button
+        type="button"
+        id="admin-edit-producer-settings-btn"
+        class="px-3.5 py-2 rounded-lg bg-surface-raised hover:bg-white/[0.08] text-surface-ink shadow-hairline font-sans text-xs font-medium transition-colors focus-ring"
+      >
+        Studio &amp; Copy
+      </button>
+      <button
+        type="button"
+        id="admin-add-chapter-btn"
+        class="px-3.5 py-2 rounded-lg bg-surface-raised hover:bg-white/[0.08] text-surface-ink shadow-hairline font-sans text-xs font-medium transition-colors focus-ring"
+      >
+        + Chapter
+      </button>
+      <button
+        type="button"
+        id="admin-add-idea-btn"
+        class="px-4 py-2 rounded-lg bg-surface-ink hover:bg-white text-surface-void font-sans text-xs font-medium transition-colors focus-ring"
+      >
+        + Song Idea
+      </button>
+    </div>
+  </div>
+
+  <!-- Sub-section Tabs -->
+  <div class="flex flex-wrap items-center gap-1 bg-surface-base p-1 rounded-lg shadow-hairline w-fit">
+    <button
+      type="button"
+      data-producer-subtab="ideas"
+      class="px-3 py-1.5 rounded text-xs font-mono transition-colors bg-surface-raised text-surface-ink focus-ring"
+    >
+      Song Ideas &amp; Crates
+    </button>
+    <button
+      type="button"
+      data-producer-subtab="credits"
+      class="px-3 py-1.5 rounded text-xs font-mono transition-colors text-surface-muted hover:text-surface-ink focus-ring"
+    >
+      Credits
+    </button>
+    <button
+      type="button"
+      data-producer-subtab="testimonials"
+      class="px-3 py-1.5 rounded text-xs font-mono transition-colors text-surface-muted hover:text-surface-ink focus-ring"
+    >
+      Testimonials
+    </button>
+  </div>
+
+  <!-- Sub-view 1: Chapters & Song Ideas -->
+  <div id="producer-subview-ideas" class="space-y-6">
+    <div class="bg-surface-raised/40 shadow-hairline rounded-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-mono text-xs uppercase tracking-[0.16em] text-surface-subtle">
+          Curated Crates / Chapters
+        </h3>
+      </div>
+      <div id="producer-chapters-container"></div>
+    </div>
+
+    <div class="bg-surface-raised/40 shadow-hairline rounded-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-mono text-xs uppercase tracking-[0.16em] text-surface-subtle">
+          Song Ideas Library (.mp3 &amp; .mp4)
+        </h3>
+      </div>
+      <div id="producer-ideas-container"></div>
+    </div>
+  </div>
+
+  <!-- Sub-view 2: Credits -->
+  <div id="producer-subview-credits" class="hidden space-y-4">
+    <div class="flex justify-end">
+      <button
+        type="button"
+        id="admin-add-credit-btn"
+        class="px-4 py-2 rounded-lg bg-surface-ink hover:bg-white text-surface-void font-sans text-xs font-medium transition-colors focus-ring"
+      >
+        + Add Credit
+      </button>
+    </div>
+    <div class="bg-surface-raised/40 shadow-hairline rounded-2xl p-6">
+      <div id="producer-credits-container"></div>
+    </div>
+  </div>
+
+  <!-- Sub-view 3: Testimonials -->
+  <div id="producer-subview-testimonials" class="hidden space-y-4">
+    <div class="flex justify-end">
+      <button
+        type="button"
+        id="admin-add-testimonial-btn"
+        class="px-4 py-2 rounded-lg bg-surface-ink hover:bg-white text-surface-void font-sans text-xs font-medium transition-colors focus-ring"
+      >
+        + Add Quote
+      </button>
+    </div>
+    <div class="bg-surface-raised/40 shadow-hairline rounded-2xl p-6">
+      <div id="producer-testimonials-container"></div>
+    </div>
+  </div>
+</div>

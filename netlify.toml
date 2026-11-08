@@ -17,6 +17,12 @@
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
+  for = "/video/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
   for = "/images/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
@@ -44,6 +50,11 @@
 [[redirects]]
   from = "/api/admin/music"
   to = "/.netlify/functions/admin-music"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/producer"
+  to = "/.netlify/functions/admin-producer"
   status = 200
 
 [[redirects]]

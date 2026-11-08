@@ -178,7 +178,7 @@ function sanitizeFilename(name = ''): string {
  */
 export async function uploadMedia(
   file: File,
-  type: 'image' | 'audio'
+  type: 'image' | 'audio' | 'video'
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -188,9 +188,11 @@ export async function uploadMedia(
         const base64Data = (reader.result as string).split(',')[1];
         const cleanName = sanitizeFilename(file.name);
         const isAudio = type === 'audio' || cleanName.endsWith('.mp3');
-        const targetDir = isAudio ? 'public/audio' : 'public/images';
+        const isVideo = type === 'video' || cleanName.endsWith('.mp4') || cleanName.endsWith('.webm');
+        const folder = isVideo ? 'video' : isAudio ? 'audio' : 'images';
+        const targetDir = `public/${folder}`;
         const targetPath = `${targetDir}/${cleanName}`;
-        const publicUrl = `/${isAudio ? 'audio' : 'images'}/${cleanName}`;
+        const publicUrl = `/${folder}/${cleanName}`;
 
         const gh = currentSessionState?.gitHub;
 

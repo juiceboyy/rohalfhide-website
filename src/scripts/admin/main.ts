@@ -2,11 +2,12 @@ import { checkSession, loginAdmin, logoutAdmin, showToast } from './api';
 import { loadNewsList, setupNewsEvents } from './news';
 import { loadMusicList, setupMusicEvents } from './music';
 import { loadCommentsList, setupCommentsEvents } from './comments';
+import { loadProducerData, setupProducerEvents } from './producer';
 
 let isInitialized = false;
 
-function switchTab(tabId: 'news' | 'music' | 'comments'): void {
-  const sections = ['news', 'music', 'comments'];
+function switchTab(tabId: 'news' | 'music' | 'producer' | 'comments'): void {
+  const sections = ['news', 'music', 'producer', 'comments'];
 
   sections.forEach((s) => {
     const secEl = document.getElementById(`section-${s}`);
@@ -25,6 +26,7 @@ function switchTab(tabId: 'news' | 'music' | 'comments'): void {
 
   if (tabId === 'news') loadNewsList();
   if (tabId === 'music') loadMusicList();
+  if (tabId === 'producer') loadProducerData();
   if (tabId === 'comments') loadCommentsList();
 }
 
@@ -57,12 +59,13 @@ async function showDashboard(session: any): Promise<void> {
   if (!isInitialized) {
     setupNewsEvents();
     setupMusicEvents();
+    setupProducerEvents();
     setupCommentsEvents();
     setupTabButtons();
     isInitialized = true;
   }
 
-  await Promise.all([loadNewsList(), loadMusicList(), loadCommentsList()]);
+  await Promise.all([loadNewsList(), loadMusicList(), loadProducerData(), loadCommentsList()]);
 }
 
 function showLogin(): void {
@@ -76,6 +79,7 @@ function showLogin(): void {
 function setupTabButtons(): void {
   document.getElementById('tab-btn-news')?.addEventListener('click', () => switchTab('news'));
   document.getElementById('tab-btn-music')?.addEventListener('click', () => switchTab('music'));
+  document.getElementById('tab-btn-producer')?.addEventListener('click', () => switchTab('producer'));
   document.getElementById('tab-btn-comments')?.addEventListener('click', () => switchTab('comments'));
 }
 

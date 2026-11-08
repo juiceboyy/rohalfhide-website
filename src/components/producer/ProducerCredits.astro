@@ -1,0 +1,165 @@
+---
+import type { ProductionCredit } from '../../scripts/admin/producer-types';
+
+interface Props {
+  credits: ProductionCredit[];
+}
+
+const { credits } = Astro.props;
+const publishedCredits = credits.filter((c) => !c.draft);
+---
+
+<section id="credits" class="py-24 bg-surface-void shadow-divider-t">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    <!-- Left Column -->
+    <div class="lg:col-span-4 space-y-3">
+      <h2 class="font-serif font-semibold text-4xl sm:text-5xl tracking-[-0.04em] leading-[1.05] text-surface-ink">
+        Selected Productions
+      </h2>
+      <p class="font-sans font-normal text-base text-surface-muted leading-relaxed">
+        Released albums, singles, and production collaborations built for vocal truth and dynamic restraint.
+      </p>
+    </div>
+
+    <!-- Right Column: Editorial Credit Ledger -->
+    <div class="lg:col-span-8 bg-surface-raised/50 rounded-2xl shadow-hairline p-6 sm:p-8 divide-y divide-white/[0.06]">
+      {publishedCredits.map((credit) => (
+        <article class="py-5 first:pt-0 last:pb-0 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+          <div class="flex items-start sm:items-center gap-4 min-w-0">
+            <img
+              src={credit.cover || '/images/hero-portrait.jpg'}
+              alt={`${credit.artist} - ${credit.title}`}
+              width="64"
+              height="64"
+              loading="lazy"
+              class="w-16 h-16 rounded-xl object-cover bg-surface-base shadow-hairline shrink-0"
+            />
+
+            <div class="min-w-0 space-y-1">
+              <div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-surface-subtle">
+                <span>{credit.year}</span>
+                <span>{credit.role}</span>
+              </div>
+              <h3 class="font-serif font-semibold text-xl text-surface-ink leading-snug">
+                {credit.artist} <span class="font-sans font-normal text-surface-muted">- {credit.title}</span>
+              </h3>
+              {credit.notes && (
+                <p class="font-sans text-xs text-surface-muted leading-relaxed">
+                  {credit.notes}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4 shrink-0 self-end sm:self-center">
+            {credit.audioPreview && (
+              <button
+                type="button"
+                data-credit-preview={credit.audioPreview}
+                data-credit-id={credit.id}
+                aria-pressed="false"
+                class="credit-preview-btn inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-surface-base hover:bg-white/[0.08] text-surface-ink shadow-hairline font-mono text-xs uppercase tracking-[0.14em] transition-colors duration-150 focus-ring"
+              >
+                <svg class="credit-preview-icon w-3.5 h-3.5 fill-current text-accent" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+                <span class="credit-preview-label">Preview</span>
+              </button>
+            )}
+
+            {credit.externalUrl && (
+              <a
+                href={credit.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.14em] text-accent hover:text-accent-hover transition-colors duration-150 rounded-sm focus-ring"
+              >
+                <span>Listen</span>
+                <svg aria-hidden="true" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M7 17L17 7M9 7h8v8"></path>
+                </svg>
+              </a>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  function initCreditPreviews() {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.credit-preview-btn');
+    if (buttons.length === 0) return;
+
+    let activeAudio: HTMLAudioElement | null = null;
+    let activeBtn: HTMLButtonElement | null = null;
+
+    function setBtnState(btn: HTMLButtonElement | null, playing: boolean) {
+      if (!btn) return;
+      btn.setAttribute('aria-pressed', playing ? 'true' : 'false');
+      const label = btn.querySelector('.credit-preview-label');
+      if (label) label.textContent = playing ? 'Stop' : 'Preview';
+      const path = btn.querySelector('.credit-preview-icon path');
+      if (path) path.setAttribute('d', playing ? 'M6 6h12v12H6z' : 'M8 5v14l11-7z');
+    }
+
+    window.addEventListener('ro-media:play', (e: Event) => {
+      const source = (e as CustomEvent).detail?.source;
+      if (source !== 'credit-preview' && activeAudio && !activeAudio.paused) {
+        activeAudio.pause();
+        setBtnState(activeBtn, false);
+        activeBtn = null;
+      }
+    });
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const src = btn.getAttribute('data-credit-preview');
+        if (!src) return;
+
+        if (activeBtn === btn && activeAudio) {
+          activeAudio.pause();
+          activeAudio.currentTime = 0;
+          setBtnState(btn, false);
+          activeBtn = null;
+          activeAudio = null;
+          return;
+        }
+
+        if (activeAudio) {
+          activeAudio.pause();
+          setBtnState(activeBtn, false);
+        }
+
+        window.dispatchEvent(new CustomEvent('ro-media:play', { detail: { source: 'credit-preview' } }));
+        const audio = new Audio(src);
+        activeAudio = audio;
+        activeBtn = btn;
+        setBtnState(btn, true);
+
+        audio.play().catch((err) => {
+          if (err?.name !== 'NotAllowedError') console.error(err);
+          if (activeAudio === audio) {
+            setBtnState(btn, false);
+            activeBtn = null;
+            activeAudio = null;
+          }
+        });
+        audio.onended = () => {
+          if (activeAudio === audio) {
+            setBtnState(btn, false);
+            activeBtn = null;
+            activeAudio = null;
+          }
+        };
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCreditPreviews);
+  } else {
+    initCreditPreviews();
+  }
+</script>

@@ -1,0 +1,94 @@
+---
+import type { ProducerHeroData } from '../../scripts/admin/producer-types';
+
+interface Props {
+  hero: ProducerHeroData;
+  instagramHighlightsUrl: string;
+}
+
+const { hero, instagramHighlightsUrl } = Astro.props;
+---
+
+<section class="relative w-full min-h-[min(78vh,740px)] bg-surface-void text-surface-ink overflow-hidden flex flex-col justify-between">
+  <!-- Right-Anchored Full-Bleed Studio Atmosphere Canvas -->
+  <div class="absolute inset-x-0 top-0 h-[48%] sm:inset-y-0 sm:left-auto sm:right-0 sm:h-full sm:w-3/5 lg:w-[52%] pointer-events-none select-none overflow-hidden">
+    <img
+      src="/images/about-banner.webp"
+      alt="Ro Halfhide in studio atmosphere"
+      width="2880"
+      height="1680"
+      fetchpriority="high"
+      class="w-full h-full object-cover object-center opacity-85"
+    />
+    <!-- Directional Left Edge Feather -->
+    <div class="hidden sm:block absolute inset-y-0 left-0 w-36 lg:w-64 bg-gradient-to-r from-surface-void via-surface-void/70 to-transparent"></div>
+    <!-- Directional Bottom Edge Feather -->
+    <div class="absolute inset-x-0 bottom-0 h-32 sm:h-40 bg-gradient-to-t from-surface-void via-surface-void/85 to-transparent"></div>
+  </div>
+
+  <!-- Foreground Editorial Spread -->
+  <div class="relative z-10 max-w-6xl mx-auto w-full flex-grow flex flex-col justify-between px-6 lg:px-8 py-10 sm:py-14 lg:py-16">
+    <!-- Top Architectural Coordinate Line -->
+    <div class="hidden sm:flex items-center justify-between gap-6 pb-4 shadow-divider-b max-w-lg lg:max-w-xl text-xs font-mono uppercase tracking-[0.2em] text-surface-subtle">
+      <span>{hero.eyebrowLeft}</span>
+      <span>{hero.eyebrowRight}</span>
+    </div>
+
+    <!-- Centerpiece Narrative -->
+    <div class="mt-[min(34vh,280px)] sm:my-auto py-8 sm:py-10 max-w-lg lg:max-w-xl xl:max-w-2xl space-y-6">
+      <p class="sm:hidden font-mono text-xs uppercase tracking-[0.2em] text-surface-subtle">
+        {hero.eyebrowLeft}
+      </p>
+
+      <h1 class="font-serif font-semibold text-4xl sm:text-6xl lg:text-7xl tracking-[-0.04em] leading-[1.02] text-surface-ink">
+        {hero.title}
+      </h1>
+
+      <p class="font-sans font-normal text-base sm:text-lg text-surface-ink/85 leading-relaxed max-w-xl">
+        {hero.subtitle}
+      </p>
+
+      <div class="pt-2 flex flex-wrap items-center gap-4">
+        <a
+          href="#song-ideas"
+          class="px-7 py-3.5 bg-surface-ink hover:bg-white text-surface-void font-mono font-medium text-xs uppercase tracking-[0.16em] rounded-full transition-colors duration-150 focus-ring"
+        >
+          Song Ideas Vault
+        </a>
+        <a
+          href="#credits"
+          class="px-7 py-3.5 bg-white/[0.06] hover:bg-white/[0.12] text-surface-ink backdrop-blur-md shadow-hairline-strong font-mono font-medium text-xs uppercase tracking-[0.16em] rounded-full transition-colors duration-150 focus-ring"
+        >
+          Productions
+        </a>
+        <a
+          href={instagramHighlightsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 px-3 py-3 text-accent hover:text-accent-hover font-mono font-medium text-xs uppercase tracking-[0.16em] rounded-sm transition-colors duration-150 focus-ring"
+        >
+          <span>IG Highlights</span>
+          <svg aria-hidden="true" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M7 17L17 7M9 7h8v8"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Bottom Asymmetric Strip -->
+    <div class="pt-6 shadow-divider-t grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+      <p class="sm:col-span-7 font-mono text-xs uppercase tracking-[0.16em] text-surface-subtle">
+        Arrangement, co-writing &amp; bespoke sonic direction
+      </p>
+      <div class="sm:col-span-5 sm:text-right">
+        <a
+          href="#contact"
+          class="inline-flex items-center gap-2 font-mono text-xs font-medium uppercase tracking-[0.16em] text-surface-ink/90 hover:text-accent transition-colors duration-150 rounded-sm focus-ring"
+        >
+          <span>Start a Project</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

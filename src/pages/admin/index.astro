@@ -2,6 +2,9 @@
 import '../../styles/global.css';
 import NewsEditorModal from '../../components/admin/NewsEditorModal.astro';
 import TrackEditorModal from '../../components/admin/TrackEditorModal.astro';
+import ProducerAdminSection from '../../components/admin/ProducerAdminSection.astro';
+import ProducerEditorModal from '../../components/admin/ProducerEditorModal.astro';
+import ProducerSettingsModal from '../../components/admin/ProducerSettingsModal.astro';
 ---
 
 <!doctype html>
@@ -123,6 +126,15 @@ import TrackEditorModal from '../../components/admin/TrackEditorModal.astro';
 
           <button
             type="button"
+            id="tab-btn-producer"
+            class="px-4 py-2 rounded-lg font-sans text-xs font-medium transition-colors text-surface-muted hover:text-surface-ink flex items-center gap-2 focus-ring"
+          >
+            <span>Producer Vault</span>
+            <span id="producer-count-badge" class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-white/[0.08] text-surface-muted">0</span>
+          </button>
+
+          <button
+            type="button"
             id="tab-btn-comments"
             class="px-4 py-2 rounded-lg font-sans text-xs font-medium transition-colors text-surface-muted hover:text-surface-ink flex items-center gap-2 focus-ring"
           >
@@ -183,6 +195,9 @@ import TrackEditorModal from '../../components/admin/TrackEditorModal.astro';
           </div>
         </div>
 
+        <!-- Section: Producer Portfolio -->
+        <ProducerAdminSection />
+
         <!-- Section: Comments Moderation -->
         <div id="section-comments" class="hidden space-y-6">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -238,6 +253,8 @@ import TrackEditorModal from '../../components/admin/TrackEditorModal.astro';
     <!-- Modals -->
     <NewsEditorModal />
     <TrackEditorModal />
+    <ProducerEditorModal />
+    <ProducerSettingsModal />
 
     <!-- Floating Toast Notifications Layer -->
     <div

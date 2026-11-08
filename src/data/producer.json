@@ -1,0 +1,162 @@
+{
+  "instagramHighlightsUrl": "https://www.instagram.com/stories/highlights/18158156884248319/",
+  "hero": {
+    "eyebrowLeft": "Producer & Songwriter",
+    "eyebrowRight": "Jupiterkade 2, The Hague",
+    "title": "Shaping honest songs from first spark to master.",
+    "subtitle": "Studio productions, artist collaborations, and an evolving vault of raw musical sketches curated from studio sessions and Instagram Song Ideas."
+  },
+  "studio": {
+    "name": "Jupiterkade 2 Studio",
+    "address": "Jupiterkade 2",
+    "city": "The Hague, The Netherlands",
+    "summary": "A focused songwriting and production room in The Hague built around feel, vocal presence, and unhurried arrangement.",
+    "approach": "Every production starts with serving the core emotion of the song - pairing tactile acoustic instruments, warm analog-inspired textures, and subtle rhythmic movement so artists sound unmistakably like themselves.",
+    "setupHighlights": [
+      "Vocal chain tuned for intimate, unforced lead performances",
+      "Acoustic guitars, Rhodes/keys, tactile upright & analog synth textures",
+      "Full arrangement, drum programming, and hybrid mixing under one roof"
+    ]
+  },
+  "services": [
+    {
+      "id": "svc-production",
+      "title": "Full Track & Album Production",
+      "description": "Guiding a song from voice memo or acoustic demo through arrangement, tracking, instrumentation, and final mix."
+    },
+    {
+      "id": "svc-cowriting",
+      "title": "Co-Writing & Song Development",
+      "description": "Focused studio writing sessions to unlock melodies, chord movement, structure, and lyrical clarity."
+    },
+    {
+      "id": "svc-mixing",
+      "title": "Arrangement & Sonic Direction",
+      "description": "Stepping in on existing demos to elevate dynamics, harmonic tension, vocal layering, and overall cohesion."
+    },
+    {
+      "id": "svc-sync",
+      "title": "Sync & Bespoke Song Starters",
+      "description": "Developing original cues or adapting raw sketches from the Song Ideas vault for artists, film, and visual storytelling."
+    }
+  ],
+  "chapters": [
+    {
+      "id": "chapter-acoustic-soul",
+      "indexLabel": "01",
+      "title": "Acoustic & Soul Sketches",
+      "description": "Intimate guitar figures, warm Rhodes progressions, and vocal-ready song starters rooted in soul and alternative pop.",
+      "draft": false
+    },
+    {
+      "id": "chapter-synth-textures",
+      "indexLabel": "02",
+      "title": "Synth & Texture Studies",
+      "description": "Atmospheric pads, tape-warmed chord loops, and late-night melodic motifs captured straight from the studio desk.",
+      "draft": false
+    },
+    {
+      "id": "chapter-rhythmic-beds",
+      "indexLabel": "03",
+      "title": "Rhythmic Beds & Grooves",
+      "description": "Pocket-driven drum sketches, basslines, and percussive frames ready to build top-lines and full arrangements around.",
+      "draft": false
+    }
+  ],
+  "songIdeas": [
+    {
+      "id": "idea-1",
+      "chapterId": "chapter-acoustic-soul",
+      "title": "It's been good (Studio Reference)",
+      "mediaType": "audio",
+      "src": "/audio/its-been-good.mp3",
+      "cover": "/images/its-been-good.jpg",
+      "duration": "1:50",
+      "note": "Stripped-back arrangement centered on vocal intimacy and warm harmonic sustain.",
+      "year": "2025",
+      "instagramUrl": "https://www.instagram.com/stories/highlights/18158156884248319/",
+      "draft": false
+    },
+    {
+      "id": "idea-2",
+      "chapterId": "chapter-synth-textures",
+      "title": "Evening Sun (Atmosphere Study)",
+      "mediaType": "audio",
+      "src": "/audio/evening-sun.mp3",
+      "cover": "/images/evening-sun.jpg",
+      "duration": "3:06",
+      "note": "Layered pad swells and slow-building dynamic lift designed to leave space for storytelling vocals.",
+      "year": "2024",
+      "instagramUrl": "https://www.instagram.com/stories/highlights/18158156884248319/",
+      "draft": false
+    },
+    {
+      "id": "idea-3",
+      "chapterId": "chapter-rhythmic-beds",
+      "title": "Surabaya Kutha (Groove & Motif)",
+      "mediaType": "audio",
+      "src": "/audio/surabaya-kutha.mp3",
+      "cover": "/images/artwork-surabaya-kutha.jpeg",
+      "duration": "4:08",
+      "note": "Percussive acoustic pocket blending cultural rhythmic motifs with modern alternative pop production.",
+      "year": "2024",
+      "instagramUrl": "https://www.instagram.com/stories/highlights/18158156884248319/",
+      "draft": false
+    }
+  ],
+  "credits": [
+    {
+      "id": "credit-lucky-fonz",
+      "title": "Album Production",
+      "artist": "Lucky Fonz III",
+      "role": "Producer",
+      "year": "Selected Credit",
+      "cover": "/images/about-banner.webp",
+      "notes": "Full album production for celebrated Dutch singer-songwriter Lucky Fonz III.",
+      "draft": false
+    },
+    {
+      "id": "credit-case-mayfield",
+      "title": "Album Production",
+      "artist": "Case Mayfield",
+      "role": "Producer",
+      "year": "Selected Credit",
+      "cover": "/images/cover-act.jpg",
+      "notes": "Album production shaping an organic, vocal-forward singer-songwriter sound.",
+      "draft": false
+    },
+    {
+      "id": "credit-its-been-good",
+      "title": "It's been good",
+      "artist": "Ro Halfhide",
+      "role": "Songwriting, Production & Mixing",
+      "year": "2025",
+      "cover": "/images/its-been-good.jpg",
+      "audioPreview": "/audio/its-been-good.mp3",
+      "externalUrl": "https://open.spotify.com/track/1ZtrRsMJlTWw7g1MDmluJP",
+      "notes": "Alternative pop & soul single produced at Jupiterkade 2.",
+      "draft": false
+    },
+    {
+      "id": "credit-evening-sun",
+      "title": "Evening Sun",
+      "artist": "Ro Halfhide",
+      "role": "Songwriting & Production",
+      "year": "2024",
+      "cover": "/images/evening-sun.jpg",
+      "audioPreview": "/audio/evening-sun.mp3",
+      "externalUrl": "https://open.spotify.com/track/1cedTVv89YDonTGkwjt72X",
+      "notes": "Soulful alternative pop production built around acoustic depth and subtle lift.",
+      "draft": false
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "testimonial-template-1",
+      "quote": "Replace this draft template in /admin with a real collaborator quote before publishing.",
+      "author": "Collaborator Name",
+      "roleOrProject": "Artist / Project Title",
+      "draft": true
+    }
+  ]
+}

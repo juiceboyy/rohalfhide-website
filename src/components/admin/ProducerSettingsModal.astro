@@ -1,0 +1,94 @@
+---
+---
+
+<dialog
+  id="producer-settings-dialog"
+  closedby="any"
+  aria-labelledby="producer-settings-title"
+  class="p-0 bg-transparent border-0 max-w-2xl w-[calc(100%-2rem)] m-auto text-surface-ink"
+>
+  <div class="bg-surface-base shadow-hairline-strong rounded-2xl max-h-[90vh] flex flex-col overflow-hidden">
+    <div class="px-6 py-4 shadow-divider-b flex items-center justify-between shrink-0 bg-surface-raised/40">
+      <div>
+        <h2 id="producer-settings-title" class="font-serif text-xl font-semibold text-surface-ink">
+          Studio &amp; Hero Copy
+        </h2>
+        <p class="font-sans text-xs text-surface-muted">
+          Update the /producer hero statement, Instagram Highlights URL, and Jupiterkade 2 studio details.
+        </p>
+      </div>
+      <button
+        type="button"
+        id="producer-settings-close-btn"
+        class="text-surface-subtle hover:text-surface-ink p-2 rounded-lg transition-colors focus-ring"
+        aria-label="Close dialog"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <form id="producer-settings-form" class="flex-grow overflow-y-auto p-6 space-y-5">
+      <div class="space-y-1">
+        <label for="ps-ig-url" class="font-mono text-xs text-surface-subtle uppercase">Instagram Song Ideas Highlights URL</label>
+        <input id="ps-ig-url" type="url" required autofocus class="form-input text-xs" />
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="space-y-1">
+          <label for="ps-hero-left" class="font-mono text-xs text-surface-subtle uppercase">Hero Label (Left)</label>
+          <input id="ps-hero-left" type="text" class="form-input" />
+        </div>
+        <div class="space-y-1">
+          <label for="ps-hero-right" class="font-mono text-xs text-surface-subtle uppercase">Hero Label (Right)</label>
+          <input id="ps-hero-right" type="text" class="form-input" />
+        </div>
+      </div>
+
+      <div class="space-y-1">
+        <label for="ps-hero-title" class="font-mono text-xs text-surface-subtle uppercase">Hero Headline</label>
+        <input id="ps-hero-title" type="text" required class="form-input" />
+      </div>
+
+      <div class="space-y-1">
+        <label for="ps-hero-subtitle" class="font-mono text-xs text-surface-subtle uppercase">Hero Subtitle</label>
+        <textarea id="ps-hero-subtitle" rows="2" class="form-input"></textarea>
+      </div>
+
+      <div class="pt-3 shadow-divider-t space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <label for="ps-studio-name" class="font-mono text-xs text-surface-subtle uppercase">Studio Name</label>
+            <input id="ps-studio-name" type="text" class="form-input" />
+          </div>
+          <div class="space-y-1">
+            <label for="ps-studio-city" class="font-mono text-xs text-surface-subtle uppercase">Studio City</label>
+            <input id="ps-studio-city" type="text" class="form-input" />
+          </div>
+        </div>
+        <div class="space-y-1">
+          <label for="ps-studio-summary" class="font-mono text-xs text-surface-subtle uppercase">Studio Summary</label>
+          <textarea id="ps-studio-summary" rows="2" class="form-input"></textarea>
+        </div>
+        <div class="space-y-1">
+          <label for="ps-studio-approach" class="font-mono text-xs text-surface-subtle uppercase">Studio Approach</label>
+          <textarea id="ps-studio-approach" rows="3" class="form-input"></textarea>
+        </div>
+        <div class="space-y-1">
+          <label for="ps-studio-highlights" class="font-mono text-xs text-surface-subtle uppercase">Setup Highlights (one per line)</label>
+          <textarea id="ps-studio-highlights" rows="3" class="form-input text-xs"></textarea>
+        </div>
+      </div>
+    </form>
+
+    <div class="px-6 py-4 shadow-divider-t flex items-center justify-between shrink-0 bg-surface-raised/40">
+      <button type="button" id="producer-settings-cancel-btn" class="px-4 py-2 rounded-lg text-xs font-sans text-surface-muted hover:text-surface-ink transition-colors focus-ring">
+        Cancel
+      </button>
+      <button type="submit" form="producer-settings-form" id="producer-settings-save-btn" class="px-5 py-2.5 rounded-lg bg-surface-ink hover:bg-white text-surface-void text-xs font-sans font-medium transition-colors focus-ring">
+        Save Copy
+      </button>
+    </div>
+  </div>
+</dialog>

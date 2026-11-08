@@ -1,7 +1,25 @@
 ---
+interface Props {
+  defaultSubject?: string;
+  subtitle?: string;
+  bgClass?: string;
+}
+
+const {
+  defaultSubject = 'Booking & Live Shows',
+  subtitle = 'For bookings, sync & licensing, or general inquiries.',
+  bgClass = 'bg-surface-void',
+} = Astro.props;
+
+const subjects = [
+  'Booking & Live Shows',
+  'Sync & Licensing',
+  'Studio & Production',
+  'General Inquiry',
+];
 ---
 
-<section id="contact" class="py-24 bg-surface-void shadow-divider-t">
+<section id="contact" class={`py-24 ${bgClass} shadow-divider-t`}>
   <div class="max-w-6xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
     <!-- Left Column: Coordinates -->
     <div class="lg:col-span-4 space-y-8">
@@ -10,7 +28,7 @@
           Contact
         </h2>
         <p class="font-sans font-normal text-base text-surface-muted leading-relaxed">
-          For bookings, sync &amp; licensing, or general inquiries.
+          {subtitle}
         </p>
       </div>
 
@@ -119,10 +137,11 @@
             Subject
           </label>
           <select id="contact-subject" name="subject" class="form-input">
-            <option value="Booking & Live Shows">Booking &amp; Live Shows</option>
-            <option value="Sync & Licensing">Sync &amp; Licensing</option>
-            <option value="Studio & Production">Studio &amp; Production</option>
-            <option value="General Inquiry">General Inquiry</option>
+            {subjects.map((opt) => (
+              <option value={opt} selected={opt === defaultSubject}>
+                {opt}
+              </option>
+            ))}
           </select>
           <p id="booking-hint" class="text-xs text-surface-muted pt-2.5 leading-relaxed">
             For private parties, corporate events, weddings, or acoustic cover sets, you can also book Ro's live act directly at
@@ -169,94 +188,4 @@
   </div>
 </section>
 
-<script>
-  function initContactForm() {
-    const form = document.getElementById('contact-form') as HTMLFormElement | null;
-    const submitBtn = document.getElementById('contact-submit') as HTMLButtonElement | null;
-    const statusEl = document.getElementById('contact-status');
-    const subjectSelect = document.getElementById('contact-subject') as HTMLSelectElement | null;
-    const bookingHint = document.getElementById('booking-hint');
-
-    if (subjectSelect && bookingHint) {
-      const updateBookingHint = () => {
-        if (subjectSelect.value === 'Booking & Live Shows') {
-          bookingHint.classList.remove('hidden');
-        } else {
-          bookingHint.classList.add('hidden');
-        }
-      };
-      subjectSelect.addEventListener('change', updateBookingHint);
-      updateBookingHint();
-    }
-
-    if (!form || !submitBtn) return;
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-      }
-
-      const originalLabel = submitBtn.textContent || 'Send Message';
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Sending...';
-      if (statusEl) {
-        statusEl.classList.add('hidden');
-        statusEl.textContent = '';
-      }
-
-      try {
-        const formData = new FormData(form);
-        const encoded = new URLSearchParams();
-        const payload: Record<string, string> = {};
-
-        formData.forEach((value, key) => {
-          if (typeof value === 'string') {
-            encoded.append(key, value);
-            payload[key] = value;
-          }
-        });
-
-        const [apiResult, netlifyResult] = await Promise.allSettled([
-          fetch('/api/contact', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-          }),
-          fetch('/__forms.html', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: encoded.toString(),
-          }),
-        ]);
-
-        const apiOk =
-          apiResult.status === 'fulfilled' &&
-          (apiResult.value.status === 200 || apiResult.value.status === 202);
-        const netlifyOk =
-          netlifyResult.status === 'fulfilled' && netlifyResult.value.ok;
-
-        if (apiOk || netlifyOk) {
-          window.location.assign('/success');
-          return;
-        }
-
-        throw new Error('Both submission endpoints failed.');
-      } catch {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalLabel;
-        if (statusEl) {
-          statusEl.textContent = 'Could not send message right now. Please try again or email halfhide@gmail.com directly.';
-          statusEl.classList.remove('hidden');
-        }
-      }
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initContactForm);
-  } else {
-    initContactForm();
-  }
-</script>
+<script src="../scripts/contact-form.ts"></script>

@@ -71,3 +71,15 @@ textarea.user-valid-fallback {
 ::-webkit-scrollbar-thumb:hover {
   background: #D4954A;
 }
+
+/* Native top-layer modal dialog containment (modern-web-guidance: dialog) */
+dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background-color: rgba(8, 9, 10, 0.82);
+  backdrop-filter: blur(8px);
+}

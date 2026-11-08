@@ -1,0 +1,77 @@
+---
+import type { ProducerService, ProducerStudioData } from '../../scripts/admin/producer-types';
+
+interface Props {
+  services: ProducerService[];
+  studio: ProducerStudioData;
+}
+
+const { services, studio } = Astro.props;
+---
+
+<section id="studio" class="py-24 bg-surface-base shadow-divider-t">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+    <!-- Left Column -->
+    <div class="lg:col-span-4 space-y-6">
+      <div class="space-y-3">
+        <h2 class="font-serif font-semibold text-4xl sm:text-5xl tracking-[-0.04em] leading-[1.05] text-surface-ink">
+          Process &amp; Studio
+        </h2>
+        <p class="font-sans font-normal text-base text-surface-muted leading-relaxed">
+          {studio.summary}
+        </p>
+      </div>
+
+      <div class="pt-6 shadow-divider-t space-y-1 text-sm">
+        <p class="font-mono font-medium text-xs uppercase tracking-[0.2em] text-surface-subtle">
+          Location
+        </p>
+        <p class="font-sans text-surface-ink">{studio.name}</p>
+        <p class="font-sans text-surface-muted">{studio.address}, {studio.city}</p>
+      </div>
+    </div>
+
+    <!-- Right Column: Services & Studio Philosophy -->
+    <div class="lg:col-span-8 space-y-12">
+      <!-- Services Asymmetric 2-Column Editorial Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8">
+        {services.map((service, idx) => (
+          <div class="pt-5 shadow-divider-t space-y-2.5">
+            <span class="block font-mono text-xs text-accent tracking-[0.16em]">
+              {String(idx + 1).padStart(2, '0')}
+            </span>
+            <h3 class="font-serif font-semibold text-xl text-surface-ink leading-snug">
+              {service.title}
+            </h3>
+            <p class="font-sans text-sm text-surface-muted leading-relaxed">
+              {service.description}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Studio Room & Approach -->
+      <div class="bg-surface-raised/60 rounded-2xl shadow-hairline p-6 sm:p-8 space-y-6">
+        <div class="space-y-2">
+          <p class="font-mono font-medium text-xs uppercase tracking-[0.2em] text-surface-subtle">
+            The Room &amp; Approach
+          </p>
+          <p class="font-sans text-base text-surface-ink/90 leading-relaxed">
+            {studio.approach}
+          </p>
+        </div>
+
+        {studio.setupHighlights.length > 0 && (
+          <ul class="pt-4 shadow-divider-t space-y-2.5 font-sans text-sm text-surface-muted">
+            {studio.setupHighlights.map((item) => (
+              <li class="flex items-start gap-3">
+                <span class="font-mono text-xs text-accent pt-0.5" aria-hidden="true">/</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  </div>
+</section>

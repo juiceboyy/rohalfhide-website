@@ -66,8 +66,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://rohalfhi
         </a>
 
         <!-- Desktop Navigation -->
-        <nav aria-label="Primary" class="hidden md:flex items-center gap-8 text-xs font-mono font-medium uppercase tracking-[0.16em]">
+        <nav aria-label="Primary" class="hidden md:flex items-center gap-4 lg:gap-7 text-xs font-mono font-medium uppercase tracking-[0.16em]">
           <a href="/#music" class="text-surface-muted hover:text-surface-ink transition-colors duration-150 rounded-sm focus-ring">Music</a>
+          <a href="/producer" class="text-surface-muted hover:text-surface-ink transition-colors duration-150 rounded-sm focus-ring">Producer</a>
           <a href="/#shows" class="text-surface-muted hover:text-surface-ink transition-colors duration-150 rounded-sm focus-ring">Shows</a>
           <a href="/#news" class="text-surface-muted hover:text-surface-ink transition-colors duration-150 rounded-sm focus-ring">News</a>
           <a href="/#bio" class="text-surface-muted hover:text-surface-ink transition-colors duration-150 rounded-sm focus-ring">Bio</a>
@@ -108,6 +109,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://rohalfhi
         class="hidden md:hidden bg-surface-base/95 backdrop-blur-xl shadow-divider-b px-6 py-6 space-y-4 text-xs font-mono font-medium uppercase tracking-[0.16em]"
       >
         <a href="/#music" class="block py-1 text-surface-ink rounded-sm focus-ring">Music</a>
+        <a href="/producer" class="block py-1 text-surface-ink rounded-sm focus-ring">Producer</a>
         <a href="/#shows" class="block py-1 text-surface-ink rounded-sm focus-ring">Shows</a>
         <a href="/#news" class="block py-1 text-surface-ink rounded-sm focus-ring">News</a>
         <a href="/#bio" class="block py-1 text-surface-ink rounded-sm focus-ring">Bio</a>
@@ -147,6 +149,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://rohalfhi
         </div>
 
         <div class="md:col-span-5 flex flex-wrap items-center gap-6 text-xs font-mono uppercase tracking-[0.16em] text-surface-muted">
+          <a href="/producer" class="hover:text-surface-ink transition-colors duration-150 rounded-sm focus-ring">Producer</a>
           <a href="/news" class="hover:text-surface-ink transition-colors duration-150 rounded-sm focus-ring">News</a>
           <a href="https://open.spotify.com/artist/79dS9zvJ6QCjz54EUdjs9u" target="_blank" rel="noopener noreferrer" class="hover:text-surface-ink transition-colors duration-150 rounded-sm focus-ring">Spotify</a>
           <a href="https://music.apple.com/us/artist/ro-halfhide/264233984" target="_blank" rel="noopener noreferrer" class="hover:text-surface-ink transition-colors duration-150 rounded-sm focus-ring">Apple Music</a>

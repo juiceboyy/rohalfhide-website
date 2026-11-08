@@ -1,0 +1,38 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProducerHero from '../components/producer/ProducerHero.astro';
+import SongIdeasVault from '../components/producer/SongIdeasVault.astro';
+import ProducerCredits from '../components/producer/ProducerCredits.astro';
+import ServicesAndStudio from '../components/producer/ServicesAndStudio.astro';
+import ProducerTestimonials from '../components/producer/ProducerTestimonials.astro';
+import ContactSection from '../components/ContactSection.astro';
+import producerRaw from '../data/producer.json';
+import type { ProducerPortfolioData } from '../scripts/admin/producer-types';
+
+const producer = producerRaw as ProducerPortfolioData;
+const hasPublishedTestimonials = producer.testimonials.some((t) => !t.draft && t.quote.trim().length > 0);
+---
+
+<Layout
+  title="Producer Portfolio - Ro Halfhide"
+  description="Music production portfolio, selected credits, studio workflow at Jupiterkade 2, and the Song Ideas vault by Ro Halfhide."
+  image="/images/about-banner.webp"
+>
+  <ProducerHero
+    hero={producer.hero}
+    instagramHighlightsUrl={producer.instagramHighlightsUrl}
+  />
+  <SongIdeasVault
+    chapters={producer.chapters}
+    songIdeas={producer.songIdeas}
+    instagramHighlightsUrl={producer.instagramHighlightsUrl}
+  />
+  <ProducerCredits credits={producer.credits} />
+  <ServicesAndStudio services={producer.services} studio={producer.studio} />
+  <ProducerTestimonials testimonials={producer.testimonials} />
+  <ContactSection
+    defaultSubject="Studio & Production"
+    subtitle="For album production, co-writing, mixing, or adapting Song Ideas from the vault."
+    bgClass={hasPublishedTestimonials ? 'bg-surface-base' : 'bg-surface-void'}
+  />
+</Layout>

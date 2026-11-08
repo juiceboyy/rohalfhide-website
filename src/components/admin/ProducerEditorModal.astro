@@ -1,0 +1,225 @@
+---
+---
+
+<dialog
+  id="producer-editor-dialog"
+  closedby="any"
+  aria-labelledby="producer-modal-title"
+  class="p-0 bg-transparent border-0 max-w-2xl w-[calc(100%-2rem)] m-auto text-surface-ink"
+>
+  <div class="bg-surface-base shadow-hairline-strong rounded-2xl max-h-[90vh] flex flex-col overflow-hidden">
+    <!-- Header -->
+    <div class="px-6 py-4 shadow-divider-b flex items-center justify-between shrink-0 bg-surface-raised/40">
+      <div>
+        <h2 id="producer-modal-title" class="font-serif text-xl font-semibold text-surface-ink">
+          Edit Item
+        </h2>
+        <p id="producer-modal-subtitle" class="font-sans text-xs text-surface-muted">
+          Changes commit directly to src/data/producer.json.
+        </p>
+      </div>
+      <button
+        type="button"
+        id="producer-modal-close-btn"
+        class="text-surface-subtle hover:text-surface-ink p-2 rounded-lg transition-colors focus-ring"
+        aria-label="Close dialog"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <form id="producer-item-form" class="flex-grow overflow-y-auto p-6 space-y-5">
+      <input type="hidden" id="pe-kind" />
+      <input type="hidden" id="pe-id" />
+
+      <!-- Chapter Fields -->
+      <div id="pe-fields-chapter" class="hidden space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <div class="space-y-1">
+            <label for="pe-ch-index" class="font-mono text-xs text-surface-subtle uppercase">Index</label>
+            <input id="pe-ch-index" type="text" placeholder="01" class="form-input font-mono" />
+          </div>
+          <div class="sm:col-span-3 space-y-1">
+            <label for="pe-ch-title" class="font-mono text-xs text-surface-subtle uppercase">Chapter Title *</label>
+            <input id="pe-ch-title" type="text" placeholder="Acoustic & Soul Sketches" class="form-input" />
+          </div>
+        </div>
+        <div class="space-y-1">
+          <label for="pe-ch-desc" class="font-mono text-xs text-surface-subtle uppercase">Description</label>
+          <textarea id="pe-ch-desc" rows="3" class="form-input"></textarea>
+        </div>
+      </div>
+
+      <!-- Song Idea Fields -->
+      <div id="pe-fields-idea" class="hidden space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <label for="pe-idea-title" class="font-mono text-xs text-surface-subtle uppercase">Title *</label>
+            <input id="pe-idea-title" type="text" placeholder="Late Night Rhodes Motif" class="form-input" />
+          </div>
+          <div class="space-y-1">
+            <label for="pe-idea-chapter" class="font-mono text-xs text-surface-subtle uppercase">Chapter *</label>
+            <select id="pe-idea-chapter" class="form-input"></select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="space-y-1">
+            <label for="pe-idea-type" class="font-mono text-xs text-surface-subtle uppercase">Media Format</label>
+            <select id="pe-idea-type" class="form-input">
+              <option value="audio">Audio (.mp3)</option>
+              <option value="video">Studio Clip (.mp4/.webm)</option>
+            </select>
+          </div>
+          <div class="space-y-1">
+            <label for="pe-idea-duration" class="font-mono text-xs text-surface-subtle uppercase">Duration</label>
+            <input id="pe-idea-duration" type="text" placeholder="0:42" class="form-input font-mono" />
+          </div>
+          <div class="space-y-1">
+            <label for="pe-idea-aspect" class="font-mono text-xs text-surface-subtle uppercase">Aspect (Clips)</label>
+            <select id="pe-idea-aspect" class="form-input">
+              <option value="9:16">9:16 (Story / Reel)</option>
+              <option value="16:9">16:9 (Landscape)</option>
+              <option value="1:1">1:1 (Square)</option>
+            </select>
+          </div>
+        </div>
+
+        <input type="hidden" id="pe-idea-width" />
+        <input type="hidden" id="pe-idea-height" />
+
+        <div class="space-y-2">
+          <label for="pe-idea-src" class="font-mono text-xs text-surface-subtle uppercase">Media File Path (.mp3 or .mp4) *</label>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <input id="pe-idea-src" type="text" placeholder="/video/idea.mp4 or /audio/idea.mp3" class="form-input flex-grow" />
+            <label class="px-4 py-3 bg-surface-raised hover:bg-white/[0.08] shadow-hairline text-surface-ink rounded-lg text-xs font-sans font-medium cursor-pointer shrink-0 text-center focus-ring">
+              <span>Upload Media</span>
+              <input id="pe-idea-media-upload" type="file" accept=".mp3,.mp4,.webm,audio/mpeg,video/mp4,video/webm" class="hidden" />
+            </label>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label for="pe-idea-cover" class="font-mono text-xs text-surface-subtle uppercase">Cover / Poster Image</label>
+          <div class="flex gap-3 items-center">
+            <input id="pe-idea-cover" type="text" placeholder="/images/hero-portrait.jpg" class="form-input flex-grow" />
+            <label class="px-4 py-3 bg-surface-raised hover:bg-white/[0.08] shadow-hairline text-surface-ink rounded-lg text-xs font-sans font-medium cursor-pointer shrink-0 focus-ring">
+              <span>Upload Image</span>
+              <input id="pe-idea-cover-upload" type="file" accept="image/*" class="hidden" />
+            </label>
+            <img id="pe-idea-cover-preview" src="" alt="Preview" class="h-11 w-11 object-cover rounded-lg bg-surface-raised shadow-hairline hidden shrink-0" />
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label for="pe-idea-note" class="font-mono text-xs text-surface-subtle uppercase">Production Note</label>
+          <textarea id="pe-idea-note" rows="2" placeholder="One-line studio context..." class="form-input"></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <label for="pe-idea-year" class="font-mono text-xs text-surface-subtle uppercase">Year</label>
+            <input id="pe-idea-year" type="text" placeholder="2026" class="form-input font-mono" />
+          </div>
+          <div class="space-y-1">
+            <label for="pe-idea-ig" class="font-mono text-xs text-surface-subtle uppercase">Instagram Link (Optional)</label>
+            <input id="pe-idea-ig" type="url" placeholder="https://www.instagram.com/..." class="form-input text-xs" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Credit Fields -->
+      <div id="pe-fields-credit" class="hidden space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <label for="pe-cr-artist" class="font-mono text-xs text-surface-subtle uppercase">Artist *</label>
+            <input id="pe-cr-artist" type="text" placeholder="Lucky Fonz III" class="form-input" />
+          </div>
+          <div class="space-y-1">
+            <label for="pe-cr-title" class="font-mono text-xs text-surface-subtle uppercase">Release / Project Title *</label>
+            <input id="pe-cr-title" type="text" placeholder="Album Title" class="form-input" />
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <label for="pe-cr-role" class="font-mono text-xs text-surface-subtle uppercase">Role</label>
+            <input id="pe-cr-role" type="text" placeholder="Producer & Arranger" class="form-input" />
+          </div>
+          <div class="space-y-1">
+            <label for="pe-cr-year" class="font-mono text-xs text-surface-subtle uppercase">Year</label>
+            <input id="pe-cr-year" type="text" placeholder="2025" class="form-input font-mono" />
+          </div>
+        </div>
+        <div class="space-y-2">
+          <label for="pe-cr-cover" class="font-mono text-xs text-surface-subtle uppercase">Artwork Image</label>
+          <div class="flex gap-3 items-center">
+            <input id="pe-cr-cover" type="text" placeholder="/images/hero-portrait.jpg" class="form-input flex-grow" />
+            <label class="px-4 py-3 bg-surface-raised hover:bg-white/[0.08] shadow-hairline text-surface-ink rounded-lg text-xs font-sans font-medium cursor-pointer shrink-0 focus-ring">
+              <span>Upload Image</span>
+              <input id="pe-cr-cover-upload" type="file" accept="image/*" class="hidden" />
+            </label>
+            <img id="pe-cr-cover-preview" src="" alt="Preview" class="h-11 w-11 object-cover rounded-lg bg-surface-raised shadow-hairline hidden shrink-0" />
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label for="pe-cr-audio" class="font-mono text-xs text-surface-subtle uppercase">Audio Preview (.mp3)</label>
+            <div class="flex gap-2">
+              <input id="pe-cr-audio" type="text" placeholder="/audio/preview.mp3" class="form-input flex-grow text-xs" />
+              <label class="px-3 py-2.5 bg-surface-raised hover:bg-white/[0.08] shadow-hairline text-surface-ink rounded-lg text-xs cursor-pointer shrink-0 focus-ring">
+                <span>MP3</span>
+                <input id="pe-cr-audio-upload" type="file" accept=".mp3,audio/mpeg" class="hidden" />
+              </label>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <label for="pe-cr-url" class="font-mono text-xs text-surface-subtle uppercase">Streaming URL</label>
+            <input id="pe-cr-url" type="url" placeholder="https://open.spotify.com/..." class="form-input text-xs" />
+          </div>
+        </div>
+        <div class="space-y-1">
+          <label for="pe-cr-notes" class="font-mono text-xs text-surface-subtle uppercase">Notes</label>
+          <textarea id="pe-cr-notes" rows="2" class="form-input"></textarea>
+        </div>
+      </div>
+
+      <!-- Testimonial Fields -->
+      <div id="pe-fields-testimonial" class="hidden space-y-4">
+        <div class="space-y-1">
+          <label for="pe-ts-quote" class="font-mono text-xs text-surface-subtle uppercase">Quote *</label>
+          <textarea id="pe-ts-quote" rows="4" class="form-input"></textarea>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <label for="pe-ts-author" class="font-mono text-xs text-surface-subtle uppercase">Author *</label>
+            <input id="pe-ts-author" type="text" class="form-input" />
+          </div>
+          <div class="space-y-1">
+            <label for="pe-ts-role" class="font-mono text-xs text-surface-subtle uppercase">Artist / Project</label>
+            <input id="pe-ts-role" type="text" class="form-input" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Draft Toggle -->
+      <div class="pt-3 shadow-divider-t">
+        <label class="inline-flex items-center gap-3 cursor-pointer">
+          <input id="pe-draft" type="checkbox" class="h-4 w-4 accent-[#D4954A] rounded" />
+          <span class="font-sans text-sm text-surface-muted">Save as Draft (hidden on /producer)</span>
+        </label>
+      </div>
+    </form>
+
+    <!-- Footer -->
+    <div class="px-6 py-4 shadow-divider-t flex items-center justify-between shrink-0 bg-surface-raised/40">
+      <button type="button" id="producer-modal-cancel-btn" class="px-4 py-2 rounded-lg text-xs font-sans text-surface-muted hover:text-surface-ink transition-colors focus-ring">
+        Cancel
+      </button>
+      <button type="submit" form="producer-item-form" id="producer-modal-save-btn" class="px-5 py-2.5 rounded-lg bg-surface-ink hover:bg-white text-surface-void text-xs font-sans font-medium transition-colors focus-ring">
+        Save Changes
+      </button>
+    </div>
+  </div>
+</dialog>

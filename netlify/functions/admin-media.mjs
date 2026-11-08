@@ -7,6 +7,7 @@ const JSON_HEADERS = {
 };
 
 const ALLOWED_AUDIO_EXT = ['.mp3'];
+const ALLOWED_VIDEO_EXT = ['.mp4', '.webm'];
 const ALLOWED_IMAGE_EXT = ['.jpg', '.jpeg', '.png', '.webp', '.svg', '.gif'];
 
 function sanitizeFilename(name = '') {
@@ -50,6 +51,15 @@ export default async (req) => {
       }
       targetDir = 'public/audio';
       publicUrlPrefix = '/audio';
+    } else if (type === 'video' || ALLOWED_VIDEO_EXT.includes(ext)) {
+      if (!ALLOWED_VIDEO_EXT.includes(ext)) {
+        return Response.json(
+          { error: `Invalid video format. Allowed: ${ALLOWED_VIDEO_EXT.join(', ')}` },
+          { status: 400, headers: JSON_HEADERS }
+        );
+      }
+      targetDir = 'public/video';
+      publicUrlPrefix = '/video';
     } else {
       if (!ALLOWED_IMAGE_EXT.includes(ext)) {
         return Response.json(
