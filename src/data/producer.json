@@ -107,11 +107,12 @@
   "credits": [
     {
       "id": "credit-lucky-fonz",
-      "title": "Album Production",
+      "title": "Hoe Je Honing Maakt",
       "artist": "Lucky Fonz III",
       "role": "Producer",
-      "year": "Selected Credit",
-      "cover": "/images/about-banner.webp",
+      "year": "2010",
+      "cover": "/images/hoe-je-honing-maakt.jpg",
+      "externalUrl": "https://open.spotify.com/album/1hkWxfkvYtrLFBaQkfu9Xb",
       "notes": "Full album production for celebrated Dutch singer-songwriter Lucky Fonz III.",
       "draft": false
     },
