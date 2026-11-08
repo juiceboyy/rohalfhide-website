@@ -139,15 +139,14 @@
       "draft": false
     },
     {
-      "id": "credit-evening-sun",
-      "title": "Evening Sun",
-      "artist": "Ro Halfhide",
-      "role": "Songwriting & Production",
-      "year": "2024",
-      "cover": "/images/evening-sun.jpg",
-      "audioPreview": "/audio/evening-sun.mp3",
-      "externalUrl": "https://open.spotify.com/track/1cedTVv89YDonTGkwjt72X",
-      "notes": "Soulful alternative pop production built around acoustic depth and subtle lift.",
+      "id": "credit-yankuba-conteh-mandinka-fola",
+      "title": "Mandinka Fola",
+      "artist": "Yankuba Conteh",
+      "role": "Producer",
+      "year": "2025",
+      "cover": "/images/mandinka-fola.jpg",
+      "externalUrl": "https://open.spotify.com/album/7xueGilxDzT2uV94uQpdFd",
+      "notes": "Traditional Mandinka kora and vocal EP produced at Jupiterkade 2 Studio.",
       "draft": false
     }
   ],
