@@ -118,12 +118,13 @@
     },
     {
       "id": "credit-case-mayfield",
-      "title": "Album Production",
+      "title": "Another Glorious Battle For The Kingdom",
       "artist": "Case Mayfield",
       "role": "Producer",
-      "year": "Selected Credit",
-      "cover": "/images/cover-act.jpg",
-      "notes": "Album production shaping an organic, vocal-forward singer-songwriter sound.",
+      "year": "2014",
+      "cover": "/images/another-glorious-battle.jpg",
+      "externalUrl": "https://open.spotify.com/album/56KewjzrQInqEbOI2LfTMj",
+      "notes": "Full-length studio album production for Dutch singer-songwriter Case Mayfield.",
       "draft": false
     },
     {
