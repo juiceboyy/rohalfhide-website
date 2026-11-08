@@ -128,15 +128,14 @@
       "draft": false
     },
     {
-      "id": "credit-its-been-good",
-      "title": "It's been good",
-      "artist": "Ro Halfhide",
-      "role": "Songwriting, Production & Mixing",
+      "id": "credit-basje-salma-kebab",
+      "title": "SALMA KEBAB",
+      "artist": "Basje",
+      "role": "Production & Co-Songwriting",
       "year": "2025",
-      "cover": "/images/its-been-good.jpg",
-      "audioPreview": "/audio/its-been-good.mp3",
-      "externalUrl": "https://open.spotify.com/track/1ZtrRsMJlTWw7g1MDmluJP",
-      "notes": "Alternative pop & soul single produced at Jupiterkade 2.",
+      "cover": "/images/salma-kebab.jpg",
+      "externalUrl": "https://open.spotify.com/album/0kw3PeRzfXwWEhWG7Ja22d",
+      "notes": "Production and co-songwriting for Dutch artist Basje.",
       "draft": false
     },
     {
