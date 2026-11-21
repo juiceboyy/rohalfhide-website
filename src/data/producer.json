@@ -9,34 +9,34 @@
     "name": "Jupiterkade 2 Studio",
     "address": "Jupiterkade 2",
     "city": "The Hague, The Netherlands",
-    "summary": "A focused songwriting and production room in The Hague built around feel, vocal presence, and unhurried arrangement.",
-    "approach": "Every production starts with serving the core emotion of the song - pairing tactile acoustic instruments, warm analog-inspired textures, and subtle rhythmic movement so artists sound unmistakably like themselves.",
+    "summary": "Songwriting, arrangement, and music production at Jupiterkade 2 in The Hague, available for in-person sessions and remote collaboration.",
+    "approach": "I work closely with artists from the first demo to a finished production. In the studio I handle songwriting, arrangement, guitar, drums, keys, and vocals, bringing in session players whenever a track calls for bass, strings, or horns.",
     "setupHighlights": [
-      "Vocal chain tuned for intimate, unforced lead performances",
-      "Acoustic guitars, Rhodes/keys, tactile upright & analog synth textures",
-      "Full arrangement, drum programming, and hybrid mixing under one roof"
+      "Acoustic & electric guitar, live drums, drum programming, keys/synths, and vocal production",
+      "Session musicians brought in when needed for bass, strings, or horns",
+      "Production mixes included, with the option to finish the mix in-house or deliver stems to a mix engineer"
     ]
   },
   "services": [
     {
       "id": "svc-production",
       "title": "Full Track & Album Production",
-      "description": "Guiding a song from voice memo or acoustic demo through arrangement, tracking, instrumentation, and final mix."
+      "description": "Taking a song from a voice memo or demo through arrangement, tracking, and a finished production, in-person in The Hague or remotely."
     },
     {
       "id": "svc-cowriting",
-      "title": "Co-Writing & Song Development",
-      "description": "Focused studio writing sessions to unlock melodies, chord movement, structure, and lyrical clarity."
+      "title": "Songwriting & Co-Writing",
+      "description": "Writing together from scratch or helping finish existing ideas, focusing on melody, chords, structure, and lyrics."
     },
     {
       "id": "svc-mixing",
-      "title": "Arrangement & Sonic Direction",
-      "description": "Stepping in on existing demos to elevate dynamics, harmonic tension, vocal layering, and overall cohesion."
+      "title": "Arrangement & Instrumentation",
+      "description": "Building out existing demos with guitars, live or programmed drums, keys, synths, backing vocals, and vocal harmonies."
     },
     {
       "id": "svc-sync",
-      "title": "Sync & Bespoke Song Starters",
-      "description": "Developing original cues or adapting raw sketches from the Song Ideas vault for artists, film, and visual storytelling."
+      "title": "Sync & Song Starters",
+      "description": "Writing custom cues or developing ideas from the Song Ideas vault for artists, film, and visual projects."
     }
   ],
   "chapters": [
