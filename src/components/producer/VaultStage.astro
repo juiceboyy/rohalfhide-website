@@ -9,10 +9,10 @@ const { initialIdea } = Astro.props;
 
 const videoFrameClass =
   initialIdea.aspectRatio === '16:9'
-    ? 'w-full max-w-xl aspect-video rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong'
+    ? 'relative w-full max-w-xl aspect-video rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong'
     : initialIdea.aspectRatio === '1:1'
-      ? 'w-full max-w-[400px] aspect-square rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong'
-      : 'w-full max-w-[340px] sm:max-w-[380px] aspect-[9/16] rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong';
+      ? 'relative w-full max-w-[400px] aspect-square rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong'
+      : 'relative w-full max-w-[340px] sm:max-w-[380px] aspect-[9/16] rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong';
 ---
 
 <!-- Active Playback Stage: Studio Video Clip View (Primary Visual Anchor) -->
@@ -33,6 +33,19 @@ const videoFrameClass =
       src={initialIdea.mediaType === 'video' ? initialIdea.src : undefined}
       class="w-full h-full block object-cover"
     ></video>
+
+    <button
+      type="button"
+      id="vault-video-play-overlay"
+      aria-label="Play song idea"
+      class="group absolute inset-x-0 top-0 bottom-14 flex items-center justify-center bg-surface-void/20 hover:bg-surface-void/10 transition-colors duration-150 cursor-pointer focus-ring"
+    >
+      <span class="w-16 h-16 rounded-full bg-surface-void/75 backdrop-blur-md text-surface-ink shadow-hairline-strong group-hover:bg-surface-ink group-hover:text-surface-void flex items-center justify-center transition-all duration-150">
+        <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </span>
+    </button>
   </div>
 </div>
 

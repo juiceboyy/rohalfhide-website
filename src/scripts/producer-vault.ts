@@ -14,11 +14,17 @@ function initProducerVault(): void {
   const audioStage = document.getElementById('vault-audio-stage');
   const videoStage = document.getElementById('vault-video-stage');
   const videoFrame = document.getElementById('vault-video-frame');
+  const videoOverlay = document.getElementById('vault-video-play-overlay');
 
   const coverEl = document.getElementById('vault-cover') as HTMLImageElement | null;
   const activeTitleEl = document.getElementById('vault-active-title');
   const activeNoteEl = document.getElementById('vault-active-note');
   const activeMetaEl = document.getElementById('vault-active-meta');
+
+  const mainPlayBtn = document.getElementById('vault-main-play-btn');
+  const mainPlayIcon = document.getElementById('vault-main-play-icon');
+  const mainPauseIcon = document.getElementById('vault-main-pause-icon');
+  const mainPlayLabel = document.getElementById('vault-main-play-label');
 
   const playBtn = document.getElementById('vault-play-btn');
   const playIcon = document.getElementById('vault-play-icon');
@@ -36,10 +42,29 @@ function initProducerVault(): void {
   const initialIdx = ideaItems.findIndex((el) => el.getAttribute('aria-current') === 'true');
   let activeIdeaIndex = initialIdx >= 0 ? initialIdx : 0;
 
-  function updateAudioPlayIcon(isPlaying: boolean): void {
+  function syncPlaybackUI(isPlaying: boolean): void {
+    if (videoOverlay) {
+      videoOverlay.classList.toggle('hidden', isPlaying);
+      videoOverlay.classList.toggle('flex', !isPlaying);
+    }
+    mainPlayIcon?.classList.toggle('hidden', isPlaying);
+    mainPauseIcon?.classList.toggle('hidden', !isPlaying);
+    if (mainPlayLabel) mainPlayLabel.textContent = isPlaying ? 'Pause' : 'Play';
+    mainPlayBtn?.setAttribute('aria-label', isPlaying ? 'Pause song idea' : 'Play song idea');
     playIcon?.classList.toggle('hidden', isPlaying);
     pauseIcon?.classList.toggle('hidden', !isPlaying);
     playBtn?.setAttribute('aria-label', isPlaying ? 'Pause song idea' : 'Play song idea');
+  }
+
+  function safePlayMedia(media: HTMLMediaElement | null): void {
+    if (!media) return;
+    media
+      .play()
+      .then(() => syncPlaybackUI(true))
+      .catch((err) => {
+        if (err?.name !== 'NotAllowedError') console.error(err);
+        syncPlaybackUI(false);
+      });
   }
 
   function syncThumbnailHighlight(activeEl: HTMLButtonElement): void {
@@ -59,24 +84,17 @@ function initProducerVault(): void {
   }
 
   function pauseAllOtherPlayers(source: 'vault-audio' | 'vault-video'): void {
-    if (source !== 'vault-audio' && audioEl && !audioEl.paused) {
-      audioEl.pause();
-      updateAudioPlayIcon(false);
-    }
-    if (source !== 'vault-video' && videoEl && !videoEl.paused) {
-      videoEl.pause();
-    }
+    if (source !== 'vault-audio' && audioEl && !audioEl.paused) audioEl.pause();
+    if (source !== 'vault-video' && videoEl && !videoEl.paused) videoEl.pause();
     window.dispatchEvent(new CustomEvent('ro-media:play', { detail: { source } }));
   }
 
   window.addEventListener('ro-media:play', (e: Event) => {
     const detail = (e as CustomEvent).detail;
     if (detail?.source === 'credit-preview') {
-      if (audioEl && !audioEl.paused) {
-        audioEl.pause();
-        updateAudioPlayIcon(false);
-      }
+      if (audioEl && !audioEl.paused) audioEl.pause();
       if (videoEl && !videoEl.paused) videoEl.pause();
+      syncPlaybackUI(false);
     }
   });
 
@@ -120,10 +138,10 @@ function initProducerVault(): void {
       if (videoFrame) {
         videoFrame.className =
           aspect === '16:9'
-            ? 'w-full max-w-xl aspect-video rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong'
+            ? 'relative w-full max-w-xl aspect-video rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong'
             : aspect === '1:1'
-              ? 'w-full max-w-[400px] aspect-square rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong'
-              : 'w-full max-w-[340px] sm:max-w-[380px] aspect-[9/16] rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong';
+              ? 'relative w-full max-w-[400px] aspect-square rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong'
+              : 'relative w-full max-w-[340px] sm:max-w-[380px] aspect-[9/16] rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong';
       }
 
       videoEl.width = Number(width) || 360;
@@ -132,11 +150,8 @@ function initProducerVault(): void {
       else videoEl.removeAttribute('poster');
       videoEl.src = src;
 
-      if (autoPlay) {
-        videoEl.play().catch((err) => {
-          if (err?.name !== 'NotAllowedError') console.error(err);
-        });
-      }
+      if (autoPlay) safePlayMedia(videoEl);
+      else syncPlaybackUI(false);
     } else if (audioEl) {
       pauseAllOtherPlayers('vault-audio');
       videoStage?.classList.add('hidden');
@@ -154,17 +169,22 @@ function initProducerVault(): void {
       progressContainer?.setAttribute('aria-valuenow', '0');
 
       audioEl.src = src;
-      if (autoPlay) {
-        audioEl
-          .play()
-          .then(() => updateAudioPlayIcon(true))
-          .catch((err) => {
-            if (err?.name !== 'NotAllowedError') console.error(err);
-            updateAudioPlayIcon(false);
-          });
-      } else {
-        updateAudioPlayIcon(false);
-      }
+      if (autoPlay) safePlayMedia(audioEl);
+      else syncPlaybackUI(false);
+    }
+  }
+
+  function toggleActivePlayback(): void {
+    const activeItem = ideaItems[activeIdeaIndex];
+    const isVideo = (activeItem?.getAttribute('data-media-type') || 'video') === 'video';
+    const media = isVideo ? videoEl : audioEl;
+    if (!media) return;
+    if (media.paused) {
+      pauseAllOtherPlayers(isVideo ? 'vault-video' : 'vault-audio');
+      safePlayMedia(media);
+    } else {
+      media.pause();
+      syncPlaybackUI(false);
     }
   }
 
@@ -186,27 +206,35 @@ function initProducerVault(): void {
     if (firstInChapter) selectIdeaByElement(firstInChapter, false, false);
   });
 
-  playBtn?.addEventListener('click', () => {
-    if (!audioEl) return;
-    if (audioEl.paused) {
-      pauseAllOtherPlayers('vault-audio');
-      audioEl
-        .play()
-        .then(() => updateAudioPlayIcon(true))
-        .catch((err) => {
-          if (err?.name !== 'NotAllowedError') console.error(err);
-          updateAudioPlayIcon(false);
-        });
-    } else {
-      audioEl.pause();
-      updateAudioPlayIcon(false);
-    }
+  videoOverlay?.addEventListener('click', () => {
+    pauseAllOtherPlayers('vault-video');
+    safePlayMedia(videoEl);
   });
 
-  videoEl?.addEventListener('play', () => pauseAllOtherPlayers('vault-video'));
+  mainPlayBtn?.addEventListener('click', toggleActivePlayback);
+  playBtn?.addEventListener('click', toggleActivePlayback);
+
+  videoEl?.addEventListener('play', () => {
+    pauseAllOtherPlayers('vault-video');
+    syncPlaybackUI(true);
+  });
+  videoEl?.addEventListener('pause', () => {
+    if (!videoEl.seeking) syncPlaybackUI(false);
+  });
+  videoEl?.addEventListener('ended', () => {
+    syncPlaybackUI(false);
+    stepInActiveChapter(1, true);
+  });
+
+  audioEl?.addEventListener('play', () => syncPlaybackUI(true));
+  audioEl?.addEventListener('pause', () => syncPlaybackUI(false));
+  audioEl?.addEventListener('ended', () => {
+    syncPlaybackUI(false);
+    stepInActiveChapter(1, true);
+  });
+
   prevBtn?.addEventListener('click', () => stepInActiveChapter(-1, true));
   nextBtn?.addEventListener('click', () => stepInActiveChapter(1, true));
-
   ideaItems.forEach((item) => item.addEventListener('click', () => selectIdeaByElement(item, true, true)));
 
   audioEl?.addEventListener('timeupdate', () => {
@@ -216,9 +244,6 @@ function initProducerVault(): void {
     progressContainer?.setAttribute('aria-valuenow', String(Math.round(progress)));
     if (currentTimeEl) currentTimeEl.textContent = formatVaultTime(audioEl.currentTime);
   });
-
-  audioEl?.addEventListener('ended', () => stepInActiveChapter(1, true));
-  videoEl?.addEventListener('ended', () => stepInActiveChapter(1, true));
 
   progressContainer?.addEventListener('click', (e) => {
     if (!audioEl?.duration) return;
