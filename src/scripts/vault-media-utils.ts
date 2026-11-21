@@ -68,7 +68,32 @@ export function initLazyMediaFallback(): void {
   });
 }
 
-export function setupVaultChapters(): (chapterId: string, scrollIntoView?: boolean) => void {
+export function initPosterStripHints(): void {
+  if (CSS.supports('animation-timeline', 'scroll()')) return;
+
+  for (const scroller of document.querySelectorAll<HTMLElement>('.vault-poster-strip')) {
+    const first = scroller.firstElementChild;
+    const last = scroller.lastElementChild;
+    if (!first || !last) continue;
+
+    // rootMargin accounts for sub-pixel widths at scroll boundaries
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const { target, intersectionRatio } of entries) {
+          scroller.classList.toggle(target === first ? 'more-start' : 'more-end', intersectionRatio < 1);
+        }
+      },
+      { root: scroller, threshold: 1, rootMargin: '1px' }
+    );
+
+    observer.observe(first);
+    observer.observe(last);
+  }
+}
+
+export function setupVaultChapters(
+  onChapterSelected?: (chapterId: string) => void
+): (chapterId: string, scrollIntoView?: boolean) => void {
   const chaptersContainer = document.getElementById('vault-chapters-container');
   const chapterTabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-chapter-tab]'));
   const chapterPanels = Array.from(document.querySelectorAll<HTMLElement>('[data-chapter-panel]'));
@@ -85,8 +110,11 @@ export function setupVaultChapters(): (chapterId: string, scrollIntoView?: boole
     chapterTabs.forEach((tab) => {
       const isMatch = tab.getAttribute('data-chapter-tab') === chapterId;
       tab.setAttribute('aria-expanded', isMatch ? 'true' : 'false');
-      tab.classList.toggle('bg-white/[0.05]', isMatch);
+      tab.classList.toggle('bg-white/[0.08]', isMatch);
+      tab.classList.toggle('shadow-hairline-strong', isMatch);
       tab.classList.toggle('text-surface-ink', isMatch);
+      tab.classList.toggle('bg-surface-raised/60', !isMatch);
+      tab.classList.toggle('shadow-hairline', !isMatch);
       tab.classList.toggle('text-surface-muted', !isMatch);
       const indexEl = tab.querySelector('.chapter-index');
       indexEl?.classList.toggle('text-accent', isMatch);
@@ -110,7 +138,9 @@ export function setupVaultChapters(): (chapterId: string, scrollIntoView?: boole
   chapterTabs.forEach((tab) => {
     tab.addEventListener('click', () => {
       const chapterId = tab.getAttribute('data-chapter-tab');
-      if (chapterId) activateChapter(chapterId, true);
+      if (!chapterId) return;
+      activateChapter(chapterId, true);
+      onChapterSelected?.(chapterId);
     });
   });
 

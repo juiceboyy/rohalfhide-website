@@ -6,32 +6,51 @@ interface Props {
 }
 
 const { initialIdea } = Astro.props;
+
+const videoFrameClass =
+  initialIdea.aspectRatio === '16:9'
+    ? 'w-full max-w-xl aspect-video rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong'
+    : initialIdea.aspectRatio === '1:1'
+      ? 'w-full max-w-[400px] aspect-square rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong'
+      : 'w-full max-w-[340px] sm:max-w-[380px] aspect-[9/16] rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong';
 ---
 
-<!-- Active Playback Stage: Audio View -->
+<!-- Active Playback Stage: Studio Video Clip View (Primary Visual Anchor) -->
+<div
+  id="vault-video-stage"
+  class={initialIdea.mediaType === 'video' ? 'w-full flex justify-center lg:justify-end' : 'hidden'}
+>
+  <div id="vault-video-frame" class={videoFrameClass}>
+    <video
+      id="vault-video-element"
+      controls
+      playsinline
+      loading="lazy"
+      preload="none"
+      width={initialIdea.width || 360}
+      height={initialIdea.height || 640}
+      poster={initialIdea.mediaType === 'video' ? (initialIdea.poster || initialIdea.cover || undefined) : undefined}
+      src={initialIdea.mediaType === 'video' ? initialIdea.src : undefined}
+      class="w-full h-full block object-cover"
+    ></video>
+  </div>
+</div>
+
+<!-- Active Playback Stage: Audio Fallback View -->
 <div
   id="vault-audio-stage"
-  class={initialIdea.mediaType === 'video' ? 'hidden' : 'flex flex-col sm:flex-row items-start sm:items-center gap-6'}
+  class={initialIdea.mediaType === 'audio' ? 'w-full flex justify-center lg:justify-end' : 'hidden'}
 >
-  <img
-    id="vault-cover"
-    src={initialIdea.cover || '/images/hero-portrait.jpg'}
-    alt={initialIdea.title}
-    width="112"
-    height="112"
-    loading="lazy"
-    class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl object-cover bg-surface-base shadow-hairline shrink-0"
-  />
-
-  <div class="flex-grow w-full space-y-4">
-    <div>
-      <h3 id="vault-audio-title" class="font-serif font-semibold text-2xl sm:text-3xl tracking-[-0.03em] text-surface-ink">
-        {initialIdea.title}
-      </h3>
-      <p id="vault-audio-note" class="font-sans font-normal text-sm text-surface-muted mt-1 leading-relaxed">
-        {initialIdea.note}
-      </p>
-    </div>
+  <div class="w-full max-w-[380px] bg-surface-raised/70 backdrop-blur-2xl rounded-2xl shadow-hairline p-6 space-y-5">
+    <img
+      id="vault-cover"
+      src={initialIdea.cover || '/images/hero-portrait.jpg'}
+      alt={initialIdea.title}
+      width="332"
+      height="332"
+      loading="lazy"
+      class="w-full aspect-square rounded-xl object-cover bg-surface-base shadow-hairline"
+    />
 
     <!-- Interactive Audio Timeline -->
     <div>
@@ -53,100 +72,16 @@ const { initialIdea } = Astro.props;
       </div>
     </div>
 
-    <!-- Transport Controls -->
-    <div class="flex flex-wrap items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <button
-          id="vault-prev-btn"
-          type="button"
-          aria-label="Previous song idea"
-          class="text-surface-muted hover:text-surface-ink p-2 rounded-full transition-colors duration-150 focus-ring"
-        >
-          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-        </button>
-
-        <button
-          id="vault-play-btn"
-          type="button"
-          aria-label="Play song idea"
-          class="w-12 h-12 rounded-full bg-surface-ink hover:bg-white text-surface-void flex items-center justify-center transition-colors duration-150 focus-ring"
-        >
-          <svg id="vault-play-icon" class="w-5 h-5 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-          <svg id="vault-pause-icon" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-        </button>
-
-        <button
-          id="vault-next-btn"
-          type="button"
-          aria-label="Next song idea"
-          class="text-surface-muted hover:text-surface-ink p-2 rounded-full transition-colors duration-150 focus-ring"
-        >
-          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-        </button>
-      </div>
-
+    <!-- Transport Button -->
+    <div class="flex items-center justify-center">
       <button
+        id="vault-play-btn"
         type="button"
-        data-inquire-active
-        class="font-mono text-xs uppercase tracking-[0.16em] text-accent hover:text-accent-hover transition-colors duration-150 rounded-sm focus-ring"
+        aria-label="Play song idea"
+        class="w-12 h-12 rounded-full bg-surface-ink hover:bg-white text-surface-void flex items-center justify-center transition-colors duration-150 focus-ring"
       >
-        Inquire about this idea &rarr;
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- Active Playback Stage: Studio Video Clip View (Compact Proportional Frame) -->
-<div
-  id="vault-video-stage"
-  class={initialIdea.mediaType === 'video' ? 'flex flex-col sm:flex-row items-start gap-6' : 'hidden'}
->
-  <div id="vault-video-frame" class="w-44 sm:w-52 shrink-0 rounded-xl overflow-hidden bg-surface-void shadow-hairline">
-    <video
-      id="vault-video-element"
-      controls
-      playsinline
-      loading="lazy"
-      preload="none"
-      width={initialIdea.width || 360}
-      height={initialIdea.height || 640}
-      poster={initialIdea.mediaType === 'video' ? (initialIdea.poster || initialIdea.cover || undefined) : undefined}
-      src={initialIdea.mediaType === 'video' ? initialIdea.src : undefined}
-      class="w-full h-auto block object-cover"
-    ></video>
-  </div>
-
-  <div class="flex-grow space-y-4">
-    <div>
-      <h3 id="vault-video-title" class="font-serif font-semibold text-2xl sm:text-3xl tracking-[-0.03em] text-surface-ink">
-        {initialIdea.title}
-      </h3>
-      <p id="vault-video-note" class="font-sans font-normal text-sm text-surface-muted mt-1 leading-relaxed">
-        {initialIdea.note}
-      </p>
-    </div>
-
-    <div class="flex flex-wrap items-center gap-4 pt-2">
-      <button
-        type="button"
-        id="vault-video-prev-btn"
-        class="font-mono text-xs uppercase tracking-[0.16em] text-surface-muted hover:text-surface-ink transition-colors focus-ring rounded-sm"
-      >
-        &larr; Prev
-      </button>
-      <button
-        type="button"
-        id="vault-video-next-btn"
-        class="font-mono text-xs uppercase tracking-[0.16em] text-surface-muted hover:text-surface-ink transition-colors focus-ring rounded-sm"
-      >
-        Next &rarr;
-      </button>
-      <button
-        type="button"
-        data-inquire-active
-        class="sm:ml-auto font-mono text-xs uppercase tracking-[0.16em] text-accent hover:text-accent-hover transition-colors focus-ring rounded-sm"
-      >
-        Inquire about this idea &rarr;
+        <svg id="vault-play-icon" class="w-5 h-5 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="vault-pause-icon" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
       </button>
     </div>
   </div>
@@ -155,5 +90,5 @@ const { initialIdea } = Astro.props;
 <audio
   id="vault-audio-element"
   preload="none"
-  src={initialIdea.mediaType === 'audio' ? initialIdea.src : ''}
+  src={initialIdea.mediaType === 'audio' ? initialIdea.src : undefined}
 ></audio>

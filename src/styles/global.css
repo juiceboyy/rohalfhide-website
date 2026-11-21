@@ -83,3 +83,65 @@ dialog::backdrop {
   background-color: rgba(8, 9, 10, 0.82);
   backdrop-filter: blur(8px);
 }
+
+/* Horizontal poster strip scrollability fade hints (modern-web-guidance: scrollability-affordance-hints) */
+@property --fade-start {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --fade-end {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+.vault-poster-strip {
+  --fade-size: 2.5rem;
+  --fade-dir: right;
+  --fade-start-pos: 0;
+  --fade-end-pos: 100%;
+  scroll-padding-inline: var(--fade-size);
+  mask:
+    linear-gradient(black, black) no-clip subtract,
+    linear-gradient(to var(--fade-dir), black, transparent) var(--fade-start-pos) 0 / var(--fade-start) 100% no-repeat no-clip,
+    linear-gradient(to var(--fade-dir), transparent, black) var(--fade-end-pos) 0 / var(--fade-end) 100% no-repeat no-clip;
+  animation: vault-reveal-fade-start linear both, vault-hide-fade-end linear both;
+  animation-timeline: scroll(self inline);
+  animation-range: 0 var(--fade-size), calc(100% - var(--fade-size)) 100%;
+}
+
+.vault-poster-strip:dir(rtl) {
+  --fade-dir: left;
+  --fade-start-pos: 100%;
+  --fade-end-pos: 0;
+}
+
+@keyframes vault-reveal-fade-start {
+  to {
+    --fade-start: var(--fade-size);
+  }
+}
+
+@keyframes vault-hide-fade-end {
+  from {
+    --fade-end: var(--fade-size);
+  }
+}
+
+@supports not (animation-timeline: scroll()) {
+  .vault-poster-strip {
+    transition: --fade-start 0.2s, --fade-end 0.2s;
+  }
+  .vault-poster-strip.more-start {
+    --fade-start: var(--fade-size);
+  }
+  .vault-poster-strip.more-end {
+    --fade-end: var(--fade-size);
+  }
+}
+
+.vault-poster-strip::-webkit-scrollbar {
+  height: 5px;
+}

@@ -1,8 +1,13 @@
-import { formatVaultTime, initLazyMediaFallback, setupVaultChapters } from './vault-media-utils';
+import {
+  formatVaultTime,
+  initLazyMediaFallback,
+  initPosterStripHints,
+  setupVaultChapters,
+} from './vault-media-utils';
 
 function initProducerVault(): void {
   initLazyMediaFallback();
-  const activateChapter = setupVaultChapters();
+  initPosterStripHints();
 
   const audioEl = document.getElementById('vault-audio-element') as HTMLAudioElement | null;
   const videoEl = document.getElementById('vault-video-element') as HTMLVideoElement | null;
@@ -11,18 +16,15 @@ function initProducerVault(): void {
   const videoFrame = document.getElementById('vault-video-frame');
 
   const coverEl = document.getElementById('vault-cover') as HTMLImageElement | null;
-  const audioTitleEl = document.getElementById('vault-audio-title');
-  const audioNoteEl = document.getElementById('vault-audio-note');
-  const videoTitleEl = document.getElementById('vault-video-title');
-  const videoNoteEl = document.getElementById('vault-video-note');
+  const activeTitleEl = document.getElementById('vault-active-title');
+  const activeNoteEl = document.getElementById('vault-active-note');
+  const activeMetaEl = document.getElementById('vault-active-meta');
 
   const playBtn = document.getElementById('vault-play-btn');
   const playIcon = document.getElementById('vault-play-icon');
   const pauseIcon = document.getElementById('vault-pause-icon');
   const prevBtn = document.getElementById('vault-prev-btn');
   const nextBtn = document.getElementById('vault-next-btn');
-  const videoPrevBtn = document.getElementById('vault-video-prev-btn');
-  const videoNextBtn = document.getElementById('vault-video-next-btn');
   const currentTimeEl = document.getElementById('vault-current-time');
   const totalDurationEl = document.getElementById('vault-total-duration');
   const progressContainer = document.getElementById('vault-progress-container');
@@ -40,19 +42,19 @@ function initProducerVault(): void {
     playBtn?.setAttribute('aria-label', isPlaying ? 'Pause song idea' : 'Play song idea');
   }
 
-  function syncRowHighlight(index: number): void {
-    ideaItems.forEach((el, i) => {
-      const active = i === index;
-      el.classList.toggle('bg-white/[0.05]', active);
-      if (active) el.setAttribute('aria-current', 'true');
-      else el.removeAttribute('aria-current');
-
-      const idxEl = el.querySelector('.idea-index');
-      const titleEl = el.querySelector('.idea-row-title');
-      idxEl?.classList.toggle('text-accent', active);
-      idxEl?.classList.toggle('text-surface-subtle', !active);
-      titleEl?.classList.toggle('text-surface-ink', active);
-      titleEl?.classList.toggle('text-surface-muted', !active);
+  function syncThumbnailHighlight(activeEl: HTMLButtonElement): void {
+    ideaItems.forEach((el) => {
+      const active = el === activeEl;
+      if (active) {
+        el.setAttribute('aria-current', 'true');
+        el.classList.add('ring-2', 'ring-accent', 'ring-offset-2', 'ring-offset-surface-base', 'opacity-100');
+        el.classList.remove('opacity-55', 'hover:opacity-95', 'shadow-hairline');
+        el.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
+      } else {
+        el.removeAttribute('aria-current');
+        el.classList.remove('ring-2', 'ring-accent', 'ring-offset-2', 'ring-offset-surface-base', 'opacity-100');
+        el.classList.add('opacity-55', 'hover:opacity-95', 'shadow-hairline');
+      }
     });
   }
 
@@ -78,12 +80,11 @@ function initProducerVault(): void {
     }
   });
 
-  function selectIdea(index: number, autoPlay = false): void {
-    if (index < 0) index = ideaItems.length - 1;
-    if (index >= ideaItems.length) index = 0;
-    activeIdeaIndex = index;
+  function selectIdeaByElement(item: HTMLButtonElement, autoPlay = false, activatePanel = true): void {
+    const idx = ideaItems.indexOf(item);
+    if (idx === -1) return;
+    activeIdeaIndex = idx;
 
-    const item = ideaItems[index];
     const chapterId = item.getAttribute('data-chapter-id') || '';
     const mediaType = item.getAttribute('data-media-type') || 'audio';
     const src = item.getAttribute('data-src') || '';
@@ -96,8 +97,18 @@ function initProducerVault(): void {
     const width = item.getAttribute('data-width') || '360';
     const height = item.getAttribute('data-height') || '640';
 
-    if (chapterId) activateChapter(chapterId);
-    syncRowHighlight(index);
+    if (activatePanel && chapterId) activateChapter(chapterId);
+
+    const chapterItems = chapterId
+      ? ideaItems.filter((el) => el.getAttribute('data-chapter-id') === chapterId)
+      : ideaItems;
+    const posInChapter = Math.max(0, chapterItems.indexOf(item));
+    const positionLabel = `${String(posInChapter + 1).padStart(2, '0')} / ${String(chapterItems.length).padStart(2, '0')} - ${duration}`;
+
+    syncThumbnailHighlight(item);
+    if (activeTitleEl) activeTitleEl.textContent = title;
+    if (activeNoteEl) activeNoteEl.textContent = note;
+    if (activeMetaEl) activeMetaEl.textContent = positionLabel;
 
     if (mediaType === 'video' && videoEl) {
       pauseAllOtherPlayers('vault-video');
@@ -109,10 +120,10 @@ function initProducerVault(): void {
       if (videoFrame) {
         videoFrame.className =
           aspect === '16:9'
-            ? 'w-full sm:w-72 shrink-0 rounded-xl overflow-hidden bg-surface-void shadow-hairline'
+            ? 'w-full max-w-xl aspect-video rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong'
             : aspect === '1:1'
-              ? 'w-52 sm:w-60 shrink-0 rounded-xl overflow-hidden bg-surface-void shadow-hairline'
-              : 'w-44 sm:w-52 shrink-0 rounded-xl overflow-hidden bg-surface-void shadow-hairline';
+              ? 'w-full max-w-[400px] aspect-square rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong'
+              : 'w-full max-w-[340px] sm:max-w-[380px] aspect-[9/16] rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong';
       }
 
       videoEl.width = Number(width) || 360;
@@ -120,8 +131,6 @@ function initProducerVault(): void {
       if (poster) videoEl.poster = poster;
       else videoEl.removeAttribute('poster');
       videoEl.src = src;
-      if (videoTitleEl) videoTitleEl.textContent = title;
-      if (videoNoteEl) videoNoteEl.textContent = note;
 
       if (autoPlay) {
         videoEl.play().catch((err) => {
@@ -139,8 +148,6 @@ function initProducerVault(): void {
         coverEl.src = cover;
         coverEl.alt = title;
       }
-      if (audioTitleEl) audioTitleEl.textContent = title;
-      if (audioNoteEl) audioNoteEl.textContent = note;
       if (totalDurationEl) totalDurationEl.textContent = duration;
       if (currentTimeEl) currentTimeEl.textContent = '0:00';
       if (progressBar) progressBar.style.width = '0%';
@@ -161,6 +168,24 @@ function initProducerVault(): void {
     }
   }
 
+  function stepInActiveChapter(delta: number, autoPlay = true): void {
+    const current = ideaItems[activeIdeaIndex];
+    const chapterId = current?.getAttribute('data-chapter-id') || '';
+    const chapterItems = chapterId
+      ? ideaItems.filter((el) => el.getAttribute('data-chapter-id') === chapterId)
+      : ideaItems;
+    if (chapterItems.length === 0) return;
+
+    const currentPos = Math.max(0, chapterItems.indexOf(current));
+    const nextPos = (currentPos + delta + chapterItems.length) % chapterItems.length;
+    selectIdeaByElement(chapterItems[nextPos], autoPlay, false);
+  }
+
+  const activateChapter = setupVaultChapters((chapterId) => {
+    const firstInChapter = ideaItems.find((el) => el.getAttribute('data-chapter-id') === chapterId);
+    if (firstInChapter) selectIdeaByElement(firstInChapter, false, false);
+  });
+
   playBtn?.addEventListener('click', () => {
     if (!audioEl) return;
     if (audioEl.paused) {
@@ -179,12 +204,10 @@ function initProducerVault(): void {
   });
 
   videoEl?.addEventListener('play', () => pauseAllOtherPlayers('vault-video'));
-  prevBtn?.addEventListener('click', () => selectIdea(activeIdeaIndex - 1, true));
-  nextBtn?.addEventListener('click', () => selectIdea(activeIdeaIndex + 1, true));
-  videoPrevBtn?.addEventListener('click', () => selectIdea(activeIdeaIndex - 1, true));
-  videoNextBtn?.addEventListener('click', () => selectIdea(activeIdeaIndex + 1, true));
+  prevBtn?.addEventListener('click', () => stepInActiveChapter(-1, true));
+  nextBtn?.addEventListener('click', () => stepInActiveChapter(1, true));
 
-  ideaItems.forEach((item, idx) => item.addEventListener('click', () => selectIdea(idx, true)));
+  ideaItems.forEach((item) => item.addEventListener('click', () => selectIdeaByElement(item, true, true)));
 
   audioEl?.addEventListener('timeupdate', () => {
     if (!audioEl.duration) return;
@@ -194,8 +217,8 @@ function initProducerVault(): void {
     if (currentTimeEl) currentTimeEl.textContent = formatVaultTime(audioEl.currentTime);
   });
 
-  audioEl?.addEventListener('ended', () => selectIdea(activeIdeaIndex + 1, true));
-  videoEl?.addEventListener('ended', () => selectIdea(activeIdeaIndex + 1, true));
+  audioEl?.addEventListener('ended', () => stepInActiveChapter(1, true));
+  videoEl?.addEventListener('ended', () => stepInActiveChapter(1, true));
 
   progressContainer?.addEventListener('click', (e) => {
     if (!audioEl?.duration) return;
