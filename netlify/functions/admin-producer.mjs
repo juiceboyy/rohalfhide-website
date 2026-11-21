@@ -125,7 +125,7 @@ export default async (req) => {
           year: (payload.year || '').trim(),
           cover: (payload.cover || '/images/hero-portrait.jpg').trim(),
           audioPreview: (payload.audioPreview || '').trim(),
-          externalUrl: (payload.externalUrl || '').trim(),
+          youtubeUrl: (payload.youtubeUrl || '').trim(),
           notes: (payload.notes || '').trim(),
           draft: Boolean(payload.draft),
         };

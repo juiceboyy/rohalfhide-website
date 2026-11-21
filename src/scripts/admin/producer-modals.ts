@@ -93,7 +93,7 @@ export function openProducerItemModal(
     (document.getElementById('pe-cr-year') as HTMLInputElement).value = cr?.year || String(new Date().getFullYear());
     (document.getElementById('pe-cr-cover') as HTMLInputElement).value = cr?.cover || '';
     (document.getElementById('pe-cr-audio') as HTMLInputElement).value = cr?.audioPreview || '';
-    (document.getElementById('pe-cr-url') as HTMLInputElement).value = cr?.externalUrl || '';
+    (document.getElementById('pe-cr-url') as HTMLInputElement).value = cr?.youtubeUrl || '';
     (document.getElementById('pe-cr-notes') as HTMLTextAreaElement).value = cr?.notes || '';
     setSafeImagePreview(document.getElementById('pe-cr-cover-preview') as HTMLImageElement | null, cr?.cover || '');
   } else {
@@ -156,7 +156,7 @@ function buildItemPayload(kind: ItemKind): { action: string; payload: Record<str
         year: (document.getElementById('pe-cr-year') as HTMLInputElement).value,
         cover: (document.getElementById('pe-cr-cover') as HTMLInputElement).value,
         audioPreview: (document.getElementById('pe-cr-audio') as HTMLInputElement).value,
-        externalUrl: (document.getElementById('pe-cr-url') as HTMLInputElement).value,
+        youtubeUrl: (document.getElementById('pe-cr-url') as HTMLInputElement).value,
         notes: (document.getElementById('pe-cr-notes') as HTMLTextAreaElement).value,
         draft,
       },

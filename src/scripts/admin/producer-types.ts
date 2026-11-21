@@ -53,7 +53,7 @@ export interface ProductionCredit {
   year: string;
   cover: string;
   audioPreview?: string;
-  externalUrl?: string;
+  youtubeUrl?: string;
   notes?: string;
   draft?: boolean;
 }
