@@ -10,7 +10,6 @@ const PRODUCER_PATH = 'src/data/producer.json';
 
 function emptyCatalog() {
   return {
-    instagramHighlightsUrl: 'https://www.instagram.com/stories/highlights/18158156884248319/',
     hero: { eyebrowLeft: 'Producer & Songwriter', eyebrowRight: 'Jupiterkade 2, The Hague', title: '', subtitle: '' },
     studio: { name: 'Jupiterkade 2 Studio', address: 'Jupiterkade 2', city: 'The Hague, The Netherlands', summary: '', approach: '', setupHighlights: [] },
     services: [],
@@ -109,7 +108,6 @@ export default async (req) => {
           aspectRatio,
           width: Number(payload.width) || (aspectRatio === '16:9' ? 640 : mediaType === 'video' ? 360 : 600),
           height: Number(payload.height) || (aspectRatio === '16:9' ? 360 : mediaType === 'video' ? 640 : 600),
-          instagramUrl: (payload.instagramUrl || '').trim(),
           draft: Boolean(payload.draft),
         };
         const res = upsertById(data.songIdeas, idea);
@@ -149,9 +147,6 @@ export default async (req) => {
         data.testimonials = res.list;
         commitMessage = `CMS: ${res.isUpdate ? 'Update' : 'Add'} testimonial from "${testimonial.author}"`;
       } else if (action === 'update-settings') {
-        if (payload.instagramHighlightsUrl) {
-          data.instagramHighlightsUrl = String(payload.instagramHighlightsUrl).trim();
-        }
         if (payload.hero) data.hero = { ...data.hero, ...payload.hero };
         if (payload.studio) data.studio = { ...data.studio, ...payload.studio };
         if (Array.isArray(payload.services)) data.services = payload.services;

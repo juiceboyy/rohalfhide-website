@@ -3,10 +3,9 @@ import type { ProducerHeroData } from '../../scripts/admin/producer-types';
 
 interface Props {
   hero: ProducerHeroData;
-  instagramHighlightsUrl: string;
 }
 
-const { hero, instagramHighlightsUrl } = Astro.props;
+const { hero } = Astro.props;
 ---
 
 <section class="relative w-full min-h-[min(78vh,740px)] bg-surface-void text-surface-ink overflow-hidden flex flex-col justify-between">
@@ -60,17 +59,6 @@ const { hero, instagramHighlightsUrl } = Astro.props;
           class="px-7 py-3.5 bg-white/[0.06] hover:bg-white/[0.12] text-surface-ink backdrop-blur-md shadow-hairline-strong font-mono font-medium text-xs uppercase tracking-[0.16em] rounded-full transition-colors duration-150 focus-ring"
         >
           Productions
-        </a>
-        <a
-          href={instagramHighlightsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-1.5 px-3 py-3 text-accent hover:text-accent-hover font-mono font-medium text-xs uppercase tracking-[0.16em] rounded-sm transition-colors duration-150 focus-ring"
-        >
-          <span>IG Highlights</span>
-          <svg aria-hidden="true" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M7 17L17 7M9 7h8v8"></path>
-          </svg>
         </a>
       </div>
     </div>

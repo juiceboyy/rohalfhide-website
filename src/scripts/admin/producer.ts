@@ -3,7 +3,6 @@ import { openProducerItemModal, setupProducerModals } from './producer-modals';
 import type { ProducerPortfolioData } from './producer-types';
 
 let catalog: ProducerPortfolioData = {
-  instagramHighlightsUrl: '',
   hero: { eyebrowLeft: '', eyebrowRight: '', title: '', subtitle: '' },
   studio: { name: '', address: '', city: '', summary: '', approach: '', setupHighlights: [] },
   services: [],

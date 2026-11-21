@@ -13,7 +13,6 @@ import type {
 type ItemKind = 'chapter' | 'idea' | 'credit' | 'testimonial';
 
 let getCatalogRef: () => ProducerPortfolioData = () => ({
-  instagramHighlightsUrl: '',
   hero: { eyebrowLeft: '', eyebrowRight: '', title: '', subtitle: '' },
   studio: { name: '', address: '', city: '', summary: '', approach: '', setupHighlights: [] },
   services: [],
@@ -85,8 +84,6 @@ export function openProducerItemModal(
     (document.getElementById('pe-idea-cover') as HTMLInputElement).value = coverVal;
     (document.getElementById('pe-idea-note') as HTMLTextAreaElement).value = idea?.note || '';
     (document.getElementById('pe-idea-year') as HTMLInputElement).value = idea?.year || String(new Date().getFullYear());
-    (document.getElementById('pe-idea-ig') as HTMLInputElement).value =
-      idea?.instagramUrl || getCatalogRef().instagramHighlightsUrl;
     setSafeImagePreview(document.getElementById('pe-idea-cover-preview') as HTMLImageElement | null, coverVal);
   } else if (kind === 'credit') {
     const cr = item as ProductionCredit | null;
@@ -144,7 +141,6 @@ function buildItemPayload(kind: ItemKind): { action: string; payload: Record<str
         height: Number((document.getElementById('pe-idea-height') as HTMLInputElement).value) || undefined,
         note: (document.getElementById('pe-idea-note') as HTMLTextAreaElement).value,
         year: (document.getElementById('pe-idea-year') as HTMLInputElement).value,
-        instagramUrl: (document.getElementById('pe-idea-ig') as HTMLInputElement).value,
         draft,
       },
     };

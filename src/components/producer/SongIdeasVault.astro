@@ -5,10 +5,9 @@ import VaultStage from './VaultStage.astro';
 interface Props {
   chapters: ProducerChapter[];
   songIdeas: SongIdea[];
-  instagramHighlightsUrl: string;
 }
 
-const { chapters, songIdeas, instagramHighlightsUrl } = Astro.props;
+const { chapters, songIdeas } = Astro.props;
 
 const activeChapters = chapters.filter((c) => !c.draft);
 const publishedIdeas = songIdeas.filter((i) => !i.draft);
@@ -27,20 +26,6 @@ const initialChapter = activeChapters.find((c) => c.id === initialIdea?.chapterI
         <p class="font-sans font-normal text-base text-surface-muted leading-relaxed">
           Unfinished sketches, late-night chord progressions, and rhythmic frames straight from the studio.
         </p>
-      </div>
-
-      <div>
-        <a
-          href={instagramHighlightsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent hover:text-accent-hover transition-colors duration-150 rounded-sm focus-ring"
-        >
-          <span>Instagram Highlights Archive</span>
-          <svg aria-hidden="true" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M7 17L17 7M9 7h8v8"></path>
-          </svg>
-        </a>
       </div>
 
       {activeChapters.length > 0 && (
@@ -167,7 +152,7 @@ const initialChapter = activeChapters.find((c) => c.id === initialIdea?.chapterI
         <div class="py-10 space-y-3">
           <p class="font-serif text-xl text-surface-ink">Song Ideas Vault</p>
           <p class="font-sans text-sm text-surface-muted leading-relaxed">
-            No published song ideas yet. Import clips from your Instagram Highlights or add tracks in the CMS.
+            No published song ideas yet. Add audio or video sketches in the CMS.
           </p>
         </div>
       )}

@@ -18,14 +18,10 @@ const hasPublishedTestimonials = producer.testimonials.some((t) => !t.draft && t
   description="Music production portfolio, selected credits, studio workflow at Jupiterkade 2, and the Song Ideas vault by Ro Halfhide."
   image="/images/about-banner.webp"
 >
-  <ProducerHero
-    hero={producer.hero}
-    instagramHighlightsUrl={producer.instagramHighlightsUrl}
-  />
+  <ProducerHero hero={producer.hero} />
   <SongIdeasVault
     chapters={producer.chapters}
     songIdeas={producer.songIdeas}
-    instagramHighlightsUrl={producer.instagramHighlightsUrl}
   />
   <ProducerCredits credits={producer.credits} />
   <ServicesAndStudio services={producer.services} studio={producer.studio} />

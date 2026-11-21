@@ -42,7 +42,6 @@ export interface SongIdea {
   aspectRatio?: '9:16' | '16:9' | '1:1';
   width?: number;
   height?: number;
-  instagramUrl?: string;
   draft?: boolean;
 }
 
@@ -68,7 +67,6 @@ export interface ProducerTestimonial {
 }
 
 export interface ProducerPortfolioData {
-  instagramHighlightsUrl: string;
   hero: ProducerHeroData;
   studio: ProducerStudioData;
   services: ProducerService[];

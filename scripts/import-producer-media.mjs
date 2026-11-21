@@ -223,12 +223,11 @@ async function main() {
           poster: posterUrl,
           cover: posterUrl,
           duration: meta.duration,
-          note: 'Imported from Instagram Song Ideas archive.',
+          note: 'Imported studio sketch.',
           year: String(new Date().getFullYear()),
           aspectRatio,
           width: meta.width,
           height: meta.height,
-          instagramUrl: catalog.instagramHighlightsUrl,
           draft: !publish,
         });
         existingSrcs.add(publicSrc);
@@ -264,7 +263,6 @@ async function main() {
           duration: meta.duration,
           note: 'Imported studio sketch.',
           year: String(new Date().getFullYear()),
-          instagramUrl: catalog.instagramHighlightsUrl,
           draft: !publish,
         });
         existingSrcs.add(publicSrc);

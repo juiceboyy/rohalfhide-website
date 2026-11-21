@@ -19,7 +19,6 @@ export function installClosedByFallback(dialog: HTMLDialogElement | null): void 
 export function openProducerSettingsModal(data: ProducerPortfolioData): void {
   const dialog = document.getElementById('producer-settings-dialog') as HTMLDialogElement | null;
   if (!dialog) return;
-  (document.getElementById('ps-ig-url') as HTMLInputElement).value = data.instagramHighlightsUrl || '';
   (document.getElementById('ps-hero-left') as HTMLInputElement).value = data.hero?.eyebrowLeft || '';
   (document.getElementById('ps-hero-right') as HTMLInputElement).value = data.hero?.eyebrowRight || '';
   (document.getElementById('ps-hero-title') as HTMLInputElement).value = data.hero?.title || '';
@@ -61,7 +60,6 @@ export function setupProducerSettingsModal(
         .map((s) => s.trim())
         .filter(Boolean);
       const payload = {
-        instagramHighlightsUrl: (document.getElementById('ps-ig-url') as HTMLInputElement).value.trim(),
         hero: {
           eyebrowLeft: (document.getElementById('ps-hero-left') as HTMLInputElement).value.trim(),
           eyebrowRight: (document.getElementById('ps-hero-right') as HTMLInputElement).value.trim(),
