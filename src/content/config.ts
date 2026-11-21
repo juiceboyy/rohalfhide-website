@@ -11,6 +11,7 @@ const newsCollection = defineCollection({
     mediaType: z.enum(['standard', 'audio', 'video']).default('standard'),
     mediaEmbedUrl: z.string().optional(),
     mediaPlatform: z.enum(['soundcloud', 'youtube']).optional(),
+    draft: z.boolean().default(false),
   }),
 });
 

@@ -1,0 +1,41 @@
+---
+import type { ProducerTestimonial } from '../../scripts/admin/producer-types';
+
+interface Props {
+  testimonials: ProducerTestimonial[];
+}
+
+const { testimonials } = Astro.props;
+const published = testimonials.filter((t) => !t.draft && t.quote.trim().length > 0);
+---
+
+{published.length > 0 && (
+  <section id="collaborators" class="py-24 bg-surface-void shadow-divider-t">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      <div class="lg:col-span-4 space-y-3">
+        <h2 class="font-serif font-semibold text-4xl sm:text-5xl tracking-[-0.04em] leading-[1.05] text-surface-ink">
+          Collaborators
+        </h2>
+        <p class="font-sans font-normal text-base text-surface-muted leading-relaxed">
+          Reflections from artists and writers who have worked in the studio.
+        </p>
+      </div>
+
+      <div class="lg:col-span-8 space-y-10">
+        {published.map((item) => (
+          <blockquote class="pt-6 first:pt-0 shadow-divider-t first:shadow-none space-y-4">
+            <p class="font-serif italic text-xl sm:text-2xl text-surface-ink leading-relaxed">
+              &ldquo;{item.quote}&rdquo;
+            </p>
+            <footer class="font-mono text-xs uppercase tracking-[0.16em] text-surface-muted">
+              <span class="text-surface-ink">{item.author}</span>
+              {item.roleOrProject && (
+                <span class="text-surface-subtle"> / {item.roleOrProject}</span>
+              )}
+            </footer>
+          </blockquote>
+        ))}
+      </div>
+    </div>
+  </section>
+)}

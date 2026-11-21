@@ -1,0 +1,205 @@
+---
+import type { ProducerChapter, SongIdea } from '../../scripts/admin/producer-types';
+import VaultStage from './VaultStage.astro';
+
+interface Props {
+  chapters: ProducerChapter[];
+  songIdeas: SongIdea[];
+}
+
+const { chapters, songIdeas } = Astro.props;
+
+const activeChapters = chapters.filter((c) => !c.draft);
+const publishedIdeas = songIdeas.filter((i) => !i.draft);
+const initialChapter = activeChapters[0] || null;
+const initialIdea =
+  publishedIdeas.find((i) => i.chapterId === initialChapter?.id) || publishedIdeas[0] || null;
+const initialChapterItems = initialChapter
+  ? publishedIdeas.filter((i) => i.chapterId === initialChapter.id)
+  : publishedIdeas;
+const initialIdxInChapter = initialIdea
+  ? Math.max(0, initialChapterItems.findIndex((i) => i.id === initialIdea.id))
+  : 0;
+const initialPositionLabel = initialIdea
+  ? `${String(initialIdxInChapter + 1).padStart(2, '0')} / ${String(initialChapterItems.length).padStart(2, '0')} - ${initialIdea.duration}`
+  : '';
+---
+
+<section id="song-ideas" class="py-24 bg-surface-base shadow-divider-t">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-x-12 lg:gap-x-14 gap-y-8 items-start">
+    <!-- Block 1: Heading & Compact Chapter Tabs -->
+    <div class="lg:col-span-7 lg:col-start-1 lg:row-start-1 space-y-6">
+      <div class="space-y-3">
+        <h2 class="font-serif font-semibold text-4xl sm:text-5xl tracking-[-0.04em] leading-[1.05] text-surface-ink">
+          Song Ideas
+        </h2>
+        <p class="font-sans font-normal text-base text-surface-muted leading-relaxed max-w-xl">
+          Unfinished sketches, late-night chord progressions, and rhythmic frames straight from the studio.
+        </p>
+      </div>
+
+      {activeChapters.length > 0 && (
+        <nav aria-label="Song Ideas Chapters" class="flex flex-wrap gap-2 pt-2">
+          {activeChapters.map((chapter, idx) => {
+            const count = publishedIdeas.filter((i) => i.chapterId === chapter.id).length;
+            const isInitial = initialChapter ? chapter.id === initialChapter.id : idx === 0;
+            return (
+              <button
+                type="button"
+                data-chapter-tab={chapter.id}
+                aria-expanded={isInitial ? 'true' : 'false'}
+                aria-controls={`chapter-panel-${chapter.id}`}
+                class={`vault-chapter-btn px-3.5 py-2 rounded-lg flex items-center gap-2.5 text-left transition-colors duration-150 focus-ring ${
+                  isInitial
+                    ? 'bg-white/[0.08] text-surface-ink shadow-hairline-strong'
+                    : 'bg-surface-raised/60 text-surface-muted hover:text-surface-ink hover:bg-white/[0.04] shadow-hairline'
+                }`}
+              >
+                <span class={`chapter-index font-mono text-xs shrink-0 ${isInitial ? 'text-accent' : 'text-surface-subtle'}`}>
+                  {chapter.indexLabel || String(idx + 1).padStart(2, '0')}
+                </span>
+                <span class="font-sans font-medium text-xs sm:text-sm">
+                  {chapter.title}
+                </span>
+                <span class="font-mono text-[11px] text-surface-subtle">
+                  {count}
+                </span>
+              </button>
+            );
+          })}
+        </nav>
+      )}
+    </div>
+
+    <!-- Block 2: Big Prominent Vertical Video Stage (after chapter tabs on mobile, right column on desktop) -->
+    <div class="lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:row-span-2 flex justify-center lg:justify-end">
+      {initialIdea ? (
+        <VaultStage initialIdea={initialIdea} />
+      ) : (
+        <div class="w-full max-w-[360px] rounded-2xl bg-surface-raised/60 shadow-hairline p-8 space-y-3">
+          <p class="font-serif text-xl text-surface-ink">Song Ideas Vault</p>
+          <p class="font-sans text-sm text-surface-muted leading-relaxed">
+            No published song ideas yet. Add audio or video sketches in the CMS.
+          </p>
+        </div>
+      )}
+    </div>
+
+    <!-- Block 3: Active Clip Quiet Details, Transport & Visual Poster Strip -->
+    {initialIdea && (
+      <div class="lg:col-span-7 lg:col-start-1 lg:row-start-2 space-y-7 min-w-0">
+        <!-- Active Clip Details -->
+        <div class="space-y-3 pt-2 shadow-divider-t">
+          <p id="vault-active-meta" class="pt-4 font-mono text-xs uppercase tracking-[0.18em] text-surface-subtle">
+            {initialPositionLabel}
+          </p>
+          <h3 id="vault-active-title" class="font-serif font-semibold text-2xl sm:text-3xl tracking-[-0.03em] text-surface-ink">
+            {initialIdea.title}
+          </h3>
+          <p id="vault-active-note" class="font-sans font-normal text-sm text-surface-subtle leading-relaxed max-w-xl">
+            {initialIdea.note}
+          </p>
+
+          <div class="flex flex-wrap items-center gap-5 pt-2">
+            <button
+              type="button"
+              id="vault-main-play-btn"
+              aria-label="Play song idea"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface-ink hover:bg-white text-surface-void font-mono font-medium text-xs uppercase tracking-[0.14em] transition-colors duration-150 focus-ring"
+            >
+              <svg id="vault-main-play-icon" class="w-3.5 h-3.5 fill-current translate-x-0.5" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              <svg id="vault-main-pause-icon" class="w-3.5 h-3.5 fill-current hidden" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+              <span id="vault-main-play-label">Play</span>
+            </button>
+            <button
+              type="button"
+              id="vault-prev-btn"
+              class="font-mono text-xs uppercase tracking-[0.16em] text-surface-muted hover:text-surface-ink transition-colors duration-150 focus-ring rounded-sm"
+            >
+              &larr; Prev
+            </button>
+            <button
+              type="button"
+              id="vault-next-btn"
+              class="font-mono text-xs uppercase tracking-[0.16em] text-surface-muted hover:text-surface-ink transition-colors duration-150 focus-ring rounded-sm"
+            >
+              Next &rarr;
+            </button>
+            <button
+              type="button"
+              data-inquire-active
+              class="sm:ml-auto font-mono text-xs uppercase tracking-[0.16em] text-accent hover:text-accent-hover transition-colors duration-150 focus-ring rounded-sm"
+            >
+              Inquire about this idea &rarr;
+            </button>
+          </div>
+        </div>
+
+        <!-- Compact Visual Poster Strip (Searchable Chapters) -->
+        <div id="vault-chapters-container" class="pt-6 shadow-divider-t">
+          {activeChapters.map((chapter, chIdx) => {
+            const items = publishedIdeas.filter((i) => i.chapterId === chapter.id);
+            const isInitial = initialChapter ? chapter.id === initialChapter.id : chIdx === 0;
+            return (
+              <div
+                id={`chapter-panel-${chapter.id}`}
+                data-chapter-panel={chapter.id}
+                hidden={isInitial ? undefined : 'until-found'}
+              >
+                <div class="space-y-3">
+                  {items.length > 0 ? (
+                    <div class="vault-poster-strip flex items-center gap-3 overflow-x-auto snap-x snap-proximity py-2 px-1">
+                      {items.map((idea) => {
+                        const isSelected = idea.id === initialIdea.id;
+                        return (
+                          <button
+                            type="button"
+                            data-idea-id={idea.id}
+                            data-chapter-id={chapter.id}
+                            data-media-type={idea.mediaType}
+                            data-src={idea.src}
+                            data-poster={idea.poster || idea.cover || ''}
+                            data-cover={idea.cover || idea.poster || '/images/hero-portrait.jpg'}
+                            data-title={idea.title}
+                            data-note={idea.note}
+                            data-duration={idea.duration}
+                            data-aspect={idea.aspectRatio || (idea.mediaType === 'video' ? '9:16' : '1:1')}
+                            data-width={String(idea.width || (idea.mediaType === 'video' ? 360 : 600))}
+                            data-height={String(idea.height || (idea.mediaType === 'video' ? 640 : 600))}
+                            aria-label={`${idea.title} (${idea.duration})`}
+                            aria-current={isSelected ? 'true' : undefined}
+                            title={idea.title}
+                            class={`vault-idea-item w-16 sm:w-[72px] aspect-[9/16] shrink-0 rounded-lg overflow-hidden bg-surface-void snap-start transition-all duration-150 focus-ring ${
+                              isSelected
+                                ? 'ring-2 ring-accent ring-offset-2 ring-offset-surface-base opacity-100'
+                                : 'opacity-55 hover:opacity-95 shadow-hairline'
+                            }`}
+                          >
+                            <img
+                              src={idea.poster || idea.cover || '/images/hero-portrait.jpg'}
+                              alt={idea.title}
+                              width="72"
+                              height="128"
+                              loading="lazy"
+                              class="w-full h-full object-cover block"
+                            />
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p class="py-4 font-sans text-sm text-surface-muted">
+                      No ideas published in this crate yet.
+                    </p>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    )}
+  </div>
+</section>
+
+<script src="../../scripts/producer-vault.ts"></script>

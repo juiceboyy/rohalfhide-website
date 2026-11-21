@@ -1,0 +1,287 @@
+import { fetchWithAuth, showToast, uploadMedia } from './api';
+import type { MusicTrack } from './music-types';
+import { findKnownSpotifyTrack, buildBandcampUrl } from './streaming-catalog';
+import { detectAudioDuration } from './audio-utils';
+import { previewLocalFile, setSafeImagePreview } from './media-preview';
+
+export async function autoLookupStreamingLinks(
+  title: string,
+  artist = 'Ro Halfhide',
+  forceOverwrite = false
+): Promise<void> {
+  const cleanTitle = title.trim();
+  if (!cleanTitle || cleanTitle.length < 2) return;
+
+  const btnText = document.getElementById('track-auto-lookup-text');
+  if (btnText) btnText.textContent = 'Searching...';
+
+  const spotifyInput = document.getElementById('track-form-spotify') as HTMLInputElement | null;
+  const bandcampInput = document.getElementById('track-form-bandcamp') as HTMLInputElement | null;
+  const appleInput = document.getElementById('track-form-apple') as HTMLInputElement | null;
+  const dateInput = document.getElementById('track-form-date') as HTMLInputElement | null;
+  const durationInput = document.getElementById('track-form-duration') as HTMLInputElement | null;
+
+  let prefilledCount = 0;
+
+  // 1. Instant local match for Spotify & Bandcamp (0ms latency)
+  const localSpotify = findKnownSpotifyTrack(cleanTitle);
+  const localBandcamp = buildBandcampUrl(cleanTitle);
+
+  if (localSpotify && spotifyInput && (!spotifyInput.value.trim() || forceOverwrite)) {
+    if (spotifyInput.value !== localSpotify) prefilledCount++;
+    spotifyInput.value = localSpotify;
+  }
+  if (localBandcamp && bandcampInput && (!bandcampInput.value.trim() || forceOverwrite)) {
+    if (bandcampInput.value !== localBandcamp) prefilledCount++;
+    bandcampInput.value = localBandcamp;
+  }
+
+  // 2. Query serverless endpoint for Apple Music, duration, release date, and dynamic links
+  try {
+    const res = await fetchWithAuth(
+      `/api/admin/lookup-links?title=${encodeURIComponent(cleanTitle)}&artist=${encodeURIComponent(artist)}`
+    );
+    if (!res.ok) {
+      if (prefilledCount > 0) {
+        showToast(`Prefilled streaming links for "${cleanTitle}".`, 'success');
+      } else if (forceOverwrite) {
+        showToast('Could not look up streaming links from external services.', 'error');
+      }
+      return;
+    }
+
+    const data = await res.json();
+    if (!data.ok || !data.links) {
+      if (prefilledCount > 0) {
+        showToast(`Prefilled streaming links for "${cleanTitle}".`, 'success');
+      } else if (forceOverwrite) {
+        showToast('No streaming links found for this track.', 'info');
+      }
+      return;
+    }
+
+    if (data.links.spotify && spotifyInput && (!spotifyInput.value.trim() || forceOverwrite)) {
+      if (spotifyInput.value !== data.links.spotify) prefilledCount++;
+      spotifyInput.value = data.links.spotify;
+    }
+
+    if (data.links.bandcamp && bandcampInput && (!bandcampInput.value.trim() || forceOverwrite)) {
+      if (bandcampInput.value !== data.links.bandcamp) prefilledCount++;
+      bandcampInput.value = data.links.bandcamp;
+    }
+
+    if (data.links.appleMusic && appleInput && (!appleInput.value.trim() || forceOverwrite)) {
+      if (appleInput.value !== data.links.appleMusic) prefilledCount++;
+      appleInput.value = data.links.appleMusic;
+    }
+
+    if (data.releaseDate && dateInput && (!dateInput.value || dateInput.value === new Date().toISOString().split('T')[0])) {
+      dateInput.value = data.releaseDate;
+    }
+
+    if (data.duration && durationInput && (!durationInput.value || durationInput.value === '0:00')) {
+      durationInput.value = data.duration;
+    }
+
+    if (prefilledCount > 0) {
+      showToast(`Prefilled streaming links for "${cleanTitle}".`, 'success');
+    } else if (forceOverwrite) {
+      showToast(`Streaming links are already up to date.`, 'info');
+    }
+  } catch (err: any) {
+    console.error('Auto-lookup error:', err);
+    if (prefilledCount > 0) {
+      showToast(`Prefilled streaming links for "${cleanTitle}".`, 'success');
+    } else if (forceOverwrite) {
+      showToast('Network error while searching streaming links.', 'error');
+    }
+  } finally {
+    if (btnText) btnText.textContent = 'Auto-Find Links';
+  }
+}
+
+export function openTrackEditor(track: MusicTrack | null = null): void {
+  const modal = document.getElementById('track-editor-modal');
+  const modalTitle = document.getElementById('track-modal-title');
+  const form = document.getElementById('track-form') as HTMLFormElement | null;
+  if (!modal || !form) return;
+
+  form.reset();
+
+  if (track) {
+    if (modalTitle) modalTitle.textContent = 'Edit Track';
+    (document.getElementById('track-form-id') as HTMLInputElement).value = track.id;
+    (document.getElementById('track-form-title') as HTMLInputElement).value = track.title;
+    (document.getElementById('track-form-artist') as HTMLInputElement).value = track.artist || 'Ro Halfhide';
+    (document.getElementById('track-form-src') as HTMLInputElement).value = track.src;
+    (document.getElementById('track-form-duration') as HTMLInputElement).value = track.duration;
+    (document.getElementById('track-form-cover') as HTMLInputElement).value = track.cover;
+    (document.getElementById('track-form-date') as HTMLInputElement).value = track.releaseDate || '';
+    (document.getElementById('track-form-draft') as HTMLInputElement).checked = Boolean(track.draft);
+    (document.getElementById('track-form-spotify') as HTMLInputElement).value = track.links?.spotify || '';
+    (document.getElementById('track-form-bandcamp') as HTMLInputElement).value = track.links?.bandcamp || '';
+    (document.getElementById('track-form-apple') as HTMLInputElement).value = track.links?.appleMusic || '';
+
+    const imgPreview = document.getElementById('track-cover-preview') as HTMLImageElement | null;
+    setSafeImagePreview(imgPreview, track.cover);
+  } else {
+    if (modalTitle) modalTitle.textContent = 'Add Track';
+    (document.getElementById('track-form-id') as HTMLInputElement).value = '';
+    (document.getElementById('track-form-artist') as HTMLInputElement).value = 'Ro Halfhide';
+    (document.getElementById('track-form-date') as HTMLInputElement).value = new Date().toISOString().split('T')[0];
+    const imgPreview = document.getElementById('track-cover-preview') as HTMLImageElement | null;
+    if (imgPreview) {
+      imgPreview.src = '';
+      imgPreview.classList.add('hidden');
+    }
+  }
+
+  modal.classList.remove('hidden');
+}
+
+export function closeTrackEditor(): void {
+  const modal = document.getElementById('track-editor-modal');
+  if (modal) modal.classList.add('hidden');
+}
+
+export function setupTrackModalEvents(onSaveSuccess: () => Promise<void>): void {
+  const addBtn = document.getElementById('admin-add-track-btn');
+  const closeBtn = document.getElementById('track-modal-close-btn');
+  const cancelBtn = document.getElementById('track-modal-cancel-btn');
+  const titleInput = document.getElementById('track-form-title') as HTMLInputElement | null;
+  const artistInput = document.getElementById('track-form-artist') as HTMLInputElement | null;
+  const lookupBtn = document.getElementById('track-auto-lookup-btn');
+  const audioUploadInput = document.getElementById('track-audio-upload') as HTMLInputElement | null;
+  const coverUploadInput = document.getElementById('track-cover-upload') as HTMLInputElement | null;
+  const form = document.getElementById('track-form') as HTMLFormElement | null;
+
+  addBtn?.addEventListener('click', () => openTrackEditor(null));
+  closeBtn?.addEventListener('click', closeTrackEditor);
+  cancelBtn?.addEventListener('click', closeTrackEditor);
+
+  // Manual Auto-Find button
+  lookupBtn?.addEventListener('click', () => {
+    const title = titleInput?.value || '';
+    const artist = artistInput?.value || 'Ro Halfhide';
+    if (title) autoLookupStreamingLinks(title, artist, true);
+  });
+
+  // Auto-search when title loses focus (blur)
+  let lastSearchedTitle = '';
+  titleInput?.addEventListener('blur', () => {
+    const title = titleInput.value.trim();
+    const artist = artistInput?.value || 'Ro Halfhide';
+    if (title && title.length >= 2 && title !== lastSearchedTitle) {
+      lastSearchedTitle = title;
+      autoLookupStreamingLinks(title, artist);
+    }
+  });
+
+  // Debounced auto-search while typing
+  let debounceTimer: ReturnType<typeof setTimeout>;
+  titleInput?.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      const title = titleInput.value.trim();
+      const artist = artistInput?.value || 'Ro Halfhide';
+      if (title && title.length >= 3 && title !== lastSearchedTitle) {
+        lastSearchedTitle = title;
+        autoLookupStreamingLinks(title, artist);
+      }
+    }, 750);
+  });
+
+  audioUploadInput?.addEventListener('change', async () => {
+    const file = audioUploadInput.files?.[0];
+    if (!file) return;
+
+    showToast('Detecting duration & uploading MP3...', 'info');
+    try {
+      const dur = await detectAudioDuration(file);
+      const durField = document.getElementById('track-form-duration') as HTMLInputElement | null;
+      if (durField && dur !== '0:00') durField.value = dur;
+
+      const audioUrl = await uploadMedia(file, 'audio');
+      const srcField = document.getElementById('track-form-src') as HTMLInputElement | null;
+      if (srcField) srcField.value = audioUrl;
+
+      // If title is not yet filled, try to infer it from filename
+      if (titleInput && !titleInput.value.trim()) {
+        const inferredTitle = file.name
+          .replace(/\.mp3$/i, '')
+          .replace(/[-_]/g, ' ')
+          .replace(/\b\w/g, (c) => c.toUpperCase());
+        titleInput.value = inferredTitle;
+        lastSearchedTitle = inferredTitle;
+        autoLookupStreamingLinks(inferredTitle, artistInput?.value || 'Ro Halfhide');
+      }
+    } catch {
+      // Handled in uploadMedia
+    }
+  });
+
+  const coverField = document.getElementById('track-form-cover') as HTMLInputElement | null;
+  const imgPreview = document.getElementById('track-cover-preview') as HTMLImageElement | null;
+
+  coverField?.addEventListener('input', () => {
+    setSafeImagePreview(imgPreview, coverField.value);
+  });
+
+  coverUploadInput?.addEventListener('change', async () => {
+    const file = coverUploadInput.files?.[0];
+    if (!file) return;
+
+    // Immediate instant preview from memory (no network wait, no 404)
+    previewLocalFile(imgPreview, file);
+
+    try {
+      const imgUrl = await uploadMedia(file, 'image');
+      if (coverField) coverField.value = imgUrl;
+    } catch {
+      // Handled in uploadMedia
+    }
+  });
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const saveBtn = document.getElementById('track-modal-save-btn') as HTMLButtonElement | null;
+    if (saveBtn) saveBtn.disabled = true;
+
+    try {
+      const payload = {
+        id: (document.getElementById('track-form-id') as HTMLInputElement).value,
+        title: (document.getElementById('track-form-title') as HTMLInputElement).value,
+        artist: (document.getElementById('track-form-artist') as HTMLInputElement).value,
+        src: (document.getElementById('track-form-src') as HTMLInputElement).value,
+        duration: (document.getElementById('track-form-duration') as HTMLInputElement).value,
+        cover: (document.getElementById('track-form-cover') as HTMLInputElement).value,
+        releaseDate: (document.getElementById('track-form-date') as HTMLInputElement).value,
+        draft: (document.getElementById('track-form-draft') as HTMLInputElement).checked,
+        links: {
+          spotify: (document.getElementById('track-form-spotify') as HTMLInputElement).value,
+          bandcamp: (document.getElementById('track-form-bandcamp') as HTMLInputElement).value,
+          appleMusic: (document.getElementById('track-form-apple') as HTMLInputElement).value,
+        },
+      };
+
+      showToast('Saving track to playlist...', 'info');
+
+      const res = await fetchWithAuth('/api/admin/music', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || 'Failed to save track');
+
+      showToast('Track saved successfully.', 'success');
+      closeTrackEditor();
+      await onSaveSuccess();
+    } catch (err: any) {
+      showToast(err.message, 'error');
+    } finally {
+      if (saveBtn) saveBtn.disabled = false;
+    }
+  });
+}

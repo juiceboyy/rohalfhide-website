@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import CommentsSection from '../../components/CommentsSection.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -98,6 +99,9 @@ function formatDate(date: Date) {
       <div class="pt-8 shadow-divider-t prose prose-invert max-w-none font-sans text-base sm:text-lg text-surface-ink/90 leading-relaxed space-y-6 [&_a]:text-accent [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-accent-hover [&_p]:leading-relaxed">
         <Content />
       </div>
+
+      <!-- Comments Section -->
+      <CommentsSection slug={post.slug} postTitle={post.data.title} />
 
       <!-- Article Footer -->
       <footer class="pt-12 shadow-divider-t flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">

@@ -1,0 +1,112 @@
+---
+import type { ProductionCredit } from '../../scripts/admin/producer-types';
+
+interface Props {
+  credits: ProductionCredit[];
+}
+
+function extractYouTubeId(url?: string): string | null {
+  if (!url) return null;
+  const trimmed = url.trim();
+  const match = trimmed.match(
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube-nocookie\.com\/embed\/)([A-Za-z0-9_-]{11})/
+  );
+  return match ? match[1] : null;
+}
+
+const { credits } = Astro.props;
+const publishedCredits = credits.filter((c) => !c.draft);
+---
+
+<section id="credits" class="py-24 bg-surface-void shadow-divider-t">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    <!-- Left Column -->
+    <div class="lg:col-span-4 space-y-3">
+      <h2 class="font-serif font-semibold text-4xl sm:text-5xl tracking-[-0.04em] leading-[1.05] text-surface-ink">
+        Selected Productions
+      </h2>
+      <p class="font-sans font-normal text-base text-surface-muted leading-relaxed">
+        Some of the productions I'm most proud of, selected from a broader catalog of released albums, EPs, and singles.
+      </p>
+    </div>
+
+    <!-- Right Column: Editorial Credit Ledger with On-Site Playback -->
+    <div class="lg:col-span-8 bg-surface-raised/50 rounded-2xl shadow-hairline p-6 sm:p-8 divide-y divide-white/[0.06]">
+      {publishedCredits.map((credit) => {
+        const youtubeId = extractYouTubeId(credit.youtubeUrl);
+        return (
+          <article class="py-5 first:pt-0 last:pb-0">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+              <div class="flex items-start sm:items-center gap-4 min-w-0">
+                <img
+                  src={credit.cover || '/images/hero-portrait.jpg'}
+                  alt={`${credit.artist} - ${credit.title}`}
+                  width="64"
+                  height="64"
+                  loading="lazy"
+                  class="w-16 h-16 rounded-xl object-cover bg-surface-base shadow-hairline shrink-0"
+                />
+
+                <div class="min-w-0 space-y-1">
+                  <div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-surface-subtle">
+                    <span>{credit.year}</span>
+                    <span>{credit.role}</span>
+                  </div>
+                  <h3 class="font-serif font-semibold text-xl text-surface-ink leading-snug">
+                    {credit.artist} <span class="font-sans font-normal text-surface-muted">- {credit.title}</span>
+                  </h3>
+                  {credit.notes && (
+                    <p class="font-sans text-xs text-surface-muted leading-relaxed">
+                      {credit.notes}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div class="flex items-center gap-4 shrink-0 self-end sm:self-center">
+                {credit.audioPreview ? (
+                  <button
+                    type="button"
+                    data-credit-preview={credit.audioPreview}
+                    data-credit-id={credit.id}
+                    aria-pressed="false"
+                    class="credit-preview-btn inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-surface-base hover:bg-white/[0.08] text-surface-ink shadow-hairline font-mono text-xs uppercase tracking-[0.14em] transition-colors duration-150 focus-ring"
+                  >
+                    <svg class="credit-preview-icon w-3.5 h-3.5 fill-current text-accent" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                    <span class="credit-preview-label">Play</span>
+                  </button>
+                ) : youtubeId ? (
+                  <button
+                    type="button"
+                    data-yt-id={youtubeId}
+                    data-yt-target={`credit-player-${credit.id}`}
+                    data-yt-title={`${credit.artist} - ${credit.title}`}
+                    aria-expanded="false"
+                    aria-controls={`credit-player-${credit.id}`}
+                    class="credit-yt-btn inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-surface-base hover:bg-white/[0.08] text-surface-ink shadow-hairline font-mono text-xs uppercase tracking-[0.14em] transition-colors duration-150 focus-ring"
+                  >
+                    <svg class="credit-yt-icon w-3.5 h-3.5 fill-current text-accent" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                    <span class="credit-yt-label">Play</span>
+                  </button>
+                ) : null}
+              </div>
+            </div>
+
+            {youtubeId && !credit.audioPreview && (
+              <div
+                id={`credit-player-${credit.id}`}
+                class="credit-yt-slot hidden mt-4 rounded-xl overflow-hidden bg-surface-void shadow-hairline"
+              ></div>
+            )}
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<script src="../../scripts/producer-credits.ts"></script>

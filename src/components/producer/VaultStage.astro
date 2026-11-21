@@ -1,0 +1,107 @@
+---
+import type { SongIdea } from '../../scripts/admin/producer-types';
+
+interface Props {
+  initialIdea: SongIdea;
+}
+
+const { initialIdea } = Astro.props;
+
+const videoFrameClass =
+  initialIdea.aspectRatio === '16:9'
+    ? 'relative w-full max-w-xl aspect-video rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong'
+    : initialIdea.aspectRatio === '1:1'
+      ? 'relative w-full max-w-[400px] aspect-square rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong'
+      : 'relative w-full max-w-[340px] sm:max-w-[380px] aspect-[9/16] rounded-2xl overflow-hidden bg-surface-void shadow-hairline-strong';
+---
+
+<!-- Active Playback Stage: Studio Video Clip View (Primary Visual Anchor) -->
+<div
+  id="vault-video-stage"
+  class={initialIdea.mediaType === 'video' ? 'w-full flex justify-center lg:justify-end' : 'hidden'}
+>
+  <div id="vault-video-frame" class={videoFrameClass}>
+    <video
+      id="vault-video-element"
+      controls
+      playsinline
+      loading="lazy"
+      preload="none"
+      width={initialIdea.width || 360}
+      height={initialIdea.height || 640}
+      poster={initialIdea.mediaType === 'video' ? (initialIdea.poster || initialIdea.cover || undefined) : undefined}
+      src={initialIdea.mediaType === 'video' ? initialIdea.src : undefined}
+      class="w-full h-full block object-cover"
+    ></video>
+
+    <button
+      type="button"
+      id="vault-video-play-overlay"
+      aria-label="Play song idea"
+      class="group absolute inset-x-0 top-0 bottom-14 flex items-center justify-center bg-surface-void/20 hover:bg-surface-void/10 transition-colors duration-150 cursor-pointer focus-ring"
+    >
+      <span class="w-16 h-16 rounded-full bg-surface-void/75 backdrop-blur-md text-surface-ink shadow-hairline-strong group-hover:bg-surface-ink group-hover:text-surface-void flex items-center justify-center transition-all duration-150">
+        <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </span>
+    </button>
+  </div>
+</div>
+
+<!-- Active Playback Stage: Audio Fallback View -->
+<div
+  id="vault-audio-stage"
+  class={initialIdea.mediaType === 'audio' ? 'w-full flex justify-center lg:justify-end' : 'hidden'}
+>
+  <div class="w-full max-w-[380px] bg-surface-raised/70 backdrop-blur-2xl rounded-2xl shadow-hairline p-6 space-y-5">
+    <img
+      id="vault-cover"
+      src={initialIdea.cover || '/images/hero-portrait.jpg'}
+      alt={initialIdea.title}
+      width="332"
+      height="332"
+      loading="lazy"
+      class="w-full aspect-square rounded-xl object-cover bg-surface-base shadow-hairline"
+    />
+
+    <!-- Interactive Audio Timeline -->
+    <div>
+      <div
+        id="vault-progress-container"
+        role="slider"
+        tabindex="0"
+        aria-label="Seek song idea position"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="0"
+        class="w-full bg-white/[0.12] h-1.5 rounded-full cursor-pointer relative focus-ring"
+      >
+        <div id="vault-progress-bar" class="bg-accent h-1.5 rounded-full w-0"></div>
+      </div>
+      <div class="flex justify-between text-xs text-surface-muted font-mono mt-2">
+        <span id="vault-current-time">0:00</span>
+        <span id="vault-total-duration">{initialIdea.duration}</span>
+      </div>
+    </div>
+
+    <!-- Transport Button -->
+    <div class="flex items-center justify-center">
+      <button
+        id="vault-play-btn"
+        type="button"
+        aria-label="Play song idea"
+        class="w-12 h-12 rounded-full bg-surface-ink hover:bg-white text-surface-void flex items-center justify-center transition-colors duration-150 focus-ring"
+      >
+        <svg id="vault-play-icon" class="w-5 h-5 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="vault-pause-icon" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<audio
+  id="vault-audio-element"
+  preload="none"
+  src={initialIdea.mediaType === 'audio' ? initialIdea.src : undefined}
+></audio>
